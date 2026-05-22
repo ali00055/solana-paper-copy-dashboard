@@ -6347,6 +6347,7 @@ function controlPageHtml() {
     .tag.copy { color:var(--blue); border-color:rgba(107,183,255,.45); }
     .tag.alert { color:var(--warn); border-color:rgba(242,193,78,.45); }
     .tag.off { color:var(--bad); border-color:rgba(255,94,108,.45); }
+    tr.just-added td { background:rgba(53,208,140,.08); box-shadow:inset 3px 0 0 var(--good); }
     .mono { font-family:ui-monospace,SFMono-Regular,Consolas,monospace; color:var(--muted); font-size:12px; }
     .row-actions { display:flex; gap:7px; flex-wrap:wrap; }
     .status { white-space:pre-wrap; color:var(--muted); font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:12px; }
@@ -6663,7 +6664,8 @@ function controlPageHtml() {
         const moonshot = boolValue(fieldValue(wallet, 'moonshot', wallet.moonshot));
         const decisionWallet = { ...wallet, mode, tradeTry, class: walletClass, score, moonshot };
         const added = wallet.addedAt ? '<div class="small good">yeni eklenen · ' + new Date(wallet.addedAt).toLocaleTimeString('tr-TR') + '</div>' : '';
-        return '<tr data-wallet="' + id + '">' +
+        const highlight = new URLSearchParams(location.search).get('added') === wallet.address ? ' just-added' : '';
+        return '<tr class="' + highlight + '" data-wallet="' + id + '" data-address="' + wallet.address + '">' +
           '<td><b>' + wallet.name + '</b><div class="mono">' + short(wallet.address) + '</div>' + added + '<div class="small">' + (wallet.note || '') + '</div></td>' +
           '<td><select data-field="mode"><option value="copy" ' + (mode === 'copy' ? 'selected' : '') + '>copy</option><option value="alert" ' + (mode === 'alert' ? 'selected' : '') + '>alert</option><option value="off" ' + (mode === 'off' ? 'selected' : '') + '>off</option></select></td>' +
           '<td><input data-field="tradeTry" type="text" inputmode="decimal" value="' + tradeTry + '"></td>' +
@@ -6754,6 +6756,12 @@ function controlPageHtml() {
       document.getElementById('copyValue').textContent = copyCount + '/' + wallets.length;
       renderSettings(config);
       renderWallets(wallets);
+      const addedAddress = new URLSearchParams(location.search).get('added');
+      if (addedAddress) {
+        setTimeout(() => {
+          document.querySelector('[data-address="' + CSS.escape(addedAddress) + '"]')?.scrollIntoView({ behavior:'smooth', block:'center' });
+        }, 150);
+      }
       renderRadar(data.signalRadar || []);
       renderPositions(mtm.positions || []);
       const losers = wallets.filter(w => Number(w.realizedTry || 0) < 0).slice(0, 4).map(w => w.name + ' ' + fmtTry(w.realizedTry)).join('\\n');
@@ -6808,6 +6816,7 @@ function controlPageHtml() {
         document.getElementById('newWalletAddress').value = '';
         document.getElementById('newWalletName').value = '';
         document.getElementById('newWalletNote').value = '';
+        if (data.wallet?.address) window.location.href = '/control?added=' + encodeURIComponent(data.wallet.address);
       }
     }
     document.getElementById('addWalletAlert').addEventListener('click', () => addWalletFromForm('alert'));
@@ -7199,6 +7208,9 @@ function researchPageHtml() {
         if (!res.ok || data.ok === false) throw new Error(data.error || 'eklenemedi');
         status.textContent = (data.existing ? 'güncellendi: ' : 'eklendi: ') + data.wallet.name + ' / ' + data.wallet.mode;
         await load();
+        if (mode === 'copy') {
+          window.location.href = '/control?added=' + encodeURIComponent(address);
+        }
       } catch (error) {
         status.textContent = 'hata: ' + (error.message || error);
       }
@@ -7208,7 +7220,7 @@ function researchPageHtml() {
       '<div class="actions">' +
       '<button onclick="addWallet(\\'' + address + '\\', \\'alert\\', \\' ' + note.replace(/'/g, '') + '\\', ' + Number(score || 45) + ', ' + Number(lotTry || 60) + ')">Alert ekle</button>' +
       '<button onclick="addWallet(\\'' + address + '\\', \\'copy\\', \\' ' + note.replace(/'/g, '') + '\\', ' + Number(score || 60) + ', ' + Number(lotTry || 60) + ')">Copy ekle</button>' +
-      '<a class="btn" href="/wallets">Cuzdan Durumlari</a>' +
+      '<a class="btn" href="/wallets?added=' + address + '">Cuzdan Durumlari</a>' +
       '</div>';
     async function loadAutoHunter(force = false) {
       const status = document.getElementById('autoHunterStatus');
