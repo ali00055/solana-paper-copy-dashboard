@@ -14,6 +14,10 @@ let socialRadarCache = { at: 0, value: null };
 let nansenSmartCache = { at: 0, value: null };
 let trendMapCache = { at: 0, value: null };
 
+function clearStateCache() {
+  stateCache = { at: 0, value: null, promise: null };
+}
+
 async function readJson(file, fallback = null) {
   try {
     return JSON.parse((await fs.readFile(file, "utf8")).replace(/^\uFEFF/, ""));
@@ -184,6 +188,19 @@ async function solanaRpc(config, method, params, timeoutMs = 12000) {
     return json.result;
   } finally {
     clearTimeout(timer);
+  }
+}
+
+async function solBalance(config, address, timeoutMs = 8000) {
+  try {
+    const result = await solanaRpc(config, "getBalance", [address], timeoutMs);
+    const sol = Number(result?.value || 0) / 1e9;
+    return {
+      sol: Number(sol.toFixed(4)),
+      try: Number((sol * Number(config.tryPerSol || 0)).toFixed(2))
+    };
+  } catch {
+    return null;
   }
 }
 
@@ -1200,7 +1217,8 @@ async function addControlWallet(body, restart = true) {
       }
     }
     if (restart) queueBotRestart(`wallet existing ${existing.name}`);
-    return { ok: true, existing: true, wallet: existing, config: publicConfig(config) };
+    clearStateCache();
+    return { ok: true, existing: true, tracked: true, wallet: existing, config: publicConfig(config) };
   }
 
   const mode = ["copy", "alert", "off"].includes(body.mode) ? body.mode : "alert";
@@ -1224,7 +1242,8 @@ async function addControlWallet(body, restart = true) {
   config.wallets.push(wallet);
   await writeJson("config.json", config);
   if (restart) queueBotRestart(`wallet add ${wallet.name}`);
-  return { ok: true, existing: false, wallet, config: publicConfig(config) };
+  clearStateCache();
+  return { ok: true, existing: false, tracked: true, wallet, config: publicConfig(config) };
 }
 
 async function batchWalletMode(mode, restart = true) {
@@ -4187,6 +4206,15 @@ async function enrichHunterRowsWithCielo(config, rows = []) {
   ].sort((a, b) => Number(b.totalScore || 0) - Number(a.totalScore || 0));
 }
 
+async function enrichHunterRowsWithBalances(config, rows = []) {
+  const out = [];
+  for (const row of rows.slice(0, 18)) {
+    const balance = await solBalance(config, row.wallet, 6500);
+    out.push({ ...row, balance });
+  }
+  return [...out, ...rows.slice(18)];
+}
+
 async function apiWalletHunter(force = false) {
   const config = await readJson("config.json", {});
   const current = await readJsonAnyEncoding("free-alpha-radar-result.json", { wallets: [], clusters: [], hunter: {} });
@@ -4202,6 +4230,7 @@ async function apiWalletHunter(force = false) {
   let rows = buildHunterRows(current);
   if (!rows.length && scanStatus?.previewWallets?.length) rows = buildLiveHunterPreview(scanStatus);
   rows = await enrichHunterRowsWithCielo(config, rows);
+  rows = await enrichHunterRowsWithBalances(config, rows);
   const clusters = (current?.clusters || []).slice(0, 25).map((cluster) => ({
     symbol: cluster.symbol,
     mint: cluster.mint,
@@ -5091,12 +5120,7 @@ async function apiWalletDetail(query = "") {
   let balance = null;
   let cielo = { enabled: Boolean(cieloKey(config)), ok: false, error: config.enableCieloPnl ? null : "Cielo PnL modulu kapali" };
   if (wallet?.address) {
-    try {
-      const lamports = await solanaRpc(config, "getBalance", [wallet.address], 8000);
-      balance = { sol: Number(lamports?.value || 0) / 1e9, try: (Number(lamports?.value || 0) / 1e9) * Number(config.tryPerSol || 0) };
-    } catch {
-      balance = null;
-    }
+    balance = await solBalance(config, wallet.address, 8000);
     if (config.enableCieloPnl) {
       cielo = await cieloWalletPnl(config, wallet.address).catch((error) => ({ enabled: Boolean(cieloKey(config)), ok: false, error: error?.message || String(error) }));
     }
@@ -7180,9 +7204,10 @@ function researchPageHtml() {
         document.getElementById('autoHunterRows').innerHTML = (data.rows || []).map(row => {
           const reasons = (row.reasons || []).slice(0, 4).map(item => '<div class="small">' + item + '</div>').join('');
           const risks = (row.riskFlags || []).length ? '<div class="small bad">' + (row.riskFlags || []).slice(0, 4).join(', ') + '</div>' : '<div class="small good">risk bayragi az</div>';
+          const balance = row.balance ? '<div class="small good">bakiye ' + Number(row.balance.sol || 0).toFixed(4) + ' SOL / ' + Number(row.balance.try || 0).toLocaleString('tr-TR', { maximumFractionDigits: 0 }) + ' TL</div>' : '<div class="small warn">bakiye okunamadi</div>';
           return '<tr><td><div class="mono">' + row.wallet + '</div>' + linkHtml(row.wallet) + '</td>' +
             '<td><b>' + Number(row.totalScore || 0).toFixed(1) + '</b><div class="small">' + (row.grade || '-') + ' / ' + (row.profile || '-') + '</div><div class="small">A' + (row.alphaScore || 0) + ' I' + (row.insiderScore || 0) + ' S' + (row.sniperScore || 0) + '</div></td>' +
-            '<td>' + reasons + '<div class="small">token ' + (row.hits || 0) + ' / erken ' + (row.earlyHits || 0) + ' / spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL</div>' + risks + '</td>' +
+            '<td>' + reasons + balance + '<div class="small">token ' + (row.hits || 0) + ' / erken ' + (row.earlyHits || 0) + ' / spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL</div>' + risks + '</td>' +
             '<td>' + (row.action || '-') + addButtons(row.wallet, 'Otomatik avci ' + (row.profile || '-') + ' skor ' + Number(row.totalScore || 0).toFixed(1), row.totalScore || row.alphaScore || 45, row.lotTry || 60) + '</td></tr>';
         }).join('') || '<tr><td colspan="4" class="small">Tarama baslatildiysa ilk adaylar birkac dakika icinde burada gorunur.</td></tr>';
       } catch (error) {
@@ -8252,9 +8277,10 @@ function oraclePageHtml() {
         const risks = (row.riskFlags || []).length ? '<div class="small bad">' + esc((row.riskFlags || []).join(' · ')) + '</div>' : '<div class="small good">risk bayragi az</div>';
         const reasons = (row.reasons || []).slice(0, 5).map(item => '<div class="small">' + esc(item) + '</div>').join('');
         const addCopy = row.mode === 'copy-mini' ? '<button data-action="add-copy" data-wallet="' + esc(row.wallet) + '" data-score="' + esc(row.totalScore) + '" data-lot="' + esc(row.lotTry) + '">Mini Copy</button>' : '';
+        const balance = row.balance ? '<div class="small good">bakiye ' + Number(row.balance.sol || 0).toFixed(4) + ' SOL / ' + Number(row.balance.try || 0).toLocaleString('tr-TR', { maximumFractionDigits: 0 }) + ' TL</div>' : '<div class="small warn">bakiye okunamadi</div>';
         return '<tr><td><div class="mono">' + esc(row.wallet) + '</div><div class="small">' + links + '</div>' + cats + '</td>' +
           '<td><span class="tag ' + esc(row.grade) + '">' + Number(row.totalScore || 0).toFixed(1) + ' / ' + esc(row.grade) + '</span><div class="small">A' + row.alphaScore + ' · I' + row.insiderScore + ' · S' + row.sniperScore + ' · $' + row.convictionScore + '</div><div class="small">mod ' + esc(row.mode) + ' · lot ' + (row.lotTry || 0) + ' TL</div></td>' +
-          '<td>' + reasons + '<div class="small">PnL ' + Number(row.pnlSol || 0).toFixed(2) + ' SOL · WR ' + (row.winRate === null || row.winRate === undefined ? '-' : Number(row.winRate).toFixed(0) + '%') + ' · max ' + Number(row.maxX || 0).toFixed(1) + 'x</div><div class="small">proof ' + Number(row.proofScore || 0).toFixed(0) + ' ? repeat ' + Number(row.repeatabilityScore || 0).toFixed(0) + ' ? survival ' + Number(row.survivalScore || 0).toFixed(0) + ' ? copySafe ' + Number(row.copySafetyScore || 0).toFixed(0) + '</div><div class="small">spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL · max buy ' + Number(Math.max(row.maxBuySol || 0, row.maxEarlyBuySol || 0)).toFixed(2) + ' SOL · avg buy ' + Number(row.avgBuySol || 0).toFixed(2) + ' SOL</div>' + (row.funding ? '<div class="small warn">funder ' + short(row.funding.funder) + ' -> ' + Number(row.funding.receivedSol || 0).toFixed(2) + ' SOL</div>' : '') + (row.dustSniper ? '<div class="small bad">kucuk para sniper cezasi</div>' : '') + risks + '</td>' +
+          '<td>' + reasons + balance + '<div class="small">PnL ' + Number(row.pnlSol || 0).toFixed(2) + ' SOL · WR ' + (row.winRate === null || row.winRate === undefined ? '-' : Number(row.winRate).toFixed(0) + '%') + ' · max ' + Number(row.maxX || 0).toFixed(1) + 'x</div><div class="small">proof ' + Number(row.proofScore || 0).toFixed(0) + ' ? repeat ' + Number(row.repeatabilityScore || 0).toFixed(0) + ' ? survival ' + Number(row.survivalScore || 0).toFixed(0) + ' ? copySafe ' + Number(row.copySafetyScore || 0).toFixed(0) + '</div><div class="small">spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL · max buy ' + Number(Math.max(row.maxBuySol || 0, row.maxEarlyBuySol || 0)).toFixed(2) + ' SOL · avg buy ' + Number(row.avgBuySol || 0).toFixed(2) + ' SOL</div>' + (row.funding ? '<div class="small warn">funder ' + short(row.funding.funder) + ' -> ' + Number(row.funding.receivedSol || 0).toFixed(2) + ' SOL</div>' : '') + (row.dustSniper ? '<div class="small bad">kucuk para sniper cezasi</div>' : '') + risks + '</td>' +
           '<td>' + esc(row.action || '-') + '<div class="actions" style="margin-top:8px"><button data-action="add-alert" data-wallet="' + esc(row.wallet) + '" data-score="' + esc(row.totalScore) + '" data-lot="' + esc(row.lotTry) + '">Alert Ekle</button>' + addCopy + '</div></td></tr>';
       }).join('') || '<tr><td colspan="4" class="empty">Cuzdan adayi yok. Taze Av Baslat.</td></tr>';
 
