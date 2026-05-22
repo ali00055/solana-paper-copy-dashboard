@@ -1,0 +1,12 @@
+{
+  "name": "solana-copy-paper-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node bot.mjs",
+    "start:all": "node deploy/start-all.mjs",
+    "status": "node status.mjs",
+    "dashboard": "node server.mjs"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "rpcHttp": "https://solana-rpc.publicnode.com",
+  "rpcWs": "wss://solana-rpc.publicnode.com",
+  "tryPerSol": 4350,
+  "startingTry": 5000,
+  "normalTradeTry": 350,
+  "highConfidenceTradeTry": 700,
+  "maxOpenPositions": 2,
+  "maxCoreOpenPositions": 1,
+  "maxMoonshotOpenPositions": 1,
+  "maxOpenPerWallet": 1,
+  "walletCooldownSec": 180,
+  "tokenCooldownMin": 60,
+  "walletSignalWindowSec": 60,
+  "maxWalletBuySignalsPerMinute": 8,
+  "maxBuyMarketCapUsd": 10000000,
+  "noPriceRetryDelaySec": 30,
+  "noPriceRetryMaxAgeSec": 180,
+  "noPriceRetryMaxAttempts": 5,
+  "noPriceRetryQueueLimit": 80,
+  "minClosedTradesForPenalty": 3,
+  "penaltyWinRatePct": 35,
+  "penaltyRealizedTry": -50,
+  "walletPenaltyCooldownMin": 30,
+  "feeHaircutPct": 2,
+  "stopLossPct": -25,
+  "coreProfitLockTry": 50,
+  "coreProfitLockFraction": 0.5,
+  "takeProfit1Pct": 80,
+  "takeProfit2Pct": 200,
+  "trailingStopPct": -35,
+  "runnerExitIfWalletSoldBelowPct": 80,
+  "tradeHistoricalOnStartup": false,
+  "wallets": [
+    {
+      "name": "DQt1vtXL",
+      "address": "DQt1vtXLG7xTWBd5astQbeUzTsafUYum2zjryUa9ymkY",
+      "mode": "copy",
+      "confidence": "normal"
+    },
+    {
+      "name": "Bmoravum",
+      "address": "Bmoravumrff388cZgpzAi33jDjaoed2Hiogw2WySUeQS",
+      "mode": "alert",
+      "confidence": "normal"
+    },
+    {
+      "name": "Hizli-03",
+      "address": "7WSDufZW7ScdYeWDooJaMLL51BmzM7zwaFu7TZGwq63k",
+      "mode": "copy",
+      "confidence": "normal"
+    },
+    {
+      "name": "Radar-01",
+      "address": "CR4Y5YQ2Dy8kdKCCYd32goMmG762FqFaBb5uVbQdxaKc",
+      "mode": "copy",
+      "confidence": "normal"
+    }
+  ],
+  "telegram": {
+    "enabled": false,
+    "botToken": "",
+    "chatId": ""
+  }
+}

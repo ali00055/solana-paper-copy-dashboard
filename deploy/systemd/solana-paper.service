@@ -1,0 +1,18 @@
+[Unit]
+Description=Solana Paper Copy Bot and Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/solana-paper
+Environment=NODE_ENV=production
+Environment=PORT=8787
+Environment=DATA_DIR=/opt/solana-paper-data
+ExecStart=/usr/bin/node deploy/start-all.mjs
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target
