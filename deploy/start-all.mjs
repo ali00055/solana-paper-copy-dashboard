@@ -44,6 +44,39 @@ async function ensurePersistentFile(name) {
   });
 }
 
+async function jsonCount(file, key) {
+  try {
+    const value = JSON.parse(await fs.readFile(file, "utf8"));
+    return Array.isArray(value?.[key]) ? value[key].length : 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function lineCount(file) {
+  try {
+    return (await fs.readFile(file, "utf8")).split(/\r?\n/).filter(Boolean).length;
+  } catch {
+    return 0;
+  }
+}
+
+async function restoreRicherSeed(name, seedName, kind) {
+  const source = path.join(root, name);
+  const target = dataDir ? path.join(dataDir, name) : source;
+  const seed = path.join(root, seedName);
+  if (!(await pathExists(seed))) return;
+  if (kind === "state") {
+    const seedScore = await jsonCount(seed, "closedTrades") + await jsonCount(seed, "processedSignatures");
+    const currentScore = await jsonCount(target, "closedTrades") + await jsonCount(target, "processedSignatures");
+    if (seedScore > currentScore) await fs.copyFile(seed, target);
+    return;
+  }
+  if (kind === "events") {
+    if ((await lineCount(seed)) > (await lineCount(target))) await fs.copyFile(seed, target);
+  }
+}
+
 async function prepareDataDir() {
   if (!(await pathExists(path.join(root, "config.json"))) && (await pathExists(path.join(root, "config.example.json")))) {
     await fs.copyFile(path.join(root, "config.example.json"), path.join(root, "config.json"));
@@ -56,6 +89,8 @@ async function prepareDataDir() {
   }
   if (!dataDir) return;
   for (const file of filesToPersist) await ensurePersistentFile(file);
+  await restoreRicherSeed("paper-state.json", "paper-state.seed.json", "state");
+  await restoreRicherSeed("paper-events.ndjson", "paper-events.seed.ndjson", "events");
 }
 
 function start(name, script) {
