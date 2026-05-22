@@ -78,8 +78,12 @@ async function restoreRicherSeed(name, seedName, kind) {
 }
 
 async function prepareDataDir() {
-  if (!(await pathExists(path.join(root, "config.json"))) && (await pathExists(path.join(root, "config.example.json")))) {
-    await fs.copyFile(path.join(root, "config.example.json"), path.join(root, "config.json"));
+  if (!(await pathExists(path.join(root, "config.json")))) {
+    if (await pathExists(path.join(root, "config.seed.json"))) {
+      await fs.copyFile(path.join(root, "config.seed.json"), path.join(root, "config.json"));
+    } else if (await pathExists(path.join(root, "config.example.json"))) {
+      await fs.copyFile(path.join(root, "config.example.json"), path.join(root, "config.json"));
+    }
   }
   if (!(await pathExists(path.join(root, "paper-state.json"))) && (await pathExists(path.join(root, "paper-state.seed.json")))) {
     await fs.copyFile(path.join(root, "paper-state.seed.json"), path.join(root, "paper-state.json"));
@@ -89,6 +93,11 @@ async function prepareDataDir() {
   }
   if (!dataDir) return;
   for (const file of filesToPersist) await ensurePersistentFile(file);
+  if ((await pathExists(path.join(root, "config.seed.json")))) {
+    const seedWallets = await jsonCount(path.join(root, "config.seed.json"), "wallets");
+    const currentWallets = await jsonCount(path.join(dataDir, "config.json"), "wallets");
+    if (seedWallets > currentWallets) await fs.copyFile(path.join(root, "config.seed.json"), path.join(dataDir, "config.json"));
+  }
   await restoreRicherSeed("paper-state.json", "paper-state.seed.json", "state");
   await restoreRicherSeed("paper-events.ndjson", "paper-events.seed.ndjson", "events");
 }

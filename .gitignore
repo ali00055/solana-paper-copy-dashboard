@@ -11,6 +11,7 @@ secrets/
 tools/
 cloudflared.exe
 config.json
+!config.seed.json
 paper-state.json
 paper-events.ndjson
 !paper-state.seed.json
