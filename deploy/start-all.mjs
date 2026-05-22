@@ -71,6 +71,10 @@ function start(name, script) {
 const children = [];
 let stopping = false;
 
+async function writeManagedPid(name, pid) {
+  await fs.writeFile(path.join(root, `${name}.pid`), String(pid), "utf8").catch(() => {});
+}
+
 function shutdown() {
   if (stopping) return;
   stopping = true;
@@ -84,8 +88,16 @@ process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
 await prepareDataDir();
-if (process.env.START_BOT !== "false") children.push(start("bot", "bot.mjs"));
-if (process.env.START_PANEL !== "false") children.push(start("panel", "server.mjs"));
+if (process.env.START_BOT !== "false") {
+  const bot = start("bot", "bot.mjs");
+  children.push(bot);
+  await writeManagedPid("bot", bot.pid);
+}
+if (process.env.START_PANEL !== "false") {
+  const panel = start("panel", "server.mjs");
+  children.push(panel);
+  await writeManagedPid("server", panel.pid);
+}
 if (!children.length) {
   console.error("START_BOT=false and START_PANEL=false; nothing to run.");
   process.exit(1);
