@@ -8,6 +8,7 @@ const TX_SAMPLE_PER_WALLET = Number(process.env.ALPHA_TX_SAMPLE_PER_WALLET || 45
 const MAX_PROFILED_WALLETS = Number(process.env.ALPHA_MAX_PROFILED_WALLETS || 18);
 const MIN_SPEND_SOL = 0.015;
 const TREND_QUERIES = ["ai", "meme", "cat", "dog", "sol", "pump", "cto", "bonk", "trenches", "viral", "moon", "usa"];
+const FUNDER_LOOKBACK_SIGNATURES = Number(process.env.ALPHA_FUNDER_SIGS || 18);
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -61,6 +62,13 @@ function solDelta(tx, owner) {
   return ((tx.meta?.postBalances?.[index] || 0) - (tx.meta?.preBalances?.[index] || 0)) / 1e9;
 }
 
+function lamportDelta(tx, owner) {
+  const keys = tx.transaction?.message?.accountKeys || [];
+  const index = keys.findIndex((key) => keyString(key) === owner);
+  if (index < 0) return 0;
+  return ((tx.meta?.postBalances?.[index] || 0) - (tx.meta?.preBalances?.[index] || 0)) / 1e9;
+}
+
 function tokenDeltasByOwner(tx) {
   const pre = tokenOwnerMap(tx.meta?.preTokenBalances);
   const post = tokenOwnerMap(tx.meta?.postTokenBalances);
@@ -101,6 +109,8 @@ function walletDecision(wallet) {
     Math.min(12, Math.log2(1 + avgBuySol) * 12) +
     (medianBuySol >= 0.25 ? 8 : medianBuySol >= 0.1 ? 4 : 0)
   ).toFixed(1))));
+  const funding = wallet.funding || null;
+  const fundedSmall = funding && Number(funding.receivedSol || 0) >= 0.08 && Number(funding.receivedSol || 0) <= 3;
   const isDustSniper = maxBuySol < 0.08 && avgBuySol < 0.035 && totalSpendSol < 0.25;
   const oneHitWonder = maxX >= 8 && closed < 5;
   const noRealizedProof = closed < 3 && pnlSol <= 0;
@@ -120,6 +130,7 @@ function walletDecision(wallet) {
   const repeatabilityScore = Math.max(0, Math.min(100, Number((
     Math.min(28, Number(wallet.hits || 0) * 10) +
     Math.min(24, Number(wallet.earlyHits || 0) * 12) +
+    (fundedSmall ? 8 : 0) +
     Math.min(22, closed * 3) +
     (closed >= 10 ? 12 : closed >= 5 ? 7 : 0) +
     (winRate >= 60 ? 10 : winRate >= 50 ? 5 : 0) -
@@ -129,6 +140,7 @@ function walletDecision(wallet) {
     Math.min(34, Math.max(0, 420 - earliestSec) / 8) +
     Math.min(24, Number(wallet.earlyHits || 0) * 12) +
     (activeHours !== null && activeHours <= 12 ? 14 : activeHours !== null && activeHours <= 36 ? 8 : 0) +
+    (fundedSmall ? 8 : 0) +
     Math.min(10, Math.max(0, Number(wallet.avgEarlyBuySol || 0)) * 16)
   ).toFixed(1))));
   const survivalScore = Math.max(0, Math.min(100, Number((
@@ -196,6 +208,7 @@ function walletDecision(wallet) {
   if (convictionScore >= 55 && pnlSol >= 0) archetypes.push("BUYUK PARA");
   const profile =
     edgeScore >= 72 && insiderScore >= 42 && convictionScore >= 38 && copySafetyScore >= 58 && proofScore >= 36 && riskFlags.length <= 1 ? "PIR ADAYI" :
+    fundedSmall && insiderScore >= 45 && timingScore >= 35 && riskFlags.length <= 3 ? "FONLANMIS CLUSTER ADAYI" :
     edgeScore >= 58 && convictionScore >= 30 && copySafetyScore >= 48 && pnlSol >= 0 && riskFlags.length <= 2 ? "IZLE + MINI" :
     maxX >= 6 && riskFlags.length <= 2 ? "MOONSHOT RADAR" :
     riskFlags.length >= 3 ? "RISKLI" :
@@ -222,6 +235,7 @@ function walletDecision(wallet) {
     survivalScore,
     copySafetyScore,
     proofScore,
+    funding,
     maxBuySol: Number(maxBuySol.toFixed(4)),
     avgBuySol: Number(avgBuySol.toFixed(4)),
     medianBuySol: Number(medianBuySol.toFixed(4)),
@@ -246,6 +260,7 @@ function walletDecision(wallet) {
       `repeat ${repeatabilityScore}`,
       `survival ${survivalScore}`,
       `copySafety ${copySafetyScore}`,
+      funding ? `funder ${funding.funder.slice(0, 6)} ${funding.receivedSol} SOL` : "funder yok",
       `noise ${noiseRatio.toFixed(1)}`
     ]
   };
@@ -435,6 +450,34 @@ async function walletProfile(wallet) {
   };
 }
 
+async function fundingSource(wallet) {
+  const sigs = await rpc("getSignaturesForAddress", [wallet, { limit: FUNDER_LOOKBACK_SIGNATURES }]) || [];
+  for (const sig of sigs) {
+    const tx = await rpc("getTransaction", [sig.signature, { encoding: "jsonParsed", maxSupportedTransactionVersion: 0 }]);
+    if (!tx?.meta || tx.meta.err) continue;
+    const receivedSol = lamportDelta(tx, wallet);
+    if (receivedSol < 0.08) continue;
+    const keys = tx.transaction?.message?.accountKeys || [];
+    const funders = keys
+      .map((key) => keyString(key))
+      .filter((address) => address && address !== wallet)
+      .map((address) => ({ address, delta: lamportDelta(tx, address) }))
+      .filter((item) => item.delta < -0.06)
+      .sort((a, b) => a.delta - b.delta);
+    const funder = funders[0];
+    if (funder) {
+      return {
+        funder: funder.address,
+        receivedSol: Number(receivedSol.toFixed(4)),
+        signature: sig.signature,
+        time: tx.blockTime ? new Date(tx.blockTime * 1000).toISOString() : null
+      };
+    }
+    await sleep(20);
+  }
+  return null;
+}
+
 const tokens = await tokenUniverse();
 console.error(`tokens=${tokens.length}`);
 const walletHits = new Map();
@@ -472,8 +515,11 @@ const candidateWallets = [...walletHits.values()]
 
 const profiles = new Map();
 for (const hit of candidateWallets) {
-  const profile = await walletProfile(hit.wallet);
-  profiles.set(hit.wallet, { ...hit, tokens: [...hit.tokens], ...profile });
+  const [profile, funding] = await Promise.all([
+    walletProfile(hit.wallet),
+    fundingSource(hit.wallet).catch(() => null)
+  ]);
+  profiles.set(hit.wallet, { ...hit, tokens: [...hit.tokens], ...profile, funding });
   console.error(`${hit.wallet.slice(0, 6)} q=${profile.quality} closed=${profile.closed} pnl=${profile.pnlSol} max=${profile.maxX}x`);
 }
 
@@ -518,10 +564,34 @@ const clusters = tokenClusters.map(({ token, buyers }) => {
   const strongBuyers = enriched.filter((buyer) => (buyer.profile?.profile || "") === "PIR ADAYI");
   const riskyBuyers = enriched.filter((buyer) => (buyer.profile?.riskFlags || []).length >= 3);
   const qualitySum = smartBuyers.reduce((sum, buyer) => sum + (buyer.profile?.alphaScore || 0), 0);
+  const funderGroups = new Map();
+  for (const buyer of enriched) {
+    const funder = buyer.profile?.funding?.funder;
+    if (!funder) continue;
+    const group = funderGroups.get(funder) || { funder, buyers: [], totalSpentSol: 0, firstSec: null, lastSec: null };
+    group.buyers.push(buyer.wallet);
+    group.totalSpentSol += Number(buyer.spentSol || 0);
+    if (buyer.earlySec !== null && buyer.earlySec !== undefined) {
+      group.firstSec = group.firstSec === null ? buyer.earlySec : Math.min(group.firstSec, buyer.earlySec);
+      group.lastSec = group.lastSec === null ? buyer.earlySec : Math.max(group.lastSec, buyer.earlySec);
+    }
+    funderGroups.set(funder, group);
+  }
+  const fundingClusters = [...funderGroups.values()]
+    .map((group) => ({
+      ...group,
+      buyerCount: group.buyers.length,
+      windowSec: group.firstSec === null || group.lastSec === null ? null : group.lastSec - group.firstSec,
+      coordinationScore: Math.min(100, group.buyers.length * 28 + Math.log2(1 + group.totalSpentSol) * 12 - Math.max(0, (group.windowSec || 0) - 180) / 12)
+    }))
+    .filter((group) => group.buyerCount >= 2)
+    .sort((a, b) => b.coordinationScore - a.coordinationScore)
+    .slice(0, 5);
+  const fundingBonus = fundingClusters.reduce((sum, group) => sum + Math.min(18, group.coordinationScore / 6), 0);
   const earlyBonus = enriched.filter((buyer) => (buyer.earlySec ?? 999999) <= 300).length * 4;
   const liquidityScore = token.liquidityUsd >= 10000 ? 10 : token.liquidityUsd >= 4000 ? 6 : 2;
   const mcapScore = token.fdv && token.fdv < 200000 ? 10 : token.fdv < 1000000 ? 6 : 2;
-  const clusterScore = Math.min(100, qualitySum / 2.7 + smartBuyers.length * 8 + strongBuyers.length * 10 + earlyBonus + liquidityScore + mcapScore - riskyBuyers.length * 5);
+  const clusterScore = Math.min(100, qualitySum / 2.7 + smartBuyers.length * 8 + strongBuyers.length * 10 + earlyBonus + fundingBonus + liquidityScore + mcapScore - riskyBuyers.length * 5);
   const action =
     clusterScore >= 78 && strongBuyers.length >= 1 ? "PIR ONAYI: sim mini lot" :
     clusterScore >= 70 && smartBuyers.length >= 2 ? "GUCLU SINYAL: ikinci onayi bekle" :
@@ -549,6 +619,7 @@ const clusters = tokenClusters.map(({ token, buyers }) => {
     smartCount: smartBuyers.length,
     strongCount: strongBuyers.length,
     riskyCount: riskyBuyers.length,
+    fundingClusters,
     clusterScore: Number(clusterScore.toFixed(1)),
     action
   };

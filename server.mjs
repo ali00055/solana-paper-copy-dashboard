@@ -4025,6 +4025,7 @@ function normalizeHunterWallet(row = {}, categories = []) {
     medianBuySol: Number(row.medianBuySol || 0),
     avgEarlyBuySol: Number(row.avgEarlyBuySol || 0),
     dustSniper: Boolean(row.dustSniper),
+    funding: row.funding || null,
     tokens: row.tokens || [],
     riskFlags,
     reasons: row.reasons || [
@@ -8132,7 +8133,7 @@ function oraclePageHtml() {
         const addCopy = row.mode === 'copy-mini' ? '<button data-action="add-copy" data-wallet="' + esc(row.wallet) + '" data-score="' + esc(row.totalScore) + '" data-lot="' + esc(row.lotTry) + '">Mini Copy</button>' : '';
         return '<tr><td><div class="mono">' + esc(row.wallet) + '</div><div class="small">' + links + '</div>' + cats + '</td>' +
           '<td><span class="tag ' + esc(row.grade) + '">' + Number(row.totalScore || 0).toFixed(1) + ' / ' + esc(row.grade) + '</span><div class="small">A' + row.alphaScore + ' · I' + row.insiderScore + ' · S' + row.sniperScore + ' · $' + row.convictionScore + '</div><div class="small">mod ' + esc(row.mode) + ' · lot ' + (row.lotTry || 0) + ' TL</div></td>' +
-          '<td>' + reasons + '<div class="small">PnL ' + Number(row.pnlSol || 0).toFixed(2) + ' SOL · WR ' + (row.winRate === null || row.winRate === undefined ? '-' : Number(row.winRate).toFixed(0) + '%') + ' · max ' + Number(row.maxX || 0).toFixed(1) + 'x</div><div class="small">proof ' + Number(row.proofScore || 0).toFixed(0) + ' ? repeat ' + Number(row.repeatabilityScore || 0).toFixed(0) + ' ? survival ' + Number(row.survivalScore || 0).toFixed(0) + ' ? copySafe ' + Number(row.copySafetyScore || 0).toFixed(0) + '</div><div class="small">spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL · max buy ' + Number(Math.max(row.maxBuySol || 0, row.maxEarlyBuySol || 0)).toFixed(2) + ' SOL · avg buy ' + Number(row.avgBuySol || 0).toFixed(2) + ' SOL</div>' + (row.dustSniper ? '<div class="small bad">kucuk para sniper cezasi</div>' : '') + risks + '</td>' +
+          '<td>' + reasons + '<div class="small">PnL ' + Number(row.pnlSol || 0).toFixed(2) + ' SOL · WR ' + (row.winRate === null || row.winRate === undefined ? '-' : Number(row.winRate).toFixed(0) + '%') + ' · max ' + Number(row.maxX || 0).toFixed(1) + 'x</div><div class="small">proof ' + Number(row.proofScore || 0).toFixed(0) + ' ? repeat ' + Number(row.repeatabilityScore || 0).toFixed(0) + ' ? survival ' + Number(row.survivalScore || 0).toFixed(0) + ' ? copySafe ' + Number(row.copySafetyScore || 0).toFixed(0) + '</div><div class="small">spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL · max buy ' + Number(Math.max(row.maxBuySol || 0, row.maxEarlyBuySol || 0)).toFixed(2) + ' SOL · avg buy ' + Number(row.avgBuySol || 0).toFixed(2) + ' SOL</div>' + (row.funding ? '<div class="small warn">funder ' + short(row.funding.funder) + ' -> ' + Number(row.funding.receivedSol || 0).toFixed(2) + ' SOL</div>' : '') + (row.dustSniper ? '<div class="small bad">kucuk para sniper cezasi</div>' : '') + risks + '</td>' +
           '<td>' + esc(row.action || '-') + '<div class="actions" style="margin-top:8px"><button data-action="add-alert" data-wallet="' + esc(row.wallet) + '" data-score="' + esc(row.totalScore) + '" data-lot="' + esc(row.lotTry) + '">Alert Ekle</button>' + addCopy + '</div></td></tr>';
       }).join('') || '<tr><td colspan="4" class="empty">Cuzdan adayi yok. Taze Av Baslat.</td></tr>';
 
