@@ -93,6 +93,7 @@ function walletDecision(wallet) {
   const maxBuySol = Math.max(Number(wallet.maxBuySol || 0), Number(wallet.maxEarlyBuySol || 0));
   const avgBuySol = Number(wallet.avgBuySol || 0);
   const medianBuySol = Number(wallet.medianBuySol || 0);
+  const earliestSec = Number(wallet.earliestSec ?? 999999);
   const convictionScore = Math.max(0, Math.min(100, Number((
     Math.min(28, Math.log2(1 + totalSpendSol) * 10) +
     Math.min(26, Math.log2(1 + profileSpendSol) * 7) +
@@ -101,6 +102,9 @@ function walletDecision(wallet) {
     (medianBuySol >= 0.25 ? 8 : medianBuySol >= 0.1 ? 4 : 0)
   ).toFixed(1))));
   const isDustSniper = maxBuySol < 0.08 && avgBuySol < 0.035 && totalSpendSol < 0.25;
+  const oneHitWonder = maxX >= 8 && closed < 5;
+  const noRealizedProof = closed < 3 && pnlSol <= 0;
+  const copyCrowdingRisk = noiseRatio > 6 || openLotCount > 24;
 
   if (closed < 3) riskFlags.push("az kapanis");
   if (noiseRatio > 4 && winRate < 55) riskFlags.push("her seye atliyor");
@@ -109,6 +113,48 @@ function walletDecision(wallet) {
   if (activeHours !== null && activeHours > 72) riskFlags.push("son aktivite zayif");
   if (wallet.spentSol > 2 && closed < 2) riskFlags.push("kar/zarar belirsiz");
   if (isDustSniper) riskFlags.push("kucuk para sniper");
+  if (oneHitWonder) riskFlags.push("one-hit-wonder riski");
+  if (copyCrowdingRisk) riskFlags.push("copy crowding/noise riski");
+  if (noRealizedProof) riskFlags.push("realized proof yok");
+
+  const repeatabilityScore = Math.max(0, Math.min(100, Number((
+    Math.min(28, Number(wallet.hits || 0) * 10) +
+    Math.min(24, Number(wallet.earlyHits || 0) * 12) +
+    Math.min(22, closed * 3) +
+    (closed >= 10 ? 12 : closed >= 5 ? 7 : 0) +
+    (winRate >= 60 ? 10 : winRate >= 50 ? 5 : 0) -
+    (oneHitWonder ? 18 : 0)
+  ).toFixed(1))));
+  const timingScore = Math.max(0, Math.min(100, Number((
+    Math.min(34, Math.max(0, 420 - earliestSec) / 8) +
+    Math.min(24, Number(wallet.earlyHits || 0) * 12) +
+    (activeHours !== null && activeHours <= 12 ? 14 : activeHours !== null && activeHours <= 36 ? 8 : 0) +
+    Math.min(10, Math.max(0, Number(wallet.avgEarlyBuySol || 0)) * 16)
+  ).toFixed(1))));
+  const survivalScore = Math.max(0, Math.min(100, Number((
+    70 +
+    (pnlSol > 0 ? Math.min(12, pnlSol * 3) : Math.max(-18, pnlSol * 6)) +
+    (winRate >= 60 ? 8 : winRate < 40 && closed >= 4 ? -14 : 0) -
+    Math.min(22, biggestLoss * 8) -
+    Math.min(18, Math.max(0, noiseRatio - 2) * 4) -
+    Math.min(16, Math.max(0, openLotCount - 8) * 1.4) -
+    riskFlags.length * 4
+  ).toFixed(1))));
+  const copySafetyScore = Math.max(0, Math.min(100, Number((
+    survivalScore * 0.45 +
+    repeatabilityScore * 0.24 +
+    convictionScore * 0.18 +
+    (closed >= 8 ? 10 : closed >= 4 ? 5 : 0) -
+    (copyCrowdingRisk ? 18 : 0) -
+    (noRealizedProof ? 16 : 0)
+  ).toFixed(1))));
+  const proofScore = Math.max(0, Math.min(100, Number((
+    Math.min(35, closed * 5) +
+    Math.min(20, Math.max(0, pnlSol) * 5) +
+    (winRate ? Math.max(0, winRate - 45) * 0.65 : 0) +
+    Math.min(16, Math.log2(Math.max(1, maxX)) * 6) -
+    (oneHitWonder ? 18 : 0)
+  ).toFixed(1))));
 
   const insiderLike =
     Math.min(22, Number(wallet.earlyHits || 0) * 8) +
@@ -125,17 +171,19 @@ function walletDecision(wallet) {
     Math.min(22, Number(wallet.earlyHits || 0) * 8) +
     Math.min(16, Number(wallet.hits || 0) * 3.5) +
     Math.min(18, convictionScore * 0.22) +
+    Math.min(18, repeatabilityScore * 0.2) +
+    Math.min(14, survivalScore * 0.16) +
     Math.min(16, Math.log2(Math.max(1, maxX)) * 8) -
     Math.min(18, biggestLoss * 5) -
-    riskFlags.length * 4;
+    riskFlags.length * 5;
 
   const edgeScore = Math.max(0, Math.min(100, Number(alphaScore.toFixed(1))));
   const insiderScore = Math.max(0, Math.min(100, Number(insiderLike.toFixed(1))));
-  const earliestSec = Number(wallet.earliestSec ?? 999999);
   const sniperScore = Math.max(0, Math.min(100, Number((
     Math.min(35, Number(wallet.earlyHits || 0) * 16) +
     Math.min(18, Number(wallet.hits || 0) * 5) +
     Math.min(18, Math.max(0, 360 - earliestSec) / 12) +
+    Math.min(12, timingScore * 0.16) +
     Math.min(10, convictionScore * 0.12) -
     (isDustSniper ? 12 : 0) +
     (activeHours !== null && activeHours <= 24 ? 8 : 0) -
@@ -144,11 +192,11 @@ function walletDecision(wallet) {
   const archetypes = [];
   if (sniperScore >= 45) archetypes.push("SNIPER");
   if (insiderScore >= 45 && convictionScore >= 34 && (Number(wallet.earlyHits || 0) >= 1 || maxX >= 5)) archetypes.push("INSIDER-BENZERI");
-  if (edgeScore >= 55 && convictionScore >= 30 && pnlSol > 0 && riskFlags.length <= 1) archetypes.push("SMART WALLET");
+  if (edgeScore >= 55 && convictionScore >= 30 && pnlSol > 0 && riskFlags.length <= 1 && proofScore >= 35) archetypes.push("SMART WALLET");
   if (convictionScore >= 55 && pnlSol >= 0) archetypes.push("BUYUK PARA");
   const profile =
-    edgeScore >= 70 && insiderScore >= 42 && convictionScore >= 38 && riskFlags.length <= 1 ? "PIR ADAYI" :
-    edgeScore >= 55 && convictionScore >= 30 && pnlSol >= 0 && riskFlags.length <= 1 ? "IZLE + MINI" :
+    edgeScore >= 72 && insiderScore >= 42 && convictionScore >= 38 && copySafetyScore >= 58 && proofScore >= 36 && riskFlags.length <= 1 ? "PIR ADAYI" :
+    edgeScore >= 58 && convictionScore >= 30 && copySafetyScore >= 48 && pnlSol >= 0 && riskFlags.length <= 2 ? "IZLE + MINI" :
     maxX >= 6 && riskFlags.length <= 2 ? "MOONSHOT RADAR" :
     riskFlags.length >= 3 ? "RISKLI" :
     "BEKLE";
@@ -169,6 +217,11 @@ function walletDecision(wallet) {
     insiderScore,
     sniperScore,
     convictionScore,
+    repeatabilityScore,
+    timingScore,
+    survivalScore,
+    copySafetyScore,
+    proofScore,
     maxBuySol: Number(maxBuySol.toFixed(4)),
     avgBuySol: Number(avgBuySol.toFixed(4)),
     medianBuySol: Number(medianBuySol.toFixed(4)),
@@ -189,6 +242,10 @@ function walletDecision(wallet) {
       `max buy ${maxBuySol.toFixed(2)} SOL`,
       `avg buy ${avgBuySol.toFixed(2)} SOL`,
       `conviction ${convictionScore}`,
+      `proof ${proofScore}`,
+      `repeat ${repeatabilityScore}`,
+      `survival ${survivalScore}`,
+      `copySafety ${copySafetyScore}`,
       `noise ${noiseRatio.toFixed(1)}`
     ]
   };
