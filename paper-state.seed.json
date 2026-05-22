@@ -1,7 +1,7 @@
 {
   "startedAt": "2026-05-18T23:50:39.163Z",
-  "cashTry": 4573.984014507618,
-  "realizedTry": -426.01598549238304,
+  "cashTry": 4642.497303789117,
+  "realizedTry": -357.5026962108841,
   "positions": [
     {
       "id": "1779451750382-gThzkC7i8jKbpn4LbfXV3mLPf2omTtHnkVPfkY6pump",
@@ -4451,16 +4451,6 @@
       "moonshot": false
     },
     {
-      "time": "2026-05-22T12:05:48.130Z",
-      "signature": "5p55Xa96ZwKSd5ACb8wHTdxm7CDVHDYvGajDs1JXHw417uweaDLJZvpcLWBkrxwN6My4iJZQ1sitsCiNMs5cW7Bm",
-      "wallet": "Radar-01",
-      "symbol": "Beanie",
-      "mint": "BKqGdm81yiF3aZZ92kG5a6KMKTBJQ8TUhgbdoUUQpump",
-      "pnlTry": -5.049500192233779,
-      "reason": "wallet sell",
-      "url": "https://dexscreener.com/solana/fgrs2ikx4nuhqcupfqbd4aixxbkeytgndnkwspk13vnv"
-    },
-    {
       "time": "2026-05-22T12:03:19.178Z",
       "signature": null,
       "wallet": "Radar-01",
@@ -4513,20 +4503,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T13:01:52.928Z",
-      "wallet": "Ultra-01",
-      "symbol": "KRUS",
-      "mint": "FBS7YsjnGaURRHo5DCXuQBppYrzaBo74UDLRjKUjpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/2rt7rm7vcpqup1sgzgmmbtpsz1wwgcfm1hqf1eljf7vu",
-      "exitPriceTry": 0.34003950000000005,
-      "entryTry": 0.37883976,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T13:01:37.655Z",
       "wallet": "Ultra-01",
       "symbol": "KRUS",
@@ -4536,20 +4512,6 @@
       "reason": "wallet exited",
       "url": "https://dexscreener.com/solana/2rt7rm7vcpqup1sgzgmmbtpsz1wwgcfm1hqf1eljf7vu",
       "exitPriceTry": 0.34003950000000005,
-      "entryTry": 0.37883976,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T13:01:22.642Z",
-      "wallet": "Ultra-01",
-      "symbol": "KRUS",
-      "mint": "FBS7YsjnGaURRHo5DCXuQBppYrzaBo74UDLRjKUjpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/2rt7rm7vcpqup1sgzgmmbtpsz1wwgcfm1hqf1eljf7vu",
-      "exitPriceTry": 0.35026199999999996,
       "entryTry": 0.37883976,
       "investedTry": 0,
       "moonshot": true
@@ -4597,20 +4559,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T08:25:29.371Z",
-      "wallet": "Pir-06",
-      "symbol": "CHARACTERS",
-      "mint": "BPyLfr9rLRN8HyBxLZMRpfMKEWWnqy3oX3TM3TFSpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/5cssh4s9q9ku5dk4jt8jmggetgsfcvgvruza1v9adhf9",
-      "exitPriceTry": 0.029914950000000003,
-      "entryTry": 0.02702046,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T08:25:14.414Z",
       "wallet": "Pir-06",
       "symbol": "CHARACTERS",
@@ -4625,20 +4573,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T08:24:59.344Z",
-      "wallet": "Pir-06",
-      "symbol": "CHARACTERS",
-      "mint": "BPyLfr9rLRN8HyBxLZMRpfMKEWWnqy3oX3TM3TFSpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/5cssh4s9q9ku5dk4jt8jmggetgsfcvgvruza1v9adhf9",
-      "exitPriceTry": 0.03208125,
-      "entryTry": 0.02702046,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T08:24:44.428Z",
       "wallet": "Pir-06",
       "symbol": "CHARACTERS",
@@ -4648,20 +4582,6 @@
       "reason": "wallet exited",
       "url": "https://dexscreener.com/solana/5cssh4s9q9ku5dk4jt8jmggetgsfcvgvruza1v9adhf9",
       "exitPriceTry": 0.03208125,
-      "entryTry": 0.02702046,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T08:24:29.365Z",
-      "wallet": "Pir-06",
-      "symbol": "CHARACTERS",
-      "mint": "BPyLfr9rLRN8HyBxLZMRpfMKEWWnqy3oX3TM3TFSpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/5cssh4s9q9ku5dk4jt8jmggetgsfcvgvruza1v9adhf9",
-      "exitPriceTry": 0.025491,
       "entryTry": 0.02702046,
       "investedTry": 0,
       "moonshot": true
@@ -4709,35 +4629,7 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T06:43:26.393Z",
-      "wallet": "Pir-06",
-      "symbol": "Lamb",
-      "mint": "GQdcEGqV2m95yDRrwJcZ9RUxMr9dUFk3EonHkf7qpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/gtu5v3xtx9zg9dm5k5o9czesqdniooj8ei28ols9ahny",
-      "exitPriceTry": 0.02519085,
-      "entryTry": 0.025051563000000006,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T06:43:11.332Z",
-      "wallet": "Pir-06",
-      "symbol": "Lamb",
-      "mint": "GQdcEGqV2m95yDRrwJcZ9RUxMr9dUFk3EonHkf7qpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/gtu5v3xtx9zg9dm5k5o9czesqdniooj8ei28ols9ahny",
-      "exitPriceTry": 0.036983699999999994,
-      "entryTry": 0.025051563000000006,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T06:42:56.379Z",
       "wallet": "Pir-06",
       "symbol": "Lamb",
       "mint": "GQdcEGqV2m95yDRrwJcZ9RUxMr9dUFk3EonHkf7qpump",
@@ -4835,34 +4727,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T03:24:32.630Z",
-      "wallet": "Pir-03",
-      "symbol": "promptonym",
-      "mint": "c3qwdDG9o1nroeAM6JKzc5jMW8Cwz2AVpoCkCxzpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/2gtdqvvax44bytcsbgfhtudu1uj82mjajt2byjj1qvfv",
-      "exitPriceTry": 0.3533505,
-      "entryTry": 0.35477034,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T03:24:17.578Z",
-      "wallet": "Pir-03",
-      "symbol": "promptonym",
-      "mint": "c3qwdDG9o1nroeAM6JKzc5jMW8Cwz2AVpoCkCxzpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/2gtdqvvax44bytcsbgfhtudu1uj82mjajt2byjj1qvfv",
-      "exitPriceTry": 0.3458685,
-      "entryTry": 0.35477034,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T03:24:02.539Z",
       "wallet": "Pir-03",
       "symbol": "promptonym",
@@ -4872,20 +4736,6 @@
       "reason": "wallet exited",
       "url": "https://dexscreener.com/solana/2gtdqvvax44bytcsbgfhtudu1uj82mjajt2byjj1qvfv",
       "exitPriceTry": 0.3458685,
-      "entryTry": 0.35477034,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T03:23:47.550Z",
-      "wallet": "Pir-03",
-      "symbol": "promptonym",
-      "mint": "c3qwdDG9o1nroeAM6JKzc5jMW8Cwz2AVpoCkCxzpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/2gtdqvvax44bytcsbgfhtudu1uj82mjajt2byjj1qvfv",
-      "exitPriceTry": 0.35743949999999997,
       "entryTry": 0.35477034,
       "investedTry": 0,
       "moonshot": true
@@ -4905,35 +4755,7 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T03:23:17.538Z",
-      "wallet": "Pir-03",
-      "symbol": "promptonym",
-      "mint": "c3qwdDG9o1nroeAM6JKzc5jMW8Cwz2AVpoCkCxzpump",
-      "pnlTry": -28.679245283018872,
-      "proceedsTry": 191.32075471698113,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/2gtdqvvax44bytcsbgfhtudu1uj82mjajt2byjj1qvfv",
-      "exitPriceTry": 0.334689,
-      "entryTry": 0.35477034,
-      "investedTry": 220,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T03:23:02.487Z",
-      "wallet": "Pir-03",
-      "symbol": "Nietzscheism",
-      "mint": "AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/4aupemvfgcgwqngyagv731mzwshdruydk2my4fguh88b",
-      "exitPriceTry": 0.06272699999999999,
-      "entryTry": 0.06515343,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T03:22:47.530Z",
       "wallet": "Pir-03",
       "symbol": "Nietzscheism",
       "mint": "AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump",
@@ -4961,35 +4783,7 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T03:22:17.536Z",
-      "wallet": "Pir-03",
-      "symbol": "Nietzscheism",
-      "mint": "AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/4aupemvfgcgwqngyagv731mzwshdruydk2my4fguh88b",
-      "exitPriceTry": 0.0637275,
-      "entryTry": 0.06515343,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T03:22:02.498Z",
-      "wallet": "Pir-03",
-      "symbol": "Nietzscheism",
-      "mint": "AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/4aupemvfgcgwqngyagv731mzwshdruydk2my4fguh88b",
-      "exitPriceTry": 0.062901,
-      "entryTry": 0.06515343,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T03:21:47.527Z",
       "wallet": "Pir-03",
       "symbol": "Nietzscheism",
       "mint": "AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump",
@@ -5045,35 +4839,7 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T01:44:29.633Z",
-      "wallet": "Pir-03",
-      "symbol": "WOMBLE",
-      "mint": "5Fnb6TiCEs3FSM6DYB2GRkb1yHWyQ8PVysCKu29Upump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/8ucdhgwasgmung1pr2gtjkds5rny2fmdyjojbojkkaa5",
-      "exitPriceTry": 0.69252,
-      "entryTry": 0.6524565,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T01:44:14.684Z",
-      "wallet": "Pir-03",
-      "symbol": "WOMBLE",
-      "mint": "5Fnb6TiCEs3FSM6DYB2GRkb1yHWyQ8PVysCKu29Upump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/8ucdhgwasgmung1pr2gtjkds5rny2fmdyjojbojkkaa5",
-      "exitPriceTry": 0.63423,
-      "entryTry": 0.6524565,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T01:43:59.636Z",
       "wallet": "Pir-03",
       "symbol": "WOMBLE",
       "mint": "5Fnb6TiCEs3FSM6DYB2GRkb1yHWyQ8PVysCKu29Upump",
@@ -5101,20 +4867,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-20T01:43:29.609Z",
-      "wallet": "Pir-03",
-      "symbol": "WOMBLE",
-      "mint": "5Fnb6TiCEs3FSM6DYB2GRkb1yHWyQ8PVysCKu29Upump",
-      "pnlTry": -15.148209880658726,
-      "proceedsTry": 156.85179011934127,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/8ucdhgwasgmung1pr2gtjkds5rny2fmdyjojbojkkaa5",
-      "exitPriceTry": 0.648585,
-      "entryTry": 0.6524565,
-      "investedTry": 172,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-20T00:03:56.794Z",
       "wallet": "Pir-03",
       "symbol": "paypertaylor2",
@@ -5138,20 +4890,6 @@
       "reason": "wallet exited",
       "url": "https://dexscreener.com/solana/hegpmsgvdlz1iesfyfpb6quxmdj7gzwrwrsqby3yd4dm",
       "exitPriceTry": 0.1283685,
-      "entryTry": 0.13842222,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-20T00:03:26.849Z",
-      "wallet": "Pir-03",
-      "symbol": "paypertaylor2",
-      "mint": "4NxrNxDgZpp3Lutg29NgRyT4awre1BrGhV7FDLgbpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/hegpmsgvdlz1iesfyfpb6quxmdj7gzwrwrsqby3yd4dm",
-      "exitPriceTry": 0.130587,
       "entryTry": 0.13842222,
       "investedTry": 0,
       "moonshot": true
@@ -5199,20 +4937,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-19T13:49:15.137Z",
-      "wallet": "Pir-03",
-      "symbol": "TYGR",
-      "mint": "yxqegfnoem8mMuRSqu8ouD8qsw32GpuMMXgTZGwpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/bjvhreqztvimr8pkbiwxtfx1wssa7ha9vgb2alxtydpr",
-      "exitPriceTry": 1.7774100000000002,
-      "entryTry": 1.7936790000000002,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-19T13:49:13.381Z",
       "wallet": "Pir-03",
       "symbol": "TYGR",
@@ -5228,20 +4952,6 @@
     },
     {
       "time": "2026-05-19T13:48:43.357Z",
-      "wallet": "Pir-03",
-      "symbol": "TYGR",
-      "mint": "yxqegfnoem8mMuRSqu8ouD8qsw32GpuMMXgTZGwpump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/bjvhreqztvimr8pkbiwxtfx1wssa7ha9vgb2alxtydpr",
-      "exitPriceTry": 1.76871,
-      "entryTry": 1.7936790000000002,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-19T13:48:23.417Z",
       "wallet": "Pir-03",
       "symbol": "TYGR",
       "mint": "yxqegfnoem8mMuRSqu8ouD8qsw32GpuMMXgTZGwpump",
@@ -5297,20 +5007,6 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-19T10:35:46.684Z",
-      "wallet": "Pir-03",
-      "symbol": "MUGI",
-      "mint": "YuHkrPoEX2stX8S8DvvtvrozUjWeNaK1n1PPZh8pump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/exz7w6x1yesh6dvdkydi33vddkkvdp3rq8j7b1gd4u7v",
-      "exitPriceTry": 0.046588500000000005,
-      "entryTry": 0.04744719,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-19T10:35:31.743Z",
       "wallet": "Pir-03",
       "symbol": "MUGI",
@@ -5320,20 +5016,6 @@
       "reason": "wallet exited",
       "url": "https://dexscreener.com/solana/exz7w6x1yesh6dvdkydi33vddkkvdp3rq8j7b1gd4u7v",
       "exitPriceTry": 0.046588500000000005,
-      "entryTry": 0.04744719,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-19T10:35:16.664Z",
-      "wallet": "Pir-03",
-      "symbol": "MUGI",
-      "mint": "YuHkrPoEX2stX8S8DvvtvrozUjWeNaK1n1PPZh8pump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/exz7w6x1yesh6dvdkydi33vddkkvdp3rq8j7b1gd4u7v",
-      "exitPriceTry": 0.047197499999999996,
       "entryTry": 0.04744719,
       "investedTry": 0,
       "moonshot": true
@@ -5350,20 +5032,6 @@
       "exitPriceTry": 0.047197499999999996,
       "entryTry": 0.04744719,
       "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-19T10:34:46.626Z",
-      "wallet": "Pir-03",
-      "symbol": "MUGI",
-      "mint": "YuHkrPoEX2stX8S8DvvtvrozUjWeNaK1n1PPZh8pump",
-      "pnlTry": -9.000898472596603,
-      "proceedsTry": 69.9991015274034,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/exz7w6x1yesh6dvdkydi33vddkkvdp3rq8j7b1gd4u7v",
-      "exitPriceTry": 0.047197499999999996,
-      "entryTry": 0.04744719,
-      "investedTry": 79,
       "moonshot": true
     },
     {
@@ -5395,35 +5063,7 @@
       "moonshot": true
     },
     {
-      "time": "2026-05-19T06:42:24.527Z",
-      "wallet": "Pir-03",
-      "symbol": "Giant",
-      "mint": "92e5MqoxHhVMQCmkP5QJ6Cw3t5LoUTEbqLB2uRcypump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/ercvssomkqhemhhwk3gzfxwwgjr1btuf43r9hl4spwdx",
-      "exitPriceTry": 0.0263349,
-      "entryTry": 0.029764005000000003,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
       "time": "2026-05-19T06:42:09.499Z",
-      "wallet": "Pir-03",
-      "symbol": "Giant",
-      "mint": "92e5MqoxHhVMQCmkP5QJ6Cw3t5LoUTEbqLB2uRcypump",
-      "pnlTry": 0,
-      "proceedsTry": 0,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/ercvssomkqhemhhwk3gzfxwwgjr1btuf43r9hl4spwdx",
-      "exitPriceTry": 0.02586075,
-      "entryTry": 0.029764005000000003,
-      "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-19T06:41:54.532Z",
       "wallet": "Pir-03",
       "symbol": "Giant",
       "mint": "92e5MqoxHhVMQCmkP5QJ6Cw3t5LoUTEbqLB2uRcypump",
@@ -5448,20 +5088,6 @@
       "exitPriceTry": 0.0261348,
       "entryTry": 0.029764005000000003,
       "investedTry": 0,
-      "moonshot": true
-    },
-    {
-      "time": "2026-05-19T06:41:24.538Z",
-      "wallet": "Pir-03",
-      "symbol": "Giant",
-      "mint": "92e5MqoxHhVMQCmkP5QJ6Cw3t5LoUTEbqLB2uRcypump",
-      "pnlTry": -10.635435452990958,
-      "proceedsTry": 29.364564547009042,
-      "reason": "wallet exited",
-      "url": "https://dexscreener.com/solana/ercvssomkqhemhhwk3gzfxwwgjr1btuf43r9hl4spwdx",
-      "exitPriceTry": 0.0261348,
-      "entryTry": 0.029764005000000003,
-      "investedTry": 40,
       "moonshot": true
     },
     {
@@ -11180,5 +10806,30 @@
     "AYAGFFesaMsocAZusRJRuRJ4dX4xs2n8bjKBpfJikyDN",
     "DYLTQByRAtEiuztfNtit4kphiMLeUaLbMQxNddG7uYpp",
     "3qKgNdQG5teLRtsdMcxucuEQtMWPcYLxT8dVyfEdMUf8"
-  ]
+  ],
+  "exitDedupe": {
+    "Radar-01|BKqGdm81yiF3aZZ92kG5a6KMKTBJQ8TUhgbdoUUQpump|0.0452574|175|FULL_CLOSED": "2026-05-22T12:05:48.130Z",
+    "Ultra-02|c873LPzrAhMvyn1jn6iEZhqjaUu3n38BErS5XTWcQmp|0.5399481|220|FULL_CLOSED": "2026-05-21T11:24:09.146Z",
+    "Ultra-02|c873LPzrAhMvyn1jn6iEZhqjaUu3n38BErS5XTWcQmp|0.22575456000000002|220|FULL_CLOSED": "2026-05-21T09:30:32.895Z",
+    "Ultra-01|FBS7YsjnGaURRHo5DCXuQBppYrzaBo74UDLRjKUjpump|0.37883976||FULL_CLOSED": "2026-05-20T13:01:07.670Z",
+    "Ultra-01|FBS7YsjnGaURRHo5DCXuQBppYrzaBo74UDLRjKUjpump|0.37883976|220|FULL_CLOSED": "2026-05-20T13:00:37.640Z",
+    "Pir-06|BPyLfr9rLRN8HyBxLZMRpfMKEWWnqy3oX3TM3TFSpump|0.02702046||FULL_CLOSED": "2026-05-20T08:24:44.428Z",
+    "Pir-06|BPyLfr9rLRN8HyBxLZMRpfMKEWWnqy3oX3TM3TFSpump|0.02702046|220|FULL_CLOSED": "2026-05-20T08:24:14.367Z",
+    "Pir-06|GQdcEGqV2m95yDRrwJcZ9RUxMr9dUFk3EonHkf7qpump|0.025051563000000006||FULL_CLOSED": "2026-05-20T06:43:11.332Z",
+    "Pir-06|GQdcEGqV2m95yDRrwJcZ9RUxMr9dUFk3EonHkf7qpump|0.025051563000000006|220|FULL_CLOSED": "2026-05-20T06:42:31.330Z",
+    "Pir-06|GovZ9FnykQrm1uGMKkm5fNdJDSTaGrQW8LxU64mrpump|0.018135063||FULL_CLOSED": "2026-05-20T05:06:38.412Z",
+    "Pir-06|GovZ9FnykQrm1uGMKkm5fNdJDSTaGrQW8LxU64mrpump|0.018135063|220|FULL_CLOSED": "2026-05-20T05:05:27.023Z",
+    "Pir-03|c3qwdDG9o1nroeAM6JKzc5jMW8Cwz2AVpoCkCxzpump|0.35477034||FULL_CLOSED": "2026-05-20T03:23:32.507Z",
+    "Pir-03|AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump|0.06515343||FULL_CLOSED": "2026-05-20T03:22:02.498Z",
+    "Pir-03|AzhUHpX3FvKCrQJjg5SxSUoSgiurdNpp9oPMWiTkpump|0.06515343|215|FULL_CLOSED": "2026-05-20T03:21:32.454Z",
+    "Pir-03|5Fnb6TiCEs3FSM6DYB2GRkb1yHWyQ8PVysCKu29Upump|0.6524565||FULL_CLOSED": "2026-05-20T01:43:44.632Z",
+    "Pir-03|4NxrNxDgZpp3Lutg29NgRyT4awre1BrGhV7FDLgbpump|0.13842222||FULL_CLOSED": "2026-05-20T00:03:11.993Z",
+    "Pir-03|4NxrNxDgZpp3Lutg29NgRyT4awre1BrGhV7FDLgbpump|0.13842222|51|FULL_CLOSED": "2026-05-20T00:02:42.172Z",
+    "Pir-03|yxqegfnoem8mMuRSqu8ouD8qsw32GpuMMXgTZGwpump|1.7936790000000002||FULL_CLOSED": "2026-05-19T13:48:43.357Z",
+    "Pir-03|yxqegfnoem8mMuRSqu8ouD8qsw32GpuMMXgTZGwpump|1.7936790000000002|220|FULL_CLOSED": "2026-05-19T13:47:53.914Z",
+    "Pir-03|YuHkrPoEX2stX8S8DvvtvrozUjWeNaK1n1PPZh8pump|0.04744719||FULL_CLOSED": "2026-05-19T10:35:01.831Z",
+    "Pir-03|92e5MqoxHhVMQCmkP5QJ6Cw3t5LoUTEbqLB2uRcypump|0.029764005000000003||FULL_CLOSED": "2026-05-19T06:41:39.505Z",
+    "Ultra-02|cshBvUNK7bCdxM537EUrdaicSyfh1UpyamfmLa6pump|0.8862342000000002|220|FULL_CLOSED": "2026-05-19T01:36:04.888Z",
+    "Ultra-02|cshBvUNK7bCdxM537EUrdaicSyfh1UpyamfmLa6pump|0.10739019000000001|220|FULL_CLOSED": "2026-05-18T23:57:27.582Z"
+  }
 }

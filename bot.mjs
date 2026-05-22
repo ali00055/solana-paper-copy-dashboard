@@ -1012,6 +1012,18 @@ async function paperBuy(config, state, signal, price) {
 }
 
 function closePosition(state, position, exitTry, reason, fraction = 1, config = {}) {
+  state.exitDedupe ||= {};
+  const positionKey = position.id || [position.wallet, position.mint, position.openedAt].join("|");
+  const normalizedReason = String(reason || "").replace(/\s+\d+\/\d+$/, "").trim();
+  const fullExit = fraction >= 0.999 || position.amount * fraction >= position.amount - 1e-12;
+  const dedupeKey = [positionKey, normalizedReason, fullExit ? "full" : Number(fraction || 0).toFixed(4)].join("|");
+  if (state.exitDedupe[dedupeKey]) {
+    return null;
+  }
+  if (fullExit && state.exitDedupe[[positionKey, "FULL_CLOSED"].join("|")]) {
+    return null;
+  }
+
   const amountToSell = position.amount * fraction;
   const closedAt = nowIso();
   const sellCostPct = position.sellCostPct ?? 2;
@@ -1035,7 +1047,11 @@ function closePosition(state, position, exitTry, reason, fraction = 1, config = 
 
   if (position.amount <= 1e-12 || fraction >= 0.999) {
     state.positions = state.positions.filter((item) => item.id !== position.id);
+    state.exitDedupe[[positionKey, "FULL_CLOSED"].join("|")] = closedAt;
   }
+  state.exitDedupe[dedupeKey] = closedAt;
+  const dedupeEntries = Object.entries(state.exitDedupe).slice(-5000);
+  state.exitDedupe = Object.fromEntries(dedupeEntries);
 
   updateGlobalAfterClose(config, state, position, pnlTry);
 
@@ -1065,7 +1081,7 @@ async function paperSell(config, state, signal, price) {
   if (!inferredPriceRiskAllowed(position)) {
     return { skipped: "inferred price exit disabled" };
   }
-  return closePosition(state, position, price.usd * config.tryPerSol, "wallet sell", 1, config);
+  return closePosition(state, position, price.usd * config.tryPerSol, "wallet sell", 1, config) || { skipped: "duplicate close ignored" };
 }
 
 async function applyRiskRules(config, state) {
