@@ -398,5 +398,6 @@
   "jitoTipMinSol": 0.001,
   "ultraCrashGatePct": 70,
   "enableGenesisTrace": true,
-  "enableBytecodeGuard": true
+  "enableBytecodeGuard": true,
+  "enableCieloPnl": true
 }
