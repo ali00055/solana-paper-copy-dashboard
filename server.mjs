@@ -4066,6 +4066,7 @@ async function apiWalletHunter(force = false) {
     lastScanAt: createdAt,
     ageMinutes: Number.isFinite(ageMin) ? Number(ageMin.toFixed(1)) : null,
     rows,
+    wallets: rows,
     clusters,
     rules: walletHunterRules(),
     counts: {
@@ -4082,6 +4083,20 @@ async function apiWalletHunter(force = false) {
       "GMGN'deki Smart/Sniper/Insider mantigi birebir etiket iddiasi degil; zincir-ustu davranis skoru olarak uygulanir."
     ]
   };
+}
+
+let autoWalletHunterTimer = null;
+
+function startAutoWalletHunterLoop() {
+  if (autoWalletHunterTimer) return;
+  const tick = () => {
+    maybeAutoFreeAlphaScan("timer").catch((error) => {
+      console.error("[free-alpha:timer]", error?.message || String(error));
+    });
+  };
+  setTimeout(tick, 15000).unref();
+  autoWalletHunterTimer = setInterval(tick, 12 * 60 * 1000);
+  autoWalletHunterTimer.unref();
 }
 
 function edgeGrade(score) {
@@ -9590,6 +9605,5 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, () => {
   fs.writeFile("server.pid", `${process.pid}`, "utf8").catch(() => {});
   console.log(`Dashboard running at http://localhost:${PORT}`);
-  setTimeout(() => maybeAutoFreeAlphaScan("startup"), 15000);
-  setInterval(() => maybeAutoFreeAlphaScan("interval"), 10 * 60 * 1000);
+  startAutoWalletHunterLoop();
 });
