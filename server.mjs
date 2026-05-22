@@ -837,6 +837,16 @@ async function readPid(script) {
   }
 }
 
+async function readBotLockPid() {
+  try {
+    const lock = JSON.parse(await fs.readFile("bot-runtime.lock", "utf8"));
+    const pid = Number(lock?.pid);
+    return Number.isInteger(pid) && pid > 0 ? pid : null;
+  } catch {
+    return null;
+  }
+}
+
 async function writePid(script, pid) {
   await fs.writeFile(pidFile(script), `${pid}`, "utf8");
 }
@@ -857,8 +867,9 @@ function isRunningPid(pid) {
 
 async function listBotProcessIds() {
   if (process.platform !== "win32") {
-    const pid = await readPid("bot.mjs");
-    return isRunningPid(pid) ? [pid] : [];
+    const ids = [await readPid("bot.mjs"), await readBotLockPid()]
+      .filter((pid) => Number.isInteger(pid) && pid > 0);
+    return [...new Set(ids)].filter((pid) => isRunningPid(pid));
   }
   try {
     const { stdout } = await execFileAsync("powershell.exe", [
@@ -871,8 +882,9 @@ async function listBotProcessIds() {
       .map((line) => Number(line.trim()))
       .filter((pid) => Number.isFinite(pid) && pid > 0);
   } catch {
-    const pid = await readPid("bot.mjs");
-    return isRunningPid(pid) ? [pid] : [];
+    const ids = [await readPid("bot.mjs"), await readBotLockPid()]
+      .filter((pid) => Number.isInteger(pid) && pid > 0);
+    return [...new Set(ids)].filter((pid) => isRunningPid(pid));
   }
 }
 
