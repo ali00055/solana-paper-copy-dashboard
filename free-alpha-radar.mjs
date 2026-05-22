@@ -9,6 +9,7 @@ const MAX_PROFILED_WALLETS = Number(process.env.ALPHA_MAX_PROFILED_WALLETS || 18
 const MIN_SPEND_SOL = 0.015;
 const TREND_QUERIES = ["ai", "meme", "cat", "dog", "sol", "pump", "cto", "bonk", "trenches", "viral", "moon", "usa"];
 const FUNDER_LOOKBACK_SIGNATURES = Number(process.env.ALPHA_FUNDER_SIGS || 18);
+const TOKEN_EVAL_LIMIT = Number(process.env.ALPHA_TOKEN_EVAL_LIMIT || 180);
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -322,9 +323,9 @@ async function tokenUniverse() {
     ...(localDiscover.rows || []).map((row) => row.mint).filter(Boolean),
     ...localEventMints,
     ...searchPairs.map((pair) => pair.baseToken.address)
-  ])].slice(0, 220);
+  ])].slice(0, TOKEN_EVAL_LIMIT);
 
-  const tokens = [];
+  const candidates = [];
   for (const mint of unique) {
     const data = await getJson(`https://api.dexscreener.com/latest/dex/tokens/${mint}`).catch(() => null);
     const pair = (data?.pairs || [])
@@ -343,7 +344,17 @@ async function tokenUniverse() {
     if (volume24 < 3500 && sourceWeight < 2) continue;
     if (buys24 < 20 && sourceWeight < 2) continue;
     if (liquidityUsd < 900 && sourceWeight < 2) continue;
-    tokens.push({
+    const freshness = pair.pairCreatedAt ? Math.max(0, 72 - ((Date.now() - Number(pair.pairCreatedAt)) / 36e5)) / 72 : 0;
+    const activityBalance = buys24 + (pair.txns?.h24?.sells || 0) > 0 ? buys24 / (buys24 + (pair.txns?.h24?.sells || 0)) : 0.5;
+    const discoveryScore =
+      Math.log10(1 + volume24) * 15 +
+      Math.log10(1 + liquidityUsd) * 9 +
+      Math.log10(1 + buys24) * 10 +
+      Math.min(18, Math.max(-8, change24 / 12)) +
+      sourceWeight * 9 +
+      freshness * 12 +
+      Math.max(0, activityBalance - 0.45) * 22;
+    candidates.push({
       mint,
       pairAddress: pair.pairAddress,
       symbol: pair.baseToken?.symbol || mint.slice(0, 6),
@@ -354,12 +365,26 @@ async function tokenUniverse() {
       fdv,
       change24,
       url: pair.url,
-      sourceWeight
+      sourceWeight,
+      pairCreatedAt: pair.pairCreatedAt || null,
+      discoveryScore: Number(discoveryScore.toFixed(1))
     });
-    if (tokens.length >= MAX_TOKENS) break;
-    await sleep(70);
+    await sleep(45);
   }
-  return tokens.sort((a, b) => (b.change24 || 0) - (a.change24 || 0));
+  const ranked = candidates.sort((a, b) => b.discoveryScore - a.discoveryScore);
+  const rotationWindow = Math.min(64, ranked.length);
+  const rotation = rotationWindow ? Math.floor(Date.now() / 36e5) % rotationWindow : 0;
+  const rotated = ranked.slice(rotation, rotationWindow).concat(ranked.slice(0, rotation), ranked.slice(rotationWindow));
+  const picked = [];
+  const seenSymbols = new Set();
+  for (const token of rotated) {
+    const symbolKey = String(token.symbol || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (symbolKey && seenSymbols.has(symbolKey) && token.sourceWeight < 2) continue;
+    seenSymbols.add(symbolKey);
+    picked.push(token);
+    if (picked.length >= MAX_TOKENS) break;
+  }
+  return picked.sort((a, b) => b.discoveryScore - a.discoveryScore);
 }
 
 async function earlyBuyers(token) {
@@ -536,8 +561,12 @@ for (const token of tokens) {
 }
 
 const candidateWallets = [...walletHits.values()]
-  .filter((hit) => hit.hits >= 2 || hit.earlyHits >= 1 || hit.spentSol >= 0.8)
-  .sort((a, b) => b.earlyHits - a.earlyHits || b.hits - a.hits || b.spentSol - a.spentSol)
+  .map((hit) => ({
+    ...hit,
+    hunterProof: hit.hits * 18 + hit.earlyHits * 20 + Math.log2(1 + hit.spentSol) * 18 + Math.log2(1 + Number(hit.maxEarlyBuySol || 0)) * 16
+  }))
+  .filter((hit) => hit.hits >= 2 || hit.earlyHits >= 2 || hit.spentSol >= 1.2 || Number(hit.maxEarlyBuySol || 0) >= 0.45)
+  .sort((a, b) => b.hunterProof - a.hunterProof || b.earlyHits - a.earlyHits || b.hits - a.hits || b.spentSol - a.spentSol)
   .slice(0, MAX_PROFILED_WALLETS);
 await writeStatus({ stage: "candidate-wallets", candidates: candidateWallets.length, walletHits: walletHits.size, previewWallets: hitPreviewRows(walletHits, 14) });
 

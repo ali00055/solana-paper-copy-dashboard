@@ -4059,7 +4059,11 @@ function buildHunterRows(freeAlpha = {}) {
     }
     map.set(wallet, !prev || merged.totalScore >= prev.totalScore ? merged : { ...prev, categories: merged.categories, tokens: merged.tokens, riskFlags: merged.riskFlags });
   };
-  for (const row of freeAlpha?.wallets || []) add(row, "ranked");
+  for (const row of freeAlpha?.wallets || []) {
+    const score = Number(row.totalScore ?? row.alphaScore ?? 0);
+    const hasProof = Number(row.hits || 0) >= 2 || Number(row.earlyHits || 0) >= 2 || Number(row.closed || 0) >= 2 || Number(row.pnlSol || 0) > 0 || Number(row.maxBuySol || row.maxEarlyBuySol || 0) >= 1;
+    if (score >= 28 || hasProof) add(row, "ranked");
+  }
   for (const row of freeAlpha?.hunter?.smartWallets || []) add(row, "smart");
   for (const row of freeAlpha?.hunter?.sniperWallets || []) add(row, "sniper");
   for (const row of freeAlpha?.hunter?.insiderLikeWallets || []) add(row, "insider-benzeri");
