@@ -83,6 +83,27 @@ function publicConfig(config) {
   return copy;
 }
 
+function walletAddedTime(wallet = {}) {
+  const time = wallet.addedAt || wallet.lastAddedAt || null;
+  const parsed = time ? new Date(time).getTime() : 0;
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function sortWalletStats(wallets = []) {
+  return [...wallets].sort((a, b) => {
+    const aAdded = walletAddedTime(a);
+    const bAdded = walletAddedTime(b);
+    if (aAdded || bAdded) {
+      if (!aAdded) return -1;
+      if (!bAdded) return 1;
+      return aAdded - bAdded;
+    }
+    return ((b.name || "").startsWith("Kume") ? 1 : 0) - ((a.name || "").startsWith("Kume") ? 1 : 0) ||
+      (Number(b.realizedTry || 0) - Number(a.realizedTry || 0)) ||
+      (Number(b.score || 0) - Number(a.score || 0));
+  });
+}
+
 async function readChatMessages() {
   const data = await readJson(CHAT_FILE, { messages: [] });
   const messages = Array.isArray(data.messages) ? data.messages : [];
@@ -1188,6 +1209,7 @@ async function addControlWallet(body, restart = true) {
   const config = await readJson("config.json", {});
   config.wallets ||= [];
   const address = cleanWalletAddress(body.address || body.wallet);
+  const nowIso = new Date().toISOString();
   const denied = new Set((config.copyDenylist || []).map((item) => String(item).trim()).filter(Boolean));
   const existing = config.wallets.find((wallet) => wallet.address === address);
   if (existing) {
@@ -1201,8 +1223,10 @@ async function addControlWallet(body, restart = true) {
     if (["normal", "high"].includes(body.confidence)) existing.confidence = body.confidence;
     if (body.moonshot !== undefined) existing.moonshot = toBoolean(body.moonshot);
     if (body.note) existing.note = String(body.note).slice(0, 600);
+    existing.addedAt = nowIso;
+    existing.addedSource = body.source || body.prefix || "hunter";
     if (existing.mode === "copy") {
-      existing.manualOverrideAt = new Date().toISOString();
+      existing.manualOverrideAt = nowIso;
       existing.manualOverrideUntil = new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString();
     } else if (["alert", "off"].includes(existing.mode)) {
       delete existing.manualOverrideAt;
@@ -1232,11 +1256,13 @@ async function addControlWallet(body, restart = true) {
     score: Math.max(0, Math.min(100, Math.round(toFiniteNumber(body.score, mode === "copy" ? 60 : 45) || 0))),
     tradeTry: Math.max(0, Math.round(toFiniteNumber(body.tradeTry, mode === "copy" ? 60 : 0) || 0)),
     moonshot: body.moonshot === undefined ? true : toBoolean(body.moonshot),
-    note: String(body.note || "Panelden eklendi; önce paper/alert doğrulama.").slice(0, 600)
+    note: String(body.note || "Panelden eklendi; önce paper/alert doğrulama.").slice(0, 600),
+    addedAt: nowIso,
+    addedSource: body.source || body.prefix || "hunter"
   };
   if (mode !== "copy") wallet.tradeTry = Math.max(0, wallet.tradeTry || 0);
   if (mode === "copy") {
-    wallet.manualOverrideAt = new Date().toISOString();
+    wallet.manualOverrideAt = nowIso;
     wallet.manualOverrideUntil = new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString();
   }
   config.wallets.push(wallet);
@@ -5589,12 +5615,8 @@ async function apiState() {
     .map((wallet) => ({
       ...wallet,
       winRate: wallet.paperSells ? (wallet.wins / wallet.paperSells) * 100 : null
-    }))
-    .sort((a, b) =>
-      ((b.name || "").startsWith("Kume") ? 1 : 0) - ((a.name || "").startsWith("Kume") ? 1 : 0) ||
-      (b.realizedTry - a.realizedTry) ||
-      ((b.score || 0) - (a.score || 0))
-    );
+    }));
+  const sortedWalletScoreboard = sortWalletStats(walletScoreboard);
 
   return {
     now: new Date().toISOString(),
@@ -5605,7 +5627,7 @@ async function apiState() {
     state,
     mtm,
     events,
-    walletStats: walletScoreboard,
+    walletStats: sortedWalletScoreboard,
     closedTrades,
     recoveryTrades,
     watchlist,
@@ -6191,7 +6213,8 @@ function pageHtml(view = "home") {
           : wallet.cooldownLeftSec > 0
             ? 'cooldown ' + wallet.cooldownLeftSec + 's'
             : 'aktif';
-        return '<tr><td>' + wallet.name + '<div class="mono">owner ' + short(wallet.address) + '</div>' + (wallet.signerAddresses?.length ? '<div class="mono">signer ' + short(wallet.signerAddresses[0]) + '</div>' : '') + (wallet.discoveredRelated?.length ? '<div class="small">otomatik iliski +' + wallet.discoveredRelated.length + '</div>' : '') + '<div class="small">' + (wallet.note || '') + '</div></td>' +
+        const added = wallet.addedAt ? '<div class="small good">yeni eklenen · ' + age(wallet.addedAt) + '</div>' : '';
+        return '<tr><td>' + wallet.name + '<div class="mono">owner ' + short(wallet.address) + '</div>' + added + (wallet.signerAddresses?.length ? '<div class="mono">signer ' + short(wallet.signerAddresses[0]) + '</div>' : '') + (wallet.discoveredRelated?.length ? '<div class="small">otomatik iliski +' + wallet.discoveredRelated.length + '</div>' : '') + '<div class="small">' + (wallet.note || '') + '</div></td>' +
           '<td><span class="tag ' + (wallet.class || 'B') + '">' + (wallet.class || 'B') + '</span><div class="small">lot ' + fmtTry(wallet.tradeTry || 0) + '</div></td>' +
           '<td>' + wallet.paperBuys + ' alım / ' + wallet.paperSells + ' satış<div class="small">WR ' + wr + ' · açık ' + wallet.openPositions + ' · kaçan ' + wallet.skipped + '</div><div class="small">son: ' + (wallet.lastSymbol || '-') + ' ' + (wallet.lastSignalAt ? age(wallet.lastSignalAt) : '') + '</div></td>' +
           '<td class="' + pnlClass(pnl) + '">' + fmtTry(pnl) + '</td></tr>';
@@ -6211,7 +6234,8 @@ function pageHtml(view = "home") {
       }).join('') || '<tr><td colspan="5" class="empty">Henüz event yok.</td></tr>';
 
       document.getElementById('wallets').innerHTML = (data.walletStats || []).map(wallet => {
-        return '<tr><td>' + wallet.name + '<div class="mono">owner ' + short(wallet.address) + '</div>' + (wallet.signerAddresses?.length ? '<div class="mono">signer ' + short(wallet.signerAddresses[0]) + '</div>' : '') + '</td><td><span class="tag ' + wallet.mode + '">' + wallet.mode + '</span></td><td>' + wallet.buys + ' buy / ' + wallet.sells + ' sell</td><td>' + wallet.paperBuys + ' buy / ' + wallet.paperSells + ' sell</td></tr>';
+        const added = wallet.addedAt ? '<div class="small good">yeni eklenen · ' + age(wallet.addedAt) + '</div>' : '';
+        return '<tr><td>' + wallet.name + '<div class="mono">owner ' + short(wallet.address) + '</div>' + added + (wallet.signerAddresses?.length ? '<div class="mono">signer ' + short(wallet.signerAddresses[0]) + '</div>' : '') + '</td><td><span class="tag ' + wallet.mode + '">' + wallet.mode + '</span></td><td>' + wallet.buys + ' buy / ' + wallet.sells + ' sell</td><td>' + wallet.paperBuys + ' buy / ' + wallet.paperSells + ' sell</td></tr>';
       }).join('');
 
       document.getElementById('positions').innerHTML = (mtm.positions || []).map(position => {
@@ -6638,8 +6662,9 @@ function controlPageHtml() {
         const score = fieldValue(wallet, 'score', wallet.score || 0);
         const moonshot = boolValue(fieldValue(wallet, 'moonshot', wallet.moonshot));
         const decisionWallet = { ...wallet, mode, tradeTry, class: walletClass, score, moonshot };
+        const added = wallet.addedAt ? '<div class="small good">yeni eklenen · ' + new Date(wallet.addedAt).toLocaleTimeString('tr-TR') + '</div>' : '';
         return '<tr data-wallet="' + id + '">' +
-          '<td><b>' + wallet.name + '</b><div class="mono">' + short(wallet.address) + '</div><div class="small">' + (wallet.note || '') + '</div></td>' +
+          '<td><b>' + wallet.name + '</b><div class="mono">' + short(wallet.address) + '</div>' + added + '<div class="small">' + (wallet.note || '') + '</div></td>' +
           '<td><select data-field="mode"><option value="copy" ' + (mode === 'copy' ? 'selected' : '') + '>copy</option><option value="alert" ' + (mode === 'alert' ? 'selected' : '') + '>alert</option><option value="off" ' + (mode === 'off' ? 'selected' : '') + '>off</option></select></td>' +
           '<td><input data-field="tradeTry" type="text" inputmode="decimal" value="' + tradeTry + '"></td>' +
           '<td><select data-field="class"><option ' + (walletClass === 'AG' ? 'selected' : '') + '>AG</option><option ' + (walletClass === 'A' ? 'selected' : '') + '>A</option><option ' + (walletClass === 'B' ? 'selected' : '') + '>B</option><option ' + (walletClass === 'C' ? 'selected' : '') + '>C</option><option ' + (walletClass === 'D' ? 'selected' : '') + '>D</option></select></td>' +
@@ -7166,6 +7191,7 @@ function researchPageHtml() {
             tradeTry: mode === 'copy' ? (lotTry || 60) : 0,
             class: mode === 'copy' ? 'B' : 'C',
             moonshot: true,
+            source: 'wallet-research',
             note
           })
         });
