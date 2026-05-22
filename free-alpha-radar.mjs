@@ -12,6 +12,15 @@ const FUNDER_LOOKBACK_SIGNATURES = Number(process.env.ALPHA_FUNDER_SIGS || 18);
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+async function writeStatus(patch) {
+  const previous = await readJson("free-alpha-radar-status.json", {});
+  await fs.writeFile("free-alpha-radar-status.json", JSON.stringify({
+    ...previous,
+    ...patch,
+    updatedAt: new Date().toISOString()
+  }, null, 2)).catch(() => {});
+}
+
 async function getJson(url) {
   const res = await fetch(url, { headers: { accept: "application/json" } });
   if (!res.ok) throw new Error(`${url} ${res.status}`);
@@ -479,12 +488,14 @@ async function fundingSource(wallet) {
 }
 
 const tokens = await tokenUniverse();
+await writeStatus({ stage: "token-universe", tokens: tokens.length });
 console.error(`tokens=${tokens.length}`);
 const walletHits = new Map();
 const tokenClusters = [];
 
 for (const token of tokens) {
   const buyers = await earlyBuyers(token);
+  await writeStatus({ stage: "early-buyers", token: token.symbol, buyers: buyers.length, walletHits: walletHits.size });
   const uniqueBuyers = [];
   const seen = new Set();
   for (const buyer of buyers) {
@@ -512,6 +523,7 @@ const candidateWallets = [...walletHits.values()]
   .filter((hit) => hit.hits >= 2 || hit.earlyHits >= 1 || hit.spentSol >= 0.8)
   .sort((a, b) => b.earlyHits - a.earlyHits || b.hits - a.hits || b.spentSol - a.spentSol)
   .slice(0, MAX_PROFILED_WALLETS);
+await writeStatus({ stage: "candidate-wallets", candidates: candidateWallets.length, walletHits: walletHits.size });
 
 const profiles = new Map();
 for (const hit of candidateWallets) {
@@ -520,6 +532,7 @@ for (const hit of candidateWallets) {
     fundingSource(hit.wallet).catch(() => null)
   ]);
   profiles.set(hit.wallet, { ...hit, tokens: [...hit.tokens], ...profile, funding });
+  await writeStatus({ stage: "profile-wallet", wallet: hit.wallet, profiles: profiles.size, candidates: candidateWallets.length });
   console.error(`${hit.wallet.slice(0, 6)} q=${profile.quality} closed=${profile.closed} pnl=${profile.pnlSol} max=${profile.maxX}x`);
 }
 
@@ -643,6 +656,7 @@ await fs.writeFile("free-alpha-radar-result.json", JSON.stringify({
     ]
   }
 }, null, 2));
+await writeStatus({ stage: "done", wallets: walletScores.length, clusters: clusters.length });
 
 console.table(clusters.slice(0, 12).map((item) => ({
   token: item.symbol,

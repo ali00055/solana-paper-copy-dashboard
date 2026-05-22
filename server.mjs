@@ -3884,13 +3884,15 @@ function oracleSourceNotes() {
 async function runFreeAlphaScan() {
   if (freeAlphaScanInFlight) {
     const current = await readJsonAnyEncoding("free-alpha-radar-result.json", { wallets: [], clusters: [], hunter: {} });
+    const status = await readJsonAnyEncoding("free-alpha-radar-status.json", {});
     return {
       ok: true,
       running: true,
       message: "Tarama zaten çalışıyor; mevcut son sonuç gösteriliyor.",
       wallets: (current?.wallets || []).slice(0, 10),
       clusters: (current?.clusters || []).slice(0, 10),
-      hunter: current?.hunter || {}
+      hunter: current?.hunter || {},
+      status
     };
   }
   const startedAt = new Date().toISOString();
@@ -3903,12 +3905,13 @@ async function runFreeAlphaScan() {
   };
   freeAlphaScanInFlight = execFileAsync(process.execPath, ["free-alpha-radar.mjs"], {
     env,
-    timeout: 180000,
+    timeout: 420000,
     maxBuffer: 1024 * 1024 * 4
   });
   try {
     const { stdout, stderr } = await freeAlphaScanInFlight;
     const result = await readJsonAnyEncoding("free-alpha-radar-result.json", { wallets: [], clusters: [], hunter: {} });
+    const status = await readJsonAnyEncoding("free-alpha-radar-status.json", {});
     return {
       ok: true,
       startedAt,
@@ -3917,7 +3920,8 @@ async function runFreeAlphaScan() {
       stderr: stderr.slice(-3000),
       wallets: (result?.wallets || []).slice(0, 10),
       clusters: (result?.clusters || []).slice(0, 10),
-      hunter: result?.hunter || {}
+      hunter: result?.hunter || {},
+      status
     };
   } finally {
     freeAlphaScanInFlight = null;
@@ -4118,6 +4122,7 @@ async function enrichHunterRowsWithCielo(config, rows = []) {
 async function apiWalletHunter(force = false) {
   const config = await readJson("config.json", {});
   const current = await readJsonAnyEncoding("free-alpha-radar-result.json", { wallets: [], clusters: [], hunter: {} });
+  const scanStatus = await readJsonAnyEncoding("free-alpha-radar-status.json", {});
   const createdAt = current?.createdAt || null;
   const ageMin = createdAt ? (Date.now() - new Date(createdAt).getTime()) / 60000 : Infinity;
   const stale = !createdAt || ageMin > 45;
@@ -4143,6 +4148,7 @@ async function apiWalletHunter(force = false) {
     running: Boolean(freeAlphaScanInFlight),
     stale,
     lastScanAt: createdAt,
+    scanStatus,
     ageMinutes: Number.isFinite(ageMin) ? Number(ageMin.toFixed(1)) : null,
     rows,
     wallets: rows,
@@ -8124,7 +8130,8 @@ function oraclePageHtml() {
         ' · smart ' + (data.counts?.smart || 0) +
         ' · sniper ' + (data.counts?.sniper || 0) +
         ' · insider-benzeri ' + (data.counts?.insider || 0) +
-        ' · son tarama ' + (data.lastScanAt ? fmtAge(data.ageMinutes) + ' once' : 'yok');
+        ' · son tarama ' + (data.lastScanAt ? fmtAge(data.ageMinutes) + ' once' : 'yok') +
+        (data.scanStatus?.stage ? ' ? asama ' + data.scanStatus.stage + (data.scanStatus.token ? ' / ' + data.scanStatus.token : '') : '');
       document.getElementById('hunterWalletRows').innerHTML = (data.rows || []).map(row => {
         const links = '<a target="_blank" rel="noreferrer" href="https://solscan.io/account/' + esc(row.wallet) + '">Solscan</a> · <a target="_blank" rel="noreferrer" href="https://gmgn.ai/sol/address/' + esc(row.wallet) + '">GMGN</a>';
         const cats = (row.categories || []).slice(0, 5).map(item => '<span class="tag">' + esc(item) + '</span>').join(' ');
