@@ -1179,8 +1179,26 @@ async function addControlWallet(body, restart = true) {
     }
     if (body.mode && ["copy", "alert", "off"].includes(body.mode)) existing.mode = body.mode;
     if (body.tradeTry !== undefined) existing.tradeTry = Math.max(0, Math.round(toFiniteNumber(body.tradeTry, existing.tradeTry || 0) || 0));
+    if (body.score !== undefined) existing.score = Math.max(0, Math.min(100, Math.round(toFiniteNumber(body.score, existing.score || 0) || 0)));
+    if (["AG", "A", "B", "C", "D"].includes(body.class)) existing.class = body.class;
+    if (["normal", "high"].includes(body.confidence)) existing.confidence = body.confidence;
+    if (body.moonshot !== undefined) existing.moonshot = toBoolean(body.moonshot);
     if (body.note) existing.note = String(body.note).slice(0, 600);
+    if (existing.mode === "copy") {
+      existing.manualOverrideAt = new Date().toISOString();
+      existing.manualOverrideUntil = new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString();
+    } else if (["alert", "off"].includes(existing.mode)) {
+      delete existing.manualOverrideAt;
+      delete existing.manualOverrideUntil;
+    }
     await writeJson("config.json", config);
+    if (existing.mode === "copy") {
+      const state = await readJson("paper-state.json", null);
+      if (state?.risk?.autoDemoted?.[existing.name]) {
+        delete state.risk.autoDemoted[existing.name];
+        await writeJson("paper-state.json", state);
+      }
+    }
     if (restart) queueBotRestart(`wallet existing ${existing.name}`);
     return { ok: true, existing: true, wallet: existing, config: publicConfig(config) };
   }
@@ -1199,6 +1217,10 @@ async function addControlWallet(body, restart = true) {
     note: String(body.note || "Panelden eklendi; önce paper/alert doğrulama.").slice(0, 600)
   };
   if (mode !== "copy") wallet.tradeTry = Math.max(0, wallet.tradeTry || 0);
+  if (mode === "copy") {
+    wallet.manualOverrideAt = new Date().toISOString();
+    wallet.manualOverrideUntil = new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString();
+  }
   config.wallets.push(wallet);
   await writeJson("config.json", config);
   if (restart) queueBotRestart(`wallet add ${wallet.name}`);
@@ -7136,6 +7158,7 @@ function researchPageHtml() {
       '<div class="actions">' +
       '<button onclick="addWallet(\\'' + address + '\\', \\'alert\\', \\' ' + note.replace(/'/g, '') + '\\', ' + Number(score || 45) + ', ' + Number(lotTry || 60) + ')">Alert ekle</button>' +
       '<button onclick="addWallet(\\'' + address + '\\', \\'copy\\', \\' ' + note.replace(/'/g, '') + '\\', ' + Number(score || 60) + ', ' + Number(lotTry || 60) + ')">Copy ekle</button>' +
+      '<a class="btn" href="/wallets">Cuzdan Durumlari</a>' +
       '</div>';
     async function loadAutoHunter(force = false) {
       const status = document.getElementById('autoHunterStatus');
