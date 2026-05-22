@@ -2,6 +2,10 @@
 
 Anlik Solana cuzdan takip ve paper-trade sim botu. Gercek emir gondermez.
 
+## Tek Tik Render Deploy
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/ali00055/solana-paper-copy-dashboard)
+
 ## Kurulum
 
 ```powershell
