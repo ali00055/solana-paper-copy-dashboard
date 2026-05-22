@@ -983,11 +983,19 @@ async function startBotProcess() {
 }
 
 async function restartBotProcess() {
+  if (process.env.RENDER || process.env.DATA_DIR) {
+    console.log("[control restart] managed Render process: skipping bot kill; bot hot-reloads config");
+    return await getBotStatus();
+  }
   await stopBotProcess();
   return await startBotProcess();
 }
 
 function queueBotRestart(reason = "config change") {
+  if (process.env.RENDER || process.env.DATA_DIR) {
+    console.log(`[control restart:${reason}] skipped on managed service; bot hot-reloads config`);
+    return;
+  }
   setTimeout(() => {
     restartBotProcess().catch((error) => {
       console.error(`[control restart:${reason}]`, error?.message || String(error));
@@ -6812,6 +6820,7 @@ function controlPageHtml() {
       };
       const data = await postJson('/api/control/wallet/add', body);
       if (data?.ok) {
+        document.getElementById('status').textContent = 'Eklendi: ' + data.wallet.name + ' / ' + data.wallet.mode + '. Bot 12 sn icinde configi sicak okuyacak.';
         editLockUntil = 0;
         document.getElementById('newWalletAddress').value = '';
         document.getElementById('newWalletName').value = '';
@@ -9667,7 +9676,7 @@ const server = http.createServer(async (req, res) => {
         return;
       }
       try {
-        send(res, 200, JSON.stringify(await addControlWallet(await readBodyJson(req))), "application/json; charset=utf-8");
+        send(res, 200, JSON.stringify(await addControlWallet(await readBodyJson(req), false)), "application/json; charset=utf-8");
       } catch (error) {
         send(res, 400, JSON.stringify({ ok: false, error: error?.message || String(error) }), "application/json; charset=utf-8");
       }

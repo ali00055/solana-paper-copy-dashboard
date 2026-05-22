@@ -1447,6 +1447,26 @@ async function main() {
 
   setInterval(async () => {
     try {
+      const nextConfig = await readJson(CONFIG_PATH);
+      if (!nextConfig?.wallets) return;
+      for (const key of Object.keys(config)) delete config[key];
+      Object.assign(config, nextConfig);
+      applyDiscoveredRelated(config, state);
+      const nextWallets = walletByAddress(config);
+      wallets.clear();
+      for (const [address, wallet] of nextWallets.entries()) wallets.set(address, wallet);
+      if (!config.tradeHistoricalOnStartup) {
+        const seeded = await seedNewWallets(config, state, wallets);
+        if (seeded) console.log(`[${nowIso()}] hot config reload seeded ${seeded} signatures for new wallets`);
+      }
+      await writeJson(STATE_PATH, state);
+    } catch (error) {
+      console.error("config reload loop:", error.message);
+    }
+  }, 12000);
+
+  setInterval(async () => {
+    try {
       await processPendingPriceSignals(config, state);
       await applyRiskRules(config, state);
       await writeJson(STATE_PATH, state);
