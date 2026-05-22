@@ -4074,6 +4074,48 @@ function buildHunterRows(freeAlpha = {}) {
     .slice(0, 40);
 }
 
+function buildLiveHunterPreview(scanStatus = {}) {
+  return (scanStatus.previewWallets || []).slice(0, 18).map((row) => {
+    const spentSol = Number(row.spentSol || 0);
+    const earlyHits = Number(row.earlyHits || 0);
+    const hits = Number(row.hits || 0);
+    const maxBuySol = Number(row.maxEarlyBuySol || 0);
+    const sniperScore = Math.min(100, earlyHits * 24 + Math.max(0, 320 - Number(row.earliestSec ?? 320)) / 8 + Math.log2(1 + spentSol) * 12);
+    const convictionScore = Math.min(100, Math.log2(1 + spentSol) * 24 + Math.log2(1 + maxBuySol) * 28 + hits * 6);
+    const totalScore = Math.min(72, 24 + sniperScore * 0.32 + convictionScore * 0.34 + hits * 3);
+    return normalizeHunterWallet({
+      wallet: row.wallet,
+      hits,
+      spentSol,
+      tokens: row.tokens || [],
+      earlyHits,
+      earliestSec: row.earliestSec,
+      maxEarlyBuySol: maxBuySol,
+      alphaScore: Number(totalScore.toFixed(1)),
+      insiderScore: Number(Math.min(100, sniperScore * 0.55 + convictionScore * 0.45).toFixed(1)),
+      sniperScore: Number(sniperScore.toFixed(1)),
+      convictionScore: Number(convictionScore.toFixed(1)),
+      repeatabilityScore: Math.min(100, hits * 18),
+      survivalScore: 40,
+      copySafetyScore: 30,
+      proofScore: 0,
+      winRate: null,
+      pnlSol: 0,
+      maxX: 1,
+      profile: "CANLI_ADAY",
+      action: "tarama bitmeden copy kapali; once detay/proof bekle",
+      riskFlags: ["canli tarama", "profil tamamlanmadi"],
+      reasons: [
+        `${hits} token izi`,
+        `${earlyHits} erken giris`,
+        `toplam ${spentSol.toFixed(2)} SOL`,
+        `max buy ${maxBuySol.toFixed(2)} SOL`,
+        "profil/PnL taramasi bekleniyor"
+      ]
+    }, ["canli-onizleme"]);
+  });
+}
+
 async function enrichHunterRowsWithCielo(config, rows = []) {
   if (!config.enableCieloPnl || !cieloKey(config)) return rows;
   const enriched = [];
@@ -4131,7 +4173,9 @@ async function apiWalletHunter(force = false) {
       .then((result) => console.log(`[wallet-hunter] wallets=${result.wallets?.length || 0} clusters=${result.clusters?.length || 0}`))
       .catch((error) => console.error("[wallet-hunter]", error?.message || String(error)));
   }
-  const rows = await enrichHunterRowsWithCielo(config, buildHunterRows(current));
+  let rows = buildHunterRows(current);
+  if (!rows.length && scanStatus?.previewWallets?.length) rows = buildLiveHunterPreview(scanStatus);
+  rows = await enrichHunterRowsWithCielo(config, rows);
   const clusters = (current?.clusters || []).slice(0, 25).map((cluster) => ({
     symbol: cluster.symbol,
     mint: cluster.mint,
@@ -4159,7 +4203,8 @@ async function apiWalletHunter(force = false) {
       clusters: clusters.length,
       smart: current?.hunter?.smartWallets?.length || 0,
       sniper: current?.hunter?.sniperWallets?.length || 0,
-      insider: current?.hunter?.insiderLikeWallets?.length || 0
+      insider: current?.hunter?.insiderLikeWallets?.length || 0,
+      livePreview: scanStatus?.previewWallets?.length || 0
     },
     sourceNotes: [
       "Token evreni DexScreener profile/boost/top boost/CTO/ads + trend search + bizim paper event hafizasindan baslar.",
@@ -6974,6 +7019,15 @@ function researchPageHtml() {
   </header>
   <main>
     <section class="panel">
+      <h2>Otomatik Smart/Sniper Cuzdan Avi</h2>
+      <div class="panel-body">
+        <div id="autoHunterStatus" class="small">Cuzdan avcisi yukleniyor...</div>
+        <div style="height:10px"></div>
+        <button id="autoHunterBtn">Taze Cuzdan Avi Baslat</button>
+      </div>
+      <div class="table-scroll"><table><thead><tr><th>Cuzdan</th><th>Puan</th><th>Ne Buldu?</th><th>Karar</th></tr></thead><tbody id="autoHunterRows"></tbody></table></div>
+    </section>
+    <section class="panel">
       <h2>Cüzdan Kontrol</h2>
       <div class="panel-body">
         <input id="walletInput" placeholder="Solana cüzdan adresi yapıştır..." />
@@ -7079,6 +7133,37 @@ function researchPageHtml() {
       '<button onclick="addWallet(\\'' + address + '\\', \\'alert\\', \\' ' + note.replace(/'/g, '') + '\\', ' + Number(score || 45) + ', ' + Number(lotTry || 60) + ')">Alert ekle</button>' +
       '<button onclick="addWallet(\\'' + address + '\\', \\'copy\\', \\' ' + note.replace(/'/g, '') + '\\', ' + Number(score || 60) + ', ' + Number(lotTry || 60) + ')">Copy ekle</button>' +
       '</div>';
+    async function loadAutoHunter(force = false) {
+      const status = document.getElementById('autoHunterStatus');
+      const btn = document.getElementById('autoHunterBtn');
+      if (force) btn.disabled = true;
+      status.textContent = force ? 'Taze tarama baslatildi; ara adaylar geldikce gorunecek...' : 'Cuzdan avcisi okunuyor...';
+      try {
+        const res = await fetch('/api/wallet-hunter/auto' + (force ? '?force=1' : ''), { cache:'no-store' });
+        const data = await res.json();
+        const stage = data.scanStatus?.stage ? ' / asama: ' + data.scanStatus.stage + (data.scanStatus.token ? ' / ' + data.scanStatus.token : '') : '';
+        status.textContent =
+          (data.running ? 'Tarama calisiyor. ' : '') +
+          'Aday ' + (data.counts?.wallets || 0) +
+          ' / cluster ' + (data.counts?.clusters || 0) +
+          ' / smart ' + (data.counts?.smart || 0) +
+          ' / sniper ' + (data.counts?.sniper || 0) +
+          ' / canli onizleme ' + (data.counts?.livePreview || 0) +
+          stage;
+        document.getElementById('autoHunterRows').innerHTML = (data.rows || []).map(row => {
+          const reasons = (row.reasons || []).slice(0, 4).map(item => '<div class="small">' + item + '</div>').join('');
+          const risks = (row.riskFlags || []).length ? '<div class="small bad">' + (row.riskFlags || []).slice(0, 4).join(', ') + '</div>' : '<div class="small good">risk bayragi az</div>';
+          return '<tr><td><div class="mono">' + row.wallet + '</div>' + linkHtml(row.wallet) + '</td>' +
+            '<td><b>' + Number(row.totalScore || 0).toFixed(1) + '</b><div class="small">' + (row.grade || '-') + ' / ' + (row.profile || '-') + '</div><div class="small">A' + (row.alphaScore || 0) + ' I' + (row.insiderScore || 0) + ' S' + (row.sniperScore || 0) + '</div></td>' +
+            '<td>' + reasons + '<div class="small">token ' + (row.hits || 0) + ' / erken ' + (row.earlyHits || 0) + ' / spent ' + Number(row.spentSol || 0).toFixed(2) + ' SOL</div>' + risks + '</td>' +
+            '<td>' + (row.action || '-') + addButtons(row.wallet, 'Otomatik avci ' + (row.profile || '-') + ' skor ' + Number(row.totalScore || 0).toFixed(1), row.totalScore || row.alphaScore || 45, row.lotTry || 60) + '</td></tr>';
+        }).join('') || '<tr><td colspan="4" class="small">Tarama baslatildiysa ilk adaylar birkac dakika icinde burada gorunur.</td></tr>';
+      } catch (error) {
+        status.textContent = 'hata: ' + error.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
     const explainProfile = row => {
       const p = row?.profile || '-';
       if (p === 'PIR ADAYI') return 'Güçlü aday: erken yakalıyor, geçmişi fena değil, risk bayrağı az.';
@@ -7274,6 +7359,8 @@ function researchPageHtml() {
         btn.disabled = false;
       }
     });
+    document.getElementById('autoHunterBtn').addEventListener('click', () => loadAutoHunter(true));
+    loadAutoHunter(false);
     load();
   </script>
 </body>

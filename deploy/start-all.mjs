@@ -91,6 +91,9 @@ async function prepareDataDir() {
   if (!(await pathExists(path.join(root, "paper-events.ndjson"))) && (await pathExists(path.join(root, "paper-events.seed.ndjson")))) {
     await fs.copyFile(path.join(root, "paper-events.seed.ndjson"), path.join(root, "paper-events.ndjson"));
   }
+  if (!(await pathExists(path.join(root, "free-alpha-radar-result.json"))) && (await pathExists(path.join(root, "free-alpha-radar-result.seed.json")))) {
+    await fs.copyFile(path.join(root, "free-alpha-radar-result.seed.json"), path.join(root, "free-alpha-radar-result.json"));
+  }
   if (!dataDir) return;
   for (const file of filesToPersist) await ensurePersistentFile(file);
   if ((await pathExists(path.join(root, "config.seed.json")))) {
@@ -100,6 +103,9 @@ async function prepareDataDir() {
   }
   await restoreRicherSeed("paper-state.json", "paper-state.seed.json", "state");
   await restoreRicherSeed("paper-events.ndjson", "paper-events.seed.ndjson", "events");
+  if (!(await pathExists(path.join(dataDir, "free-alpha-radar-result.json"))) && (await pathExists(path.join(root, "free-alpha-radar-result.seed.json")))) {
+    await fs.copyFile(path.join(root, "free-alpha-radar-result.seed.json"), path.join(dataDir, "free-alpha-radar-result.json"));
+  }
 }
 
 function start(name, script) {

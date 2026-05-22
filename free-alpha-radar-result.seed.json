@@ -1,0 +1,403 @@
+{
+  "createdAt": "2026-05-22T14:53:41.870Z",
+  "tokens": [
+    {
+      "mint": "FqAUAY7LgWVq4d55K6HJ8CUuXm67MP8sW8sgkBshpump",
+      "pairAddress": "AE7zykz9noDaNdiWQvvwXcSQQVD8oMeZNxUL9AuHVAD8",
+      "symbol": "CHARIZARD",
+      "volume24": 91488.39,
+      "buys24": 1137,
+      "sells24": 996,
+      "liquidityUsd": 17280.31,
+      "fdv": 48113,
+      "change24": 33.4,
+      "url": "https://dexscreener.com/solana/ae7zykz9nodandiwqvvwxcsqqvd8omeznxul9auhvad8",
+      "sourceWeight": 0
+    },
+    {
+      "mint": "CSXvojjB8s7oXJP5Dt3cKpUR6KUmsqe3AosaC4kJpump",
+      "pairAddress": "k18yd4PVbJfLahTPCW67ZUeMAQFT3mRCQ68M7ubtjHz",
+      "symbol": "Pikachu",
+      "volume24": 92784,
+      "buys24": 1361,
+      "sells24": 1035,
+      "liquidityUsd": 15312.77,
+      "fdv": 38040,
+      "change24": 5.47,
+      "url": "https://dexscreener.com/solana/k18yd4pvbjflahtpcw67zuemaqft3mrcq68m7ubtjhz",
+      "sourceWeight": 0
+    }
+  ],
+  "wallets": [
+    {
+      "wallet": "7UdiXUmtPjAXp4ZTX6r8HrxtK57wMncLwWLrGrKM2ykJ",
+      "hits": 1,
+      "spentSol": 2.00392348,
+      "tokens": [
+        "Pikachu"
+      ],
+      "earlyHits": 1,
+      "earliestSec": 0,
+      "earlySecSum": 0,
+      "maxEarlyBuySol": 2.00392348,
+      "earlyBuySizes": [
+        2.00392348
+      ],
+      "buys": 4,
+      "sells": 0,
+      "closed": 0,
+      "winRate": null,
+      "pnlSol": 0,
+      "biggestLossSol": 0,
+      "maxX": 1,
+      "threeX": 0,
+      "fiveX": 0,
+      "openLotCount": 2,
+      "openCostSol": 6.006,
+      "totalBuySol": 6.006,
+      "maxBuySol": 2.0039,
+      "avgBuySol": 1.5015,
+      "medianBuySol": 2.0021,
+      "noiseRatio": 4,
+      "lastSeenAt": "2026-05-22T10:18:44.000Z",
+      "quality": 0,
+      "funding": null,
+      "avgEarlySec": 0,
+      "avgEarlyBuySol": 2.0039,
+      "alphaScore": 26.3,
+      "insiderScore": 36,
+      "sniperScore": 45.1,
+      "convictionScore": 79.3,
+      "repeatabilityScore": 22,
+      "timingScore": 60,
+      "survivalScore": 50,
+      "copySafetyScore": 26.1,
+      "proofScore": 0,
+      "dustSniper": false,
+      "archetypes": [
+        "SNIPER",
+        "BUYUK PARA"
+      ],
+      "profile": "RISKLI",
+      "action": "copy kapali, sadece veri topla",
+      "lotTry": 0,
+      "riskFlags": [
+        "az kapanis",
+        "kar/zarar belirsiz",
+        "realized proof yok"
+      ],
+      "reasons": [
+        "1 token yakaladi",
+        "1 erken giris",
+        "ilk giris 0s",
+        "WR -%",
+        "PnL 0 SOL",
+        "max 1x",
+        "max buy 2.00 SOL",
+        "avg buy 1.50 SOL",
+        "conviction 79.3",
+        "proof 0",
+        "repeat 22",
+        "survival 50",
+        "copySafety 26.1",
+        "funder yok",
+        "noise 4.0"
+      ]
+    },
+    {
+      "wallet": "2BHwcSWm6E3Ex4M42BM3tDBnJZGpxurLDbgAzjEoMhMf",
+      "hits": 1,
+      "spentSol": 0.202005,
+      "tokens": [
+        "Pikachu"
+      ],
+      "earlyHits": 1,
+      "earliestSec": 1,
+      "earlySecSum": 1,
+      "maxEarlyBuySol": 0.202005,
+      "earlyBuySizes": [
+        0.202005
+      ],
+      "buys": 5,
+      "sells": 1,
+      "closed": 0,
+      "winRate": null,
+      "pnlSol": 0,
+      "biggestLossSol": 0,
+      "maxX": 1,
+      "threeX": 0,
+      "fiveX": 0,
+      "openLotCount": 2,
+      "openCostSol": 3.7021,
+      "totalBuySol": 3.7021,
+      "maxBuySol": 1.6941,
+      "avgBuySol": 0.7404,
+      "medianBuySol": 0.502,
+      "noiseRatio": 5,
+      "lastSeenAt": "2026-05-22T13:17:10.000Z",
+      "quality": 0,
+      "funding": null,
+      "avgEarlySec": 1,
+      "avgEarlyBuySol": 0.202,
+      "alphaScore": 20.9,
+      "insiderScore": 29.5,
+      "sniperScore": 42.5,
+      "convictionScore": 57.3,
+      "repeatabilityScore": 22,
+      "timingScore": 60,
+      "survivalScore": 46,
+      "copySafetyScore": 20.3,
+      "proofScore": 0,
+      "dustSniper": false,
+      "archetypes": [
+        "BUYUK PARA"
+      ],
+      "profile": "RISKLI",
+      "action": "copy kapali, sadece veri topla",
+      "lotTry": 0,
+      "riskFlags": [
+        "az kapanis",
+        "her seye atliyor",
+        "realized proof yok"
+      ],
+      "reasons": [
+        "1 token yakaladi",
+        "1 erken giris",
+        "ilk giris 1s",
+        "WR -%",
+        "PnL 0 SOL",
+        "max 1x",
+        "max buy 1.69 SOL",
+        "avg buy 0.74 SOL",
+        "conviction 57.3",
+        "proof 0",
+        "repeat 22",
+        "survival 46",
+        "copySafety 20.3",
+        "funder yok",
+        "noise 5.0"
+      ]
+    }
+  ],
+  "clusters": [
+    {
+      "symbol": "Pikachu",
+      "mint": "CSXvojjB8s7oXJP5Dt3cKpUR6KUmsqe3AosaC4kJpump",
+      "url": "https://dexscreener.com/solana/k18yd4pvbjflahtpcw67zuemaqft3mrcq68m7ubtjhz",
+      "change24": 5.47,
+      "liquidityUsd": 15312.77,
+      "fdv": 38040,
+      "buyers": [
+        {
+          "wallet": "7UdiXUmtPjAXp4ZTX6r8HrxtK57wMncLwWLrGrKM2ykJ",
+          "spentSol": 2.0039,
+          "earlySec": 0,
+          "alphaScore": 0,
+          "insiderScore": 0,
+          "sniperScore": 0,
+          "profile": "-",
+          "archetypes": [],
+          "quality": 0,
+          "riskFlags": []
+        },
+        {
+          "wallet": "2BHwcSWm6E3Ex4M42BM3tDBnJZGpxurLDbgAzjEoMhMf",
+          "spentSol": 0.202,
+          "earlySec": 1,
+          "alphaScore": 0,
+          "insiderScore": 0,
+          "sniperScore": 0,
+          "profile": "-",
+          "archetypes": [],
+          "quality": 0,
+          "riskFlags": []
+        }
+      ],
+      "smartCount": 0,
+      "strongCount": 0,
+      "riskyCount": 0,
+      "fundingClusters": [],
+      "clusterScore": 28,
+      "action": "GURULTU: sadece kaydet"
+    },
+    {
+      "symbol": "CHARIZARD",
+      "mint": "FqAUAY7LgWVq4d55K6HJ8CUuXm67MP8sW8sgkBshpump",
+      "url": "https://dexscreener.com/solana/ae7zykz9nodandiwqvvwxcsqqvd8omeznxul9auhvad8",
+      "change24": 33.4,
+      "liquidityUsd": 17280.31,
+      "fdv": 48113,
+      "buyers": [],
+      "smartCount": 0,
+      "strongCount": 0,
+      "riskyCount": 0,
+      "fundingClusters": [],
+      "clusterScore": 20,
+      "action": "GURULTU: sadece kaydet"
+    }
+  ],
+  "hunter": {
+    "sniperWallets": [
+      {
+        "wallet": "7UdiXUmtPjAXp4ZTX6r8HrxtK57wMncLwWLrGrKM2ykJ",
+        "hits": 1,
+        "spentSol": 2.00392348,
+        "tokens": [
+          "Pikachu"
+        ],
+        "earlyHits": 1,
+        "earliestSec": 0,
+        "earlySecSum": 0,
+        "maxEarlyBuySol": 2.00392348,
+        "earlyBuySizes": [
+          2.00392348
+        ],
+        "buys": 4,
+        "sells": 0,
+        "closed": 0,
+        "winRate": null,
+        "pnlSol": 0,
+        "biggestLossSol": 0,
+        "maxX": 1,
+        "threeX": 0,
+        "fiveX": 0,
+        "openLotCount": 2,
+        "openCostSol": 6.006,
+        "totalBuySol": 6.006,
+        "maxBuySol": 2.0039,
+        "avgBuySol": 1.5015,
+        "medianBuySol": 2.0021,
+        "noiseRatio": 4,
+        "lastSeenAt": "2026-05-22T10:18:44.000Z",
+        "quality": 0,
+        "funding": null,
+        "avgEarlySec": 0,
+        "avgEarlyBuySol": 2.0039,
+        "alphaScore": 26.3,
+        "insiderScore": 36,
+        "sniperScore": 45.1,
+        "convictionScore": 79.3,
+        "repeatabilityScore": 22,
+        "timingScore": 60,
+        "survivalScore": 50,
+        "copySafetyScore": 26.1,
+        "proofScore": 0,
+        "dustSniper": false,
+        "archetypes": [
+          "SNIPER",
+          "BUYUK PARA"
+        ],
+        "profile": "RISKLI",
+        "action": "copy kapali, sadece veri topla",
+        "lotTry": 0,
+        "riskFlags": [
+          "az kapanis",
+          "kar/zarar belirsiz",
+          "realized proof yok"
+        ],
+        "reasons": [
+          "1 token yakaladi",
+          "1 erken giris",
+          "ilk giris 0s",
+          "WR -%",
+          "PnL 0 SOL",
+          "max 1x",
+          "max buy 2.00 SOL",
+          "avg buy 1.50 SOL",
+          "conviction 79.3",
+          "proof 0",
+          "repeat 22",
+          "survival 50",
+          "copySafety 26.1",
+          "funder yok",
+          "noise 4.0"
+        ]
+      }
+    ],
+    "insiderLikeWallets": [],
+    "smartWallets": [],
+    "suggestedWatchlist": [
+      {
+        "wallet": "7UdiXUmtPjAXp4ZTX6r8HrxtK57wMncLwWLrGrKM2ykJ",
+        "hits": 1,
+        "spentSol": 2.00392348,
+        "tokens": [
+          "Pikachu"
+        ],
+        "earlyHits": 1,
+        "earliestSec": 0,
+        "earlySecSum": 0,
+        "maxEarlyBuySol": 2.00392348,
+        "earlyBuySizes": [
+          2.00392348
+        ],
+        "buys": 4,
+        "sells": 0,
+        "closed": 0,
+        "winRate": null,
+        "pnlSol": 0,
+        "biggestLossSol": 0,
+        "maxX": 1,
+        "threeX": 0,
+        "fiveX": 0,
+        "openLotCount": 2,
+        "openCostSol": 6.006,
+        "totalBuySol": 6.006,
+        "maxBuySol": 2.0039,
+        "avgBuySol": 1.5015,
+        "medianBuySol": 2.0021,
+        "noiseRatio": 4,
+        "lastSeenAt": "2026-05-22T10:18:44.000Z",
+        "quality": 0,
+        "funding": null,
+        "avgEarlySec": 0,
+        "avgEarlyBuySol": 2.0039,
+        "alphaScore": 26.3,
+        "insiderScore": 36,
+        "sniperScore": 45.1,
+        "convictionScore": 79.3,
+        "repeatabilityScore": 22,
+        "timingScore": 60,
+        "survivalScore": 50,
+        "copySafetyScore": 26.1,
+        "proofScore": 0,
+        "dustSniper": false,
+        "archetypes": [
+          "SNIPER",
+          "BUYUK PARA"
+        ],
+        "profile": "RISKLI",
+        "action": "copy kapali, sadece veri topla",
+        "lotTry": 0,
+        "riskFlags": [
+          "az kapanis",
+          "kar/zarar belirsiz",
+          "realized proof yok"
+        ],
+        "reasons": [
+          "1 token yakaladi",
+          "1 erken giris",
+          "ilk giris 0s",
+          "WR -%",
+          "PnL 0 SOL",
+          "max 1x",
+          "max buy 2.00 SOL",
+          "avg buy 1.50 SOL",
+          "conviction 79.3",
+          "proof 0",
+          "repeat 22",
+          "survival 50",
+          "copySafety 26.1",
+          "funder yok",
+          "noise 4.0"
+        ]
+      }
+    ],
+    "rules": [
+      "Sniper: ayni taramada erken alici olarak gorunen ve hiz puani yuksek cuzdan.",
+      "Insider-benzeri: erkenlik + tekrar + yuksek carpan izi olan cuzdan; kimlik iddiasi degildir.",
+      "Smart wallet: PnL, win rate, zarar kontrolu ve tekrar sinyal kalitesi daha temiz cuzdan.",
+      "Hiçbiri otomatik gercek emir sebebi degil; once simulasyon ve ikinci cuzdan onayi."
+    ]
+  }
+}

@@ -20,6 +20,9 @@ paper-events.archive-*.ndjson
 paper-state.archive-*.json
 codex-mobile-chat.json
 free-alpha-radar-result.json
+!free-alpha-radar-result.seed.json
+free-alpha-radar-status.json
+render-*.json
 oracle-discovery-result.json
 social-radar-result.json
 trend-map-result.json

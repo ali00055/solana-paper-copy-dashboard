@@ -21,6 +21,21 @@ async function writeStatus(patch) {
   }, null, 2)).catch(() => {});
 }
 
+function hitPreviewRows(walletHits, limit = 10) {
+  return [...walletHits.values()]
+    .map((hit) => ({
+      wallet: hit.wallet,
+      hits: hit.hits,
+      spentSol: Number(Number(hit.spentSol || 0).toFixed(4)),
+      tokens: [...(hit.tokens || [])].slice(0, 6),
+      earlyHits: hit.earlyHits,
+      earliestSec: hit.earliestSec,
+      maxEarlyBuySol: Number(Number(hit.maxEarlyBuySol || 0).toFixed(4))
+    }))
+    .sort((a, b) => b.earlyHits - a.earlyHits || b.hits - a.hits || b.spentSol - a.spentSol)
+    .slice(0, limit);
+}
+
 async function getJson(url) {
   const res = await fetch(url, { headers: { accept: "application/json" } });
   if (!res.ok) throw new Error(`${url} ${res.status}`);
@@ -495,7 +510,7 @@ const tokenClusters = [];
 
 for (const token of tokens) {
   const buyers = await earlyBuyers(token);
-  await writeStatus({ stage: "early-buyers", token: token.symbol, buyers: buyers.length, walletHits: walletHits.size });
+  await writeStatus({ stage: "early-buyers", token: token.symbol, buyers: buyers.length, walletHits: walletHits.size, previewWallets: hitPreviewRows(walletHits) });
   const uniqueBuyers = [];
   const seen = new Set();
   for (const buyer of buyers) {
@@ -516,6 +531,7 @@ for (const token of tokens) {
     walletHits.set(buyer.wallet, hit);
   }
   tokenClusters.push({ token, buyers: uniqueBuyers.slice(0, 15) });
+  await writeStatus({ stage: "early-buyers", token: token.symbol, buyers: buyers.length, walletHits: walletHits.size, previewWallets: hitPreviewRows(walletHits) });
   console.error(`${token.symbol} buyers=${uniqueBuyers.length}`);
 }
 
@@ -523,7 +539,7 @@ const candidateWallets = [...walletHits.values()]
   .filter((hit) => hit.hits >= 2 || hit.earlyHits >= 1 || hit.spentSol >= 0.8)
   .sort((a, b) => b.earlyHits - a.earlyHits || b.hits - a.hits || b.spentSol - a.spentSol)
   .slice(0, MAX_PROFILED_WALLETS);
-await writeStatus({ stage: "candidate-wallets", candidates: candidateWallets.length, walletHits: walletHits.size });
+await writeStatus({ stage: "candidate-wallets", candidates: candidateWallets.length, walletHits: walletHits.size, previewWallets: hitPreviewRows(walletHits, 14) });
 
 const profiles = new Map();
 for (const hit of candidateWallets) {
