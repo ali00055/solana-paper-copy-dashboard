@@ -13,6 +13,8 @@ cloudflared.exe
 config.json
 paper-state.json
 paper-events.ndjson
+!paper-state.seed.json
+!paper-events.seed.ndjson
 paper-events.archive-*.ndjson
 paper-state.archive-*.json
 codex-mobile-chat.json

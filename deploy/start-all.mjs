@@ -48,6 +48,12 @@ async function prepareDataDir() {
   if (!(await pathExists(path.join(root, "config.json"))) && (await pathExists(path.join(root, "config.example.json")))) {
     await fs.copyFile(path.join(root, "config.example.json"), path.join(root, "config.json"));
   }
+  if (!(await pathExists(path.join(root, "paper-state.json"))) && (await pathExists(path.join(root, "paper-state.seed.json")))) {
+    await fs.copyFile(path.join(root, "paper-state.seed.json"), path.join(root, "paper-state.json"));
+  }
+  if (!(await pathExists(path.join(root, "paper-events.ndjson"))) && (await pathExists(path.join(root, "paper-events.seed.ndjson")))) {
+    await fs.copyFile(path.join(root, "paper-events.seed.ndjson"), path.join(root, "paper-events.ndjson"));
+  }
   if (!dataDir) return;
   for (const file of filesToPersist) await ensurePersistentFile(file);
 }

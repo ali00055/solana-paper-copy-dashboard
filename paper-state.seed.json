@@ -1,0 +1,224 @@
+{
+  "startedAt": "2026-05-22T10:59:19.998Z",
+  "cashTry": 4879.052045957015,
+  "realizedTry": 54.05204595701497,
+  "positions": [
+    {
+      "id": "1779447934549-4xxcMVRGJCcdWuPR1Pq2iKkgTfYqjxNZjG2dbavfpump",
+      "openedAt": "2026-05-22T11:05:34.549Z",
+      "wallet": "Radar-01",
+      "walletAddress": "CR4Y5YQ2Dy8kdKCCYd32goMmG762FqFaBb5uVbQdxaKc",
+      "ownerAddress": "CR4Y5YQ2Dy8kdKCCYd32goMmG762FqFaBb5uVbQdxaKc",
+      "mint": "4xxcMVRGJCcdWuPR1Pq2iKkgTfYqjxNZjG2dbavfpump",
+      "symbol": "TREX",
+      "entryTry": 0.04800834,
+      "spotEntryTry": 0.047067,
+      "amount": 3645.199979836837,
+      "investedTry": 175,
+      "priorityFeeTry": 0,
+      "buyCostPct": 2,
+      "sellCostPct": 2,
+      "highestTry": 0.064119,
+      "profitLockDone": true,
+      "tp1Done": false,
+      "tp2Done": false,
+      "url": "https://dexscreener.com/solana/6qfydbjl334vcudqc3mzzid62yd7kzr6ik7vocrreatb",
+      "walletClass": "B",
+      "walletScore": null,
+      "moonshot": false,
+      "buyReason": "Radar-01 cüzdanı alım yaptı · sınıf B · lot 350.00 TL · mcap $10,827 · pair age 5dk",
+      "tokenMeta": {
+        "liquidityUsd": null,
+        "marketCap": 10826.77,
+        "volume24h": 24484.12,
+        "pairCreatedAt": 1779447628000,
+        "txns5m": 747,
+        "txns1h": 747,
+        "priceChange5m": 179,
+        "priceChange1h": 179,
+        "boostsActive": 0,
+        "safety": null,
+        "paidOrders": 0,
+        "inferredPrice": false,
+        "dynamicLotScore": null,
+        "dynamicLotMultiplier": 1,
+        "baseTradeTry": 350
+      }
+    }
+  ],
+  "processedSignatures": [
+    "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"
+  ],
+  "stats": {},
+  "pendingPriceSignals": [],
+  "risk": {
+    "walletLastBuyAt": {
+      "Radar-01": "2026-05-22T11:05:34.549Z"
+    },
+    "tokenLastBuyAt": {
+      "4xxcMVRGJCcdWuPR1Pq2iKkgTfYqjxNZjG2dbavfpump": "2026-05-22T11:05:34.549Z"
+    },
+    "walletBuySignals": {
+      "Radar-01": [
+        1779448184601,
+        1779448184822
+      ]
+    },
+    "tokenBuySignals": {
+      "4xxcMVRGJCcdWuPR1Pq2iKkgTfYqjxNZjG2dbavfpump": []
+    },
+    "tokenSellSignals": {
+      "6wsbGeNJBYPmfNG6rAgj138FG5zXsEKCKLrUBk64pump": [
+        {
+          "id": "Radar-01:2XG4L2KsiUtgCKcWFwF67vf5xmb56QupvA5jwKCa5jWcGWSG6Dzt84ypanZr1n8A78tqbc5PrZLdK7AP7f8FcCQ7:SELL:1779447624523",
+          "wallet": "Radar-01",
+          "time": 1779447624523
+        },
+        {
+          "id": "Radar-01:4wDtgtG5u2yY8XDmxtD8p3GosGpTWL2BXpdcjyH4Rn1oydiTfSPSKGHJGqJxBGfiSGTCM37cwhY86RfAsBBNnWgA:SELL:1779447674616",
+          "wallet": "Radar-01",
+          "time": 1779447674616
+        }
+      ],
+      "DHvuBLZeE5jCLgRWnn1D4p9JMES6QbAqX9i3WJVBpump": [
+        {
+          "id": "Radar-01:3GNXS7DYRaKWtcamuVQjW9fwDXZaGHQVwy7rmzAmJXTfiEAfBWJJC4EdKjyvZpA4JDDeip9gyPiXjDGxBFVNQgaf:SELL:1779447734630",
+          "wallet": "Radar-01",
+          "time": 1779447734630
+        },
+        {
+          "id": "Radar-01:5vhvnmvNU2gAWQSsp95sy6j9hBqHSHSPE6P2adptFNR7zNi3ktZ4saSUWvSbiAkTZkuA2roogJQBNACaeAsYStXz:SELL:1779447754485",
+          "wallet": "Radar-01",
+          "time": 1779447754485
+        },
+        {
+          "id": "Radar-01:4ys1o4gskGuHtTqwcLB8EaxFFjsAiCeVtU5kxoYPaCZeN95Co3rhR3HxVa9L8XPE7Xq6gnPSWZP46bNQ2H5LYefn:SELL:1779448154684",
+          "wallet": "Radar-01",
+          "time": 1779448154684
+        },
+        {
+          "id": "Radar-01:4RWz5CiPP5jQzq5rR4MMcgMuqYoiaGbhwQbJtnrSX65GjYYrEeKZJunLVgvisGzyzepG4Re41aQPgDjPSZACcvUq:SELL:1779448154899",
+          "wallet": "Radar-01",
+          "time": 1779448154899
+        },
+        {
+          "id": "Radar-01:4fhe2PzCAT6P9k52jAWVCSyRoYvE9DofLhe67ytgbbY7TSi4EkptWecbCEJ6noGnSEuxXCTor2rJSyrC6CD58FzL:SELL:1779448155274",
+          "wallet": "Radar-01",
+          "time": 1779448155274
+        }
+      ],
+      "4xxcMVRGJCcdWuPR1Pq2iKkgTfYqjxNZjG2dbavfpump": []
+    },
+    "tokenBlocklist": {},
+    "dailyGuard": {
+      "date": "2026-05-22",
+      "peakTry": 5083.396306766699,
+      "lowTry": 5000,
+      "blockedUntil": null,
+      "lastEquityTry": 5054.052045957015
+    },
+    "autoDemoted": {},
+    "globalPerformance": {
+      "closed": 1,
+      "realizedTry": 54.05204595701497,
+      "lastClosedAt": "2026-05-22T11:07:53.472Z",
+      "wins": 1,
+      "consecutiveLosses": 0
+    },
+    "walletPerformance": {
+      "Radar-01": {
+        "closed": 1,
+        "wins": 1,
+        "losses": 0,
+        "realizedTry": 54.05204595701497,
+        "lastLossAt": null,
+        "blockedUntil": null
+      }
+    }
+  },
+  "discoveredRelated": {},
+  "seededWallets": [
+    "DQt1vtXLG7xTWBd5astQbeUzTsafUYum2zjryUa9ymkY",
+    "Bmoravumrff388cZgpzAi33jDjaoed2Hiogw2WySUeQS",
+    "7WSDufZW7ScdYeWDooJaMLL51BmzM7zwaFu7TZGwq63k",
+    "CR4Y5YQ2Dy8kdKCCYd32goMmG762FqFaBb5uVbQdxaKc"
+  ],
+  "closedTrades": [
+    {
+      "time": "2026-05-22T11:07:53.472Z",
+      "wallet": "Radar-01",
+      "symbol": "TREX",
+      "mint": "4xxcMVRGJCcdWuPR1Pq2iKkgTfYqjxNZjG2dbavfpump",
+      "pnlTry": 54.05204595701497,
+      "proceedsTry": 229.05204595701497,
+      "reason": "core profit lock",
+      "url": "https://dexscreener.com/solana/6qfydbjl334vcudqc3mzzid62yd7kzr6ik7vocrreatb",
+      "exitPriceTry": 0.064119,
+      "entryTry": 0.04800834,
+      "investedTry": 175,
+      "moonshot": false
+    }
+  ]
+}
