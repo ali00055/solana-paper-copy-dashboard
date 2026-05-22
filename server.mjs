@@ -4045,7 +4045,53 @@ function buildHunterRows(freeAlpha = {}) {
     .slice(0, 40);
 }
 
+async function enrichHunterRowsWithCielo(config, rows = []) {
+  if (!config.enableCieloPnl || !cieloKey(config)) return rows;
+  const enriched = [];
+  for (const row of rows.slice(0, 12)) {
+    const cielo = await cieloWalletPnl(config, row.wallet).catch((error) => ({
+      enabled: true,
+      ok: false,
+      error: error?.message || String(error)
+    }));
+    if (cielo.ok) {
+      const winRate = cielo.winRate ?? row.winRate;
+      const closed = Math.max(Number(row.closed || 0), Number(cielo.closed || 0));
+      const pnlSolApprox = Number(row.pnlSol || 0) || Number(cielo.realizedUsd || 0) / 180;
+      const bonus = Math.min(24, Math.max(0, Number(cielo.realizedUsd || 0)) / 250 + (winRate ? Math.max(0, winRate - 50) * 0.28 : 0));
+      const totalScore = clamp(Number(row.totalScore || 0) + bonus);
+      enriched.push({
+        ...row,
+        totalScore: Number(totalScore.toFixed(1)),
+        grade: totalScore >= 82 ? "A+" : totalScore >= 70 ? "A" : totalScore >= 56 ? "B" : totalScore >= 42 ? "WATCH" : row.grade,
+        winRate,
+        closed,
+        pnlSol: Number(pnlSolApprox.toFixed(4)),
+        cielo,
+        profile: row.profile === "BEKLE" && closed ? "CIELO_DOGRULU" : row.profile,
+        reasons: [
+          `Cielo WR ${winRate === null || winRate === undefined ? "-" : Number(winRate).toFixed(0) + "%"}`,
+          `Cielo PnL $${Number(cielo.realizedUsd || 0).toFixed(0)}`,
+          `Cielo token ${cielo.tokenCount || 0}`,
+          ...(row.reasons || [])
+        ].slice(0, 8)
+      });
+    } else {
+      enriched.push({
+        ...row,
+        cielo,
+        reasons: [`Cielo: ${cielo.error || "veri yok"}`, ...(row.reasons || [])].slice(0, 8)
+      });
+    }
+  }
+  return [
+    ...enriched,
+    ...rows.slice(12)
+  ].sort((a, b) => Number(b.totalScore || 0) - Number(a.totalScore || 0));
+}
+
 async function apiWalletHunter(force = false) {
+  const config = await readJson("config.json", {});
   const current = await readJsonAnyEncoding("free-alpha-radar-result.json", { wallets: [], clusters: [], hunter: {} });
   const createdAt = current?.createdAt || null;
   const ageMin = createdAt ? (Date.now() - new Date(createdAt).getTime()) / 60000 : Infinity;
@@ -4055,7 +4101,7 @@ async function apiWalletHunter(force = false) {
       .then((result) => console.log(`[wallet-hunter] wallets=${result.wallets?.length || 0} clusters=${result.clusters?.length || 0}`))
       .catch((error) => console.error("[wallet-hunter]", error?.message || String(error)));
   }
-  const rows = buildHunterRows(current);
+  const rows = await enrichHunterRowsWithCielo(config, buildHunterRows(current));
   const clusters = (current?.clusters || []).slice(0, 25).map((cluster) => ({
     symbol: cluster.symbol,
     mint: cluster.mint,
