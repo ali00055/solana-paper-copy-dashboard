@@ -7,6 +7,7 @@ const SIGS_PER_PAIR = Number(process.env.ALPHA_SIGS_PER_PAIR || 32);
 const TX_SAMPLE_PER_WALLET = Number(process.env.ALPHA_TX_SAMPLE_PER_WALLET || 45);
 const MAX_PROFILED_WALLETS = Number(process.env.ALPHA_MAX_PROFILED_WALLETS || 18);
 const MIN_SPEND_SOL = 0.015;
+const TREND_QUERIES = ["ai", "meme", "cat", "dog", "sol", "pump", "cto", "bonk", "trenches", "viral", "moon", "usa"];
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -14,6 +15,14 @@ async function getJson(url) {
   const res = await fetch(url, { headers: { accept: "application/json" } });
   if (!res.ok) throw new Error(`${url} ${res.status}`);
   return res.json();
+}
+
+async function readJson(file, fallback) {
+  try {
+    return JSON.parse((await fs.readFile(file, "utf8")).replace(/^\uFEFF/, ""));
+  } catch {
+    return fallback;
+  }
 }
 
 async function rpc(method, params, retries = 2) {
@@ -186,13 +195,38 @@ function walletDecision(wallet) {
 }
 
 async function tokenUniverse() {
-  const [profiles, boosts] = await Promise.all([
+  const [profiles, boosts, topBoosts, ctos, ads] = await Promise.all([
     getJson("https://api.dexscreener.com/token-profiles/latest/v1").catch(() => []),
-    getJson("https://api.dexscreener.com/token-boosts/latest/v1").catch(() => [])
+    getJson("https://api.dexscreener.com/token-boosts/latest/v1").catch(() => []),
+    getJson("https://api.dexscreener.com/token-boosts/top/v1").catch(() => []),
+    getJson("https://api.dexscreener.com/community-takeovers/latest/v1").catch(() => []),
+    getJson("https://api.dexscreener.com/ads/latest/v1").catch(() => [])
   ]);
-  const unique = [...new Set([...profiles, ...boosts]
-    .filter((item) => item.chainId === "solana" && item.tokenAddress)
-    .map((item) => item.tokenAddress))].slice(0, 100);
+  const localDiscover = await readJson("oracle-discovery-result.json", { rows: [] });
+  const localEventsText = await fs.readFile("paper-events.ndjson", "utf8").catch(() => "");
+  const localEventMints = localEventsText
+    .trim()
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .slice(-500)
+    .map((line) => {
+      try { return JSON.parse(line).mint; } catch { return null; }
+    })
+    .filter(Boolean);
+  const searchPairs = [];
+  for (const query of TREND_QUERIES) {
+    const data = await getJson(`https://api.dexscreener.com/latest/dex/search?q=${encodeURIComponent(query)}`).catch(() => ({ pairs: [] }));
+    searchPairs.push(...(data?.pairs || []).filter((pair) => pair.chainId === "solana" && pair.baseToken?.address));
+    await sleep(80);
+  }
+  const unique = [...new Set([
+    ...[...profiles, ...boosts, ...topBoosts, ...ctos, ...ads]
+      .filter((item) => item.chainId === "solana" && item.tokenAddress)
+      .map((item) => item.tokenAddress),
+    ...(localDiscover.rows || []).map((row) => row.mint).filter(Boolean),
+    ...localEventMints,
+    ...searchPairs.map((pair) => pair.baseToken.address)
+  ])].slice(0, 220);
 
   const tokens = [];
   for (const mint of unique) {
@@ -206,7 +240,13 @@ async function tokenUniverse() {
     const liquidityUsd = pair.liquidity?.usd || 0;
     const fdv = pair.fdv || pair.marketCap || 0;
     const change24 = pair.priceChange?.h24 ?? 0;
-    if (volume24 < 7000 || buys24 < 50 || liquidityUsd < 1500) continue;
+    const sourceWeight =
+      (localEventMints.includes(mint) ? 2 : 0) +
+      ((localDiscover.rows || []).some((row) => row.mint === mint) ? 2 : 0) +
+      (searchPairs.some((pair) => pair.baseToken?.address === mint) ? 1 : 0);
+    if (volume24 < 3500 && sourceWeight < 2) continue;
+    if (buys24 < 20 && sourceWeight < 2) continue;
+    if (liquidityUsd < 900 && sourceWeight < 2) continue;
     tokens.push({
       mint,
       pairAddress: pair.pairAddress,
@@ -217,7 +257,8 @@ async function tokenUniverse() {
       liquidityUsd,
       fdv,
       change24,
-      url: pair.url
+      url: pair.url,
+      sourceWeight
     });
     if (tokens.length >= MAX_TOKENS) break;
     await sleep(70);

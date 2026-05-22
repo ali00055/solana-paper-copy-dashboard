@@ -3896,10 +3896,10 @@ async function runFreeAlphaScan() {
   const startedAt = new Date().toISOString();
   const env = {
     ...process.env,
-    ALPHA_MAX_TOKENS: process.env.ALPHA_MAX_TOKENS || "6",
-    ALPHA_SIGS_PER_PAIR: process.env.ALPHA_SIGS_PER_PAIR || "22",
-    ALPHA_TX_SAMPLE_PER_WALLET: process.env.ALPHA_TX_SAMPLE_PER_WALLET || "28",
-    ALPHA_MAX_PROFILED_WALLETS: process.env.ALPHA_MAX_PROFILED_WALLETS || "8"
+    ALPHA_MAX_TOKENS: process.env.ALPHA_MAX_TOKENS || "16",
+    ALPHA_SIGS_PER_PAIR: process.env.ALPHA_SIGS_PER_PAIR || "38",
+    ALPHA_TX_SAMPLE_PER_WALLET: process.env.ALPHA_TX_SAMPLE_PER_WALLET || "70",
+    ALPHA_MAX_PROFILED_WALLETS: process.env.ALPHA_MAX_PROFILED_WALLETS || "20"
   };
   freeAlphaScanInFlight = execFileAsync(process.execPath, ["free-alpha-radar.mjs"], {
     env,
@@ -4131,9 +4131,10 @@ async function apiWalletHunter(force = false) {
       insider: current?.hunter?.insiderLikeWallets?.length || 0
     },
     sourceNotes: [
-      "Token evreni DexScreener profile/boost akisiyle baslar.",
-      "Pair imzalarindan erken alicilar cikarilir; tekrar eden ilk alicilar aday olur.",
-      "Aday cuzdanlarda son tx ornegiyle PnL/WR/maxX/noise yaklasik hesaplanir.",
+      "Token evreni DexScreener profile/boost/top boost/CTO/ads + trend search + bizim paper event hafizasindan baslar.",
+      "Pair imzalarindan erken alicilar cikarilir; tekrar eden ilk alicilar ve anlamli SOL harcayanlar aday olur.",
+      "Aday cuzdanlarda daha genis tx ornegiyle PnL/WR/maxX/noise/buy-size yaklasik hesaplanir.",
+      "Cielo aktifse ilk adaylar Cielo PnL/WR ile ikinci kez dogrulanir.",
       "GMGN'deki Smart/Sniper/Insider mantigi birebir etiket iddiasi degil; zincir-ustu davranis skoru olarak uygulanir."
     ]
   };
