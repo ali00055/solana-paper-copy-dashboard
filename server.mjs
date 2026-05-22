@@ -2919,6 +2919,12 @@ async function fetchDexPairsForMints(mints) {
     const data = await fetchJsonLoose(`https://api.dexscreener.com/tokens/v1/solana/${chunk.map(encodeURIComponent).join(",")}`, []);
     if (Array.isArray(data)) pairs.push(...data);
   }
+  const found = new Set(pairs.map((pair) => pair?.baseToken?.address).filter(Boolean));
+  const missing = mints.filter((mint) => mint && !found.has(mint)).slice(0, 20);
+  for (const mint of missing) {
+    const data = await fetchJsonLoose(`https://api.dexscreener.com/latest/dex/tokens/${encodeURIComponent(mint)}`, { pairs: [] });
+    if (Array.isArray(data?.pairs)) pairs.push(...data.pairs.filter((pair) => pair?.chainId === "solana"));
+  }
   return pairs;
 }
 
@@ -3003,6 +3009,8 @@ async function apiOracleDiscover(force = false) {
         liquidityUsd,
         fdv: pair.fdv ?? pair.marketCap ?? null,
         volume24,
+        volume24hUsd: volume24,
+        marketCapUsd: pair.marketCap ?? pair.fdv ?? null,
         tx5: Number(pair.txns?.m5?.buys || 0) + Number(pair.txns?.m5?.sells || 0),
         tx1h: Number(pair.txns?.h1?.buys || 0) + Number(pair.txns?.h1?.sells || 0),
         buys24: pair.txns?.h24?.buys || 0,
