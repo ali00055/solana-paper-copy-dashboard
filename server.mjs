@@ -6344,6 +6344,8 @@ function controlPageHtml() {
     .field-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
     label { display:grid; gap:6px; color:var(--muted); font-size:12px; }
     input, select, textarea { width:100%; padding:9px 10px; font-size:14px; }
+    #walletRows input, #walletRows select { min-width:118px; width:100%; min-height:46px; font-size:16px; line-height:1.25; padding:10px 12px; }
+    #walletRows input[data-field="tradeTry"], #walletRows input[data-field="score"] { min-width:136px; text-align:right; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:17px; }
     textarea { min-height:72px; resize:vertical; }
     table { width:100%; border-collapse:collapse; font-size:13px; }
     th, td { text-align:left; padding:10px 12px; border-bottom:1px solid rgba(38,50,65,.7); vertical-align:top; }
@@ -6351,6 +6353,7 @@ function controlPageHtml() {
     tr:last-child td { border-bottom:0; }
     .table-scroll { width:100%; overflow-x:auto; }
     .table-scroll table { min-width:980px; }
+    #walletRows { font-size:14px; }
     .tag { display:inline-flex; border:1px solid var(--line); border-radius:6px; padding:3px 7px; color:var(--muted); background:var(--panel2); font-size:12px; }
     .tag.copy { color:var(--blue); border-color:rgba(107,183,255,.45); }
     .tag.alert { color:var(--warn); border-color:rgba(242,193,78,.45); }
@@ -6379,6 +6382,8 @@ function controlPageHtml() {
       input, select, textarea { font-size:16px; min-height:44px; }
       .table-scroll { border-radius:8px; -webkit-overflow-scrolling:touch; }
       .table-scroll table { min-width:620px; }
+      #walletRows input, #walletRows select { min-width:132px; min-height:50px; font-size:17px; }
+      #walletRows input[data-field="tradeTry"], #walletRows input[data-field="score"] { min-width:148px; font-size:18px; }
       th,td { padding:10px; font-size:13px; }
       th,.mono,.tag { font-size:12px; }
     }
