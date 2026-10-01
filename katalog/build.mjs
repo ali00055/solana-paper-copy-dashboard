@@ -17,7 +17,7 @@ const CATS = [
   ['spinner', 'Spinner\'lar', 'SP', '#2a9d8f', 'Jiroskop halkalı, dişli ve rulmanlı dakikalarca dönen spinner\'lar.'],
   ['ball', 'Spinner Ball & Twist Toplar', 'SB', '#3a86ff', 'Elde dönen, burulan, küre içinde küre fidget toplar.'],
   ['kup', 'Sonsuzluk Küpleri', 'SK', '#8e44ad', 'Sonsuza kadar katlanıp açılan küpler ve anahtarlık versiyonları.'],
-  ['cakmak', 'Çakmak Kılıfları', 'CK', '#c0392b', 'Ejderha, yılan, kurukafa, uzaylı gibi figürlü; gül, petek ve isimli desenli; anahtarlıklı çakmak kılıfları.'],
+  ['cakmak', 'Clipper Kılıfları & Standlar', 'CK', '#c0392b', 'Figürlü Clipper çakmak kılıfları ve koleksiyon standları.'],
 ];
 
 const fmtK = n => n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace('.', ',') + 'B' : String(n);
@@ -39,7 +39,7 @@ pages.push(`<section class="page cover">
   <div class="brand">${BRAND}</div><div class="yr">KATALOG ${YEAR}</div>
   <div class="inner">
     <h1>Fidget &amp; Hediyelik<br><em>Ürün Kataloğu</em></h1>
-    <p>Anahtarlıklar · Zıplaçlar · Spinner'lar · Spinner Ball · Sonsuzluk Küpleri · Çakmak Kılıfları</p>
+    <p>Anahtarlıklar · Zıplaçlar · Spinner'lar · Spinner Ball · Sonsuzluk Küpleri · Clipper Kılıfları</p>
     <div class="count"><b>${models.length}</b> model &nbsp;·&nbsp; <b>${CATS.length}</b> kategori &nbsp;·&nbsp; istediğiniz renkte</div>
   </div>
 </section>`);
