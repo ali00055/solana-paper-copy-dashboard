@@ -2,399 +2,549 @@
 @page { size: A4; margin: 0 }
 * { box-sizing: border-box; margin: 0; padding: 0 }
 body { font-family: 'DejaVu Sans', sans-serif; color: #1f2a44; -webkit-print-color-adjust: exact; print-color-adjust: exact }
-.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 16mm 15mm 18mm; background: #fbf8f3 }
-.pf { position: absolute; bottom: 8mm; left: 15mm; right: 15mm; display: flex; justify-content: space-between; font-size: 8pt; color: #8a8f99; border-top: 1px solid #e6e1d8; padding-top: 3mm }
-/* kapak */
-.cover { background: #1f2a44; color: #fff; padding: 0 }
-.cover .blob { position: absolute; border-radius: 50% }
-.cover .inner { position: absolute; left: 18mm; right: 18mm; bottom: 30mm }
-.cover .brand { position: absolute; top: 18mm; left: 18mm; font-size: 13pt; letter-spacing: 3px; font-weight: 700 }
-.cover .yr { position: absolute; top: 18mm; right: 18mm; font-size: 11pt; opacity: .7 }
-.cover h1 { font-size: 46pt; line-height: 1.02; letter-spacing: -1px }
-.cover h1 em { font-style: normal; color: #f6c343 }
-.cover p { font-size: 13pt; opacity: .85; margin-top: 6mm; max-width: 140mm; line-height: 1.5 }
-.cover .chips { margin-top: 8mm; display: flex; gap: 3mm; flex-wrap: wrap }
-.cover .chips span { border: 1.5px solid #ffffff55; border-radius: 30px; padding: 2mm 5mm; font-size: 10pt }
-.cover .arts { position: absolute; top: 40mm; left: 0; right: 0; height: 130mm }
-.cover .arts svg { position: absolute; width: 70mm }
-/* iç sayfa */
-h2 { font-size: 26pt; letter-spacing: -.5px }
-.kicker { font-size: 9pt; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase }
-.lead { font-size: 11pt; line-height: 1.55; color: #4a5468; margin: 3mm 0 7mm; max-width: 165mm }
-.bar { width: 18mm; height: 2.2mm; border-radius: 2mm; margin-bottom: 4mm }
-.card { display: flex; gap: 7mm; background: #fff; border-radius: 5mm; padding: 6mm; margin-bottom: 6mm; box-shadow: 0 1px 0 #e6e1d8, 0 6px 18px #1f2a440d }
-.art { flex: 0 0 72mm; height: 92mm; border-radius: 4mm; background: color-mix(in srgb, var(--a) 14%, #fff); position: relative; display: flex; align-items: center; justify-content: center }
-.art svg { width: 64mm; height: 50mm }
-.art .ph { position: absolute; bottom: 3mm; left: 3mm; right: 3mm; text-align: center; font-size: 6.5pt; color: #8a8f99 }
-.tag { position: absolute; top: 3mm; left: 3mm; background: #1f2a44; color: #fff; font-size: 7pt; font-weight: 700; letter-spacing: 1px; padding: 1.2mm 2.5mm; border-radius: 2mm }
-.body { flex: 1; display: flex; flex-direction: column }
-.code { font-size: 8pt; color: #8a8f99; font-weight: 700; letter-spacing: 1.5px }
-h3 { font-size: 16pt; margin: 1mm 0 2.5mm }
-.body p { font-size: 9.5pt; line-height: 1.5; color: #4a5468 }
-table { width: 100%; border-collapse: collapse; margin: 4mm 0; font-size: 8.8pt }
-th { text-align: left; color: #8a8f99; font-weight: 400; width: 38%; padding: 1.4mm 0; border-bottom: 1px solid #f0ebe3 }
-td { font-weight: 700; padding: 1.4mm 0; border-bottom: 1px solid #f0ebe3 }
-.foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end }
-.foot small { display: block; font-size: 7.5pt; color: #8a8f99; margin-bottom: 1.5mm }
-.sw { display: inline-block; width: 5mm; height: 5mm; border-radius: 50%; margin-right: 1.3mm; border: 1px solid #0002 }
-.price { text-align: right } .price b { font-size: 13pt }
-/* içindekiler / bilgi */
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm }
-.tile { background: #fff; border-radius: 4mm; padding: 6mm; box-shadow: 0 1px 0 #e6e1d8 }
-.tile h4 { font-size: 12pt; margin-bottom: 2mm } .tile p { font-size: 9.5pt; line-height: 1.5; color: #4a5468 }
-.toc a { display: flex; align-items: center; gap: 4mm; padding: 4.2mm 0; border-bottom: 1px solid #e6e1d8; color: inherit; text-decoration: none; font-size: 13pt; font-weight: 700 }
+.page { width: 210mm; height: 297mm; position: relative; overflow: hidden; page-break-after: always; padding: 14mm 13mm 16mm; background: #fbf8f3 }
+.pf { position: absolute; bottom: 7mm; left: 13mm; right: 13mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: #8a8f99; border-top: 1px solid #e6e1d8; padding-top: 2.5mm }
+.cover { padding: 0; background: #111 }
+.collage { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr) }
+.collage img { width: 100%; height: 100%; object-fit: cover }
+.shade { position: absolute; inset: 0; background: linear-gradient(180deg, #11182788 0%, #11182722 35%, #111827ee 70%, #111827 100%) }
+.cover .brand { position: absolute; top: 16mm; left: 16mm; color: #fff; font-size: 13pt; letter-spacing: 3px; font-weight: 700 }
+.cover .yr { position: absolute; top: 16mm; right: 16mm; color: #fff; font-size: 11pt; opacity: .85 }
+.cover .inner { position: absolute; left: 16mm; right: 16mm; bottom: 22mm; color: #fff }
+.cover h1 { font-size: 44pt; line-height: 1.05; letter-spacing: -1px } .cover h1 em { font-style: normal; color: #f6c343 }
+.cover p { font-size: 12pt; margin-top: 5mm; opacity: .9 }
+.cover .count { margin-top: 6mm; display: inline-block; background: #ff6b4a; padding: 2.5mm 5mm; border-radius: 30px; font-size: 10.5pt }
+h2 { font-size: 24pt; letter-spacing: -.5px }
+.kicker { font-size: 8.5pt; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase }
+.lead { font-size: 10pt; line-height: 1.5; color: #4a5468; margin-top: 2mm }
+.head { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--c); padding-bottom: 3mm; margin-bottom: 5mm }
+.head .num { font-size: 34pt; font-weight: 700; line-height: 1; text-align: right } .head .num small { display: block; font-size: 8pt; letter-spacing: 2px; text-transform: uppercase }
+.subhead { font-size: 13pt; font-weight: 700; margin-bottom: 5mm } .subhead span { color: #8a8f99; font-weight: 400 }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4.5mm }
+.card { background: #fff; border-radius: 3.5mm; overflow: hidden; box-shadow: 0 1px 0 #e6e1d8, 0 4px 12px #1f2a440d; break-inside: avoid }
+.ph { position: relative; aspect-ratio: 16 / 10; background: #eee }
+.ph img { width: 100%; height: 100%; object-fit: cover; display: block }
+.hot { position: absolute; top: 2mm; left: 2mm; color: #fff; font-size: 6.5pt; font-weight: 700; letter-spacing: 1px; padding: 1mm 2.2mm; border-radius: 1.5mm }
+.meta { padding: 2.6mm 3mm 3.2mm }
+.code { font-size: 7.5pt; font-weight: 700; letter-spacing: 1.5px }
+.card h3 { font-size: 9.5pt; margin-top: .8mm; line-height: 1.25; height: 2.5em; overflow: hidden }
+.toc div { display: flex; align-items: center; gap: 4mm; padding: 4.6mm 0; border-bottom: 1px solid #e6e1d8; font-size: 13pt; font-weight: 700 }
 .toc .dot { width: 4mm; height: 4mm; border-radius: 50% } .toc .n { margin-left: auto; color: #8a8f99; font-weight: 400; font-size: 10pt }
-.pl { width: 100%; font-size: 9.5pt; margin-top: 4mm }
-.pl th, .pl td { padding: 2.6mm 2mm; border-bottom: 1px solid #e6e1d8 } .pl thead th { color: #1f2a44; font-weight: 700; border-bottom: 2px solid #1f2a44 }
-.pl td.r, .pl th.r { text-align: right; width: 26mm; white-space: nowrap } .pl td:first-child { width: 18mm; white-space: nowrap }
-.steps { counter-reset: s; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; margin-top: 5mm }
-.steps div { background: #fff; border-radius: 4mm; padding: 5mm; font-size: 9pt; line-height: 1.45; color: #4a5468 }
-.steps div::before { counter-increment: s; content: counter(s); display: block; font-size: 20pt; font-weight: 700; color: #ff6b4a; margin-bottom: 1mm }
-.steps b { color: #1f2a44; display: block; margin-bottom: 1mm }
+.note { margin-top: 12mm; background: #fff; border-radius: 4mm; padding: 6mm; font-size: 10pt; line-height: 1.55; color: #4a5468 }
 .back { background: #ff6b4a; color: #fff }
-.back h2 { font-size: 34pt; line-height: 1.1 } .back .ct { margin-top: 12mm; font-size: 13pt; line-height: 2.1 }
-.back .ct b { display: inline-block; width: 62mm; opacity: .8; font-weight: 400 }
+.back .ct { margin-top: 12mm; font-size: 13pt; line-height: 2.1 } .back .ct b { display: inline-block; width: 62mm; opacity: .8; font-weight: 400 }
 </style></head><body><section class="page cover">
-  <div class="blob" style="width:160mm;height:160mm;background:#ff6b4a;opacity:.18;right:-50mm;top:-40mm"></div>
-  <div class="blob" style="width:120mm;height:120mm;background:#3aa6a0;opacity:.18;left:-40mm;top:110mm"></div>
+  <div class="collage"><img src="img/707208.jpg"><img src="img/2115391.jpg"><img src="img/831088.jpg"><img src="img/2856174.jpg"><img src="img/2459711.jpg"><img src="img/1084160.jpg"><img src="img/1122800.jpg"><img src="img/2661039.jpg"><img src="img/568279.jpg"></div>
+  <div class="shade"></div>
   <div class="brand">MARKA ADINIZ</div><div class="yr">KATALOG 2026</div>
-  <div class="arts"><svg style="left:8mm;top:0;transform:rotate(-8deg)" viewBox="0 0 220 160"><polygon points="110,10 136.1,25 110,40 83.9,25" fill="#7b5cff"/>
-        <polygon points="83.9,55 110,70 110,40 83.9,25" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="136.1,55 110,70 110,40 136.1,25" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="136.1,25 162.2,40 136.1,55 110,40" fill="#f6c343"/>
-        <polygon points="110,70 136.1,85 136.1,55 110,40" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="162.2,70 136.1,85 136.1,55 162.2,40" fill="#f6c343" style="filter:brightness(.65)"/><polygon points="83.9,25 110,40 83.9,55 57.8,40" fill="#f6c343"/>
-        <polygon points="57.8,70 83.9,85 83.9,55 57.8,40" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="110,70 83.9,85 83.9,55 110,40" fill="#f6c343" style="filter:brightness(.65)"/><polygon points="110,-20 136.1,-5 110,10 83.9,-5" fill="#f6c343"/>
-        <polygon points="83.9,25 110,40 110,10 83.9,-5" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="136.1,25 110,40 110,10 136.1,-5" fill="#f6c343" style="filter:brightness(.65)"/><polygon points="110,40 136.1,55 110,70 83.9,55" fill="#7b5cff"/>
-        <polygon points="83.9,85 110,100 110,70 83.9,55" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="136.1,85 110,100 110,70 136.1,55" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="136.1,-5 162.2,10 136.1,25 110,10" fill="#7b5cff"/>
-        <polygon points="110,40 136.1,55 136.1,25 110,10" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="162.2,40 136.1,55 136.1,25 162.2,10" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="83.9,-5 110,10 83.9,25 57.8,10" fill="#7b5cff"/>
-        <polygon points="57.8,40 83.9,55 83.9,25 57.8,10" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="110,40 83.9,55 83.9,25 110,10" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="110,10 136.1,25 110,40 83.9,25" fill="#f6c343"/>
-        <polygon points="83.9,55 110,70 110,40 83.9,25" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="136.1,55 110,70 110,40 136.1,25" fill="#f6c343" style="filter:brightness(.65)"/></svg><svg style="right:10mm;top:6mm" viewBox="0 0 220 160"><circle cx="110" cy="80" r="62" fill="#3aa6a0" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="50" fill="#f6c343" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="38" fill="#3aa6a0" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="26" fill="#f6c343" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="14" fill="#ffffff" stroke="#0003" stroke-width="2"/>
-      <path d="M30 40 a80 80 0 0 1 40 -25 M190 120 a80 80 0 0 1 -40 25" stroke="#bbb" stroke-width="3" fill="none"/>
-    </svg><svg style="left:62mm;top:46mm;width:86mm" viewBox="0 0 220 160">
-      <path d="M140 70 L120 30 L150 55 Z M150 66 L175 28 L168 62 Z" fill="#f6c343" opacity=".85"/>
-      <ellipse cx="150" cy="85" rx="15" ry="12" fill="#f6c343" stroke="#0002" stroke-width="1.5"/><ellipse cx="137" cy="95.53175091292832" rx="13.9" ry="11.120000000000001" fill="#ff6b4a" stroke="#0002" stroke-width="1.5"/><ellipse cx="124" cy="102.08172314840056" rx="12.8" ry="10.240000000000002" fill="#f6c343" stroke="#0002" stroke-width="1.5"/><ellipse cx="111" cy="102.1735440689745" rx="11.7" ry="9.36" fill="#ff6b4a" stroke="#0002" stroke-width="1.5"/><ellipse cx="98" cy="95.77249859387122" rx="10.6" ry="8.48" fill="#f6c343" stroke="#0002" stroke-width="1.5"/><ellipse cx="85" cy="85.29865406012826" rx="9.5" ry="7.6000000000000005" fill="#ff6b4a" stroke="#0002" stroke-width="1.5"/><ellipse cx="72" cy="74.71189626263781" rx="8.399999999999999" ry="6.719999999999999" fill="#f6c343" stroke="#0002" stroke-width="1.5"/><ellipse cx="59" cy="68.01480053858268" rx="7.299999999999999" ry="5.84" fill="#ff6b4a" stroke="#0002" stroke-width="1.5"/><ellipse cx="46" cy="67.73936305606351" rx="6.199999999999999" ry="4.96" fill="#f6c343" stroke="#0002" stroke-width="1.5"/>
-      <ellipse cx="172" cy="72" rx="24" ry="17" fill="#ff6b4a" stroke="#0002" stroke-width="1.5"/>
-      <path d="M160 58 l-6 -14 l12 10 Z M176 56 l2 -15 l6 13 Z" fill="#f6c343"/>
-      <circle cx="180" cy="68" r="4.5" fill="#fff"/><circle cx="181" cy="68" r="2.2" fill="#222"/>
-      <circle cx="32" cy="120" r="10" fill="none" stroke="#9aa3ad" stroke-width="4"/>
-    </svg><svg style="left:4mm;top:78mm;transform:rotate(10deg)" viewBox="0 0 220 160">
-      <path d="M60 30 q10 -18 20 0 M140 22 q10 -18 20 0" stroke="#bbb" stroke-width="3" fill="none"/>
-      <polygon points="110,22 170.86761704288983,66.22291236000336 147.6182561467183,137.77708763999664 72.38174385328173,137.77708763999664 49.13238295711017,66.22291236000338" fill="#d94f8a"/>
-      <polygon points="110,38 155.65071278216737,71.16718427000252 138.21369211003872,124.83281572999748 81.7863078899613,124.83281572999748 64.34928721783263,71.16718427000254" fill="#f6c343"/>
-      <polygon points="110,56 138.5316954888546,76.72949016875158 127.6335575687742,110.27050983124843 92.3664424312258,110.27050983124843 81.46830451114539,76.72949016875158" fill="#d94f8a"/>
-      <circle cx="110" cy="86" r="10" fill="#fff" opacity=".9"/>
-      <path d="M40 145 h140" stroke="#0001" stroke-width="8" stroke-linecap="round"/>
-    </svg>
-  <svg style="right:4mm;top:70mm;width:56mm;transform:rotate(12deg)" viewBox="0 0 220 160">
-    <rect x="86" y="10" width="48" height="26" rx="5" fill="#c8ccd1"/>
-    <rect x="96" y="4" width="28" height="12" rx="3" fill="#888"/>
-    <rect x="76" y="30" width="68" height="124" rx="16" fill="#3aa6a0"/>
-    <g transform="translate(110 92)"><circle r="20" fill="#f6c343"/><path d="M-10 -4 q10 -14 20 0 q-10 14 -20 0 M-14 6 q14 10 28 0" stroke="#0004" stroke-width="2.5" fill="none"/>
-         <path d="M0 20 v26 M0 34 q-12 -6 -16 4 M0 30 q12 -6 16 4" stroke="#2f8f5b" stroke-width="3.5" fill="none"/></g>
-  </svg></div>
   <div class="inner">
-    <h1>Elde dönen,<br>cepte taşınan,<br><em>akılda kalan.</em></h1>
-    <p>3D Baskı Hediyelik & Fidget Koleksiyonu. Anahtarlıklar, zıplaçlar, spinner'lar, sonsuzluk küpleri ve çakmak kılıfları — yüksek kaliteli 3D baskıyla, istediğiniz renkte.</p>
-    <div class="chips"><span>Anahtarlıklar</span><span>Zıplaç & Klik Oyuncaklar</span><span>Spinner & Spinner Ball</span><span>Sonsuzluk Küpü</span><span>Çakmak Kılıfları</span></div>
+    <h1>Fidget &amp; Hediyelik<br><em>Ürün Kataloğu</em></h1>
+    <p>Anahtarlıklar · Zıplaçlar · Spinner'lar · Spinner Ball · Sonsuzluk Küpleri · Çakmak Kılıfları</p>
+    <div class="count"><b>111</b> model &nbsp;·&nbsp; <b>8</b> kategori &nbsp;·&nbsp; istediğiniz renkte</div>
   </div>
 </section><section class="page">
-  <div class="kicker" style="color:#ff6b4a">Hoş geldiniz</div>
-  <h2 style="margin:2mm 0 6mm">Koleksiyon</h2>
-  <div class="toc"><a><span class="dot" style="background:#ff6b4a"></span>Anahtarlıklar<span class="n">AN-01 · AN-02 — s. 3</span></a><a><span class="dot" style="background:#f6c343"></span>Zıplaç & Klik Oyuncaklar<span class="n">ZP-01 · ZP-02 — s. 4</span></a><a><span class="dot" style="background:#3aa6a0"></span>Spinner & Spinner Ball<span class="n">SP-01 · SP-02 — s. 5</span></a><a><span class="dot" style="background:#7b5cff"></span>Sonsuzluk Küpü<span class="n">KP-01 · KP-02 — s. 6</span></a><a><span class="dot" style="background:#d94f8a"></span>Çakmak Kılıfları<span class="n">CK-01 · CK-02 — s. 7</span></a>
-    <a><span class="dot" style="background:#1f2a44"></span>Fiyat Listesi & Sipariş<span class="n">s. 8</span></a></div>
-  <h2 style="margin:14mm 0 6mm;font-size:18pt">Neden bizim ürünlerimiz?</h2>
-  <div class="grid">
-    <div class="tile"><h4>Montajsız, tek parça</h4><p>Ürünlerin çoğu tek parça basılır; kırılacak yapıştırma ya da vida yoktur.</p></div>
-    <div class="tile"><h4>İstediğiniz renk</h4><p>Geniş filament paletiyle tek, çift veya gökkuşağı renkli üretim.</p></div>
-    <div class="tile"><h4>Kişiye & firmaya özel</h4><p>İsim, logo, tarih ekleyerek hediyelik, düğün, okul ve kurumsal promosyon.</p></div>
-    <div class="tile"><h4>Toptan & perakende</h4><p>Tekli siparişten mağaza/kantin toplu alımına kadar esnek adetler.</p></div>
-  </div>
-  <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>2</span></div>
+  <div class="kicker" style="color:#ff6b4a">İçindekiler</div>
+  <h2 style="margin:2mm 0 8mm">Koleksiyon</h2>
+  <div class="toc"><div><span class="dot" style="background:#ff6b4a"></span>İsimli Anahtarlıklar<span class="n">8 model · s. 3</span></div><div><span class="dot" style="background:#7b5cff"></span>Esnek Hayvan Anahtarlıkları<span class="n">18 model · s. 4</span></div><div><span class="dot" style="background:#f6a623"></span>Zıplaçlar & Pop Oyuncaklar<span class="n">12 model · s. 6</span></div><div><span class="dot" style="background:#e0457b"></span>Klik Anahtarlıklar<span class="n">16 model · s. 7</span></div><div><span class="dot" style="background:#2a9d8f"></span>Spinner'lar<span class="n">24 model · s. 9</span></div><div><span class="dot" style="background:#3a86ff"></span>Spinner Ball & Twist Toplar<span class="n">9 model · s. 11</span></div><div><span class="dot" style="background:#8e44ad"></span>Sonsuzluk Küpleri<span class="n">13 model · s. 12</span></div><div><span class="dot" style="background:#c0392b"></span>Çakmak Kılıfları<span class="n">11 model · s. 14</span></div></div>
+  <div class="note">Tüm ürünler 3D baskı ile üretilir ve istediğiniz renkte hazırlanabilir. Görseller örnek modellere aittir; sipariş öncesi numune gösterilir.</div>
+  <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>2</span></div>
 </section><section class="page">
-    <div class="bar" style="background:#ff6b4a"></div>
-    <div class="kicker" style="color:#ff6b4a">Kategori</div>
-    <h2>Anahtarlıklar</h2>
-    <p class="lead">En çok satan hediyelik ürün. Kişiye özel isim, logo veya yazı ile her siparişe özel üretilir.</p>
-    
+    <div class="head" style="--c:#ff6b4a"><div><div class="kicker" style="color:#ff6b4a">Kategori</div><h2>İsimli Anahtarlıklar</h2><p class="lead">Kişiye özel isim ve yazılı, tek ya da çok renkli anahtarlıklar.</p></div><div class="num" style="color:#ff6b4a">8<small>model</small></div></div>
+    <div class="grid">
   <div class="card">
-    <div class="art" style="--a:#ff6b4a"><span class="tag">ÇOK SATAN</span>
-  <svg viewBox="0 0 220 160"><g transform="rotate(-8 110 80)">
-    <circle cx="40" cy="80" r="18" fill="none" stroke="#9aa3ad" stroke-width="6"/>
-    <rect x="50" y="52" width="150" height="56" rx="28" fill="#1f2a44"/>
-    <rect x="58" y="60" width="134" height="40" rx="20" fill="#ff6b4a"/>
-    <circle cx="70" cy="80" r="7" fill="#fff"/>
-    <text x="135" y="91" font-family="DejaVu Sans" font-weight="700" font-size="28" fill="#fff" text-anchor="middle">ELİF</text>
-  </g></svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">AN-01</div>
-      <h3>İsimli Anahtarlık</h3>
-      <p>Çift renkli, istediğiniz isim veya kısa yazı ile kişiselleştirilir. Okul çantası, araba anahtarı, düğün/nişan hediyeliği için ideal.</p>
-      <table><tr><th>Boyut</th><td>~ 60 × 20 × 4 mm</td></tr><tr><th>Malzeme</th><td>PLA (çift renk)</td></tr><tr><th>Kişiselleştirme</th><td>İsim / yazı / tarih</td></tr><tr><th>Toplu sipariş</th><td>Etkinlik & kurumsal</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#ffffff"></span><span class="sw" style="background:#f6c343"></span><span class="sw" style="background:#3aa6a0"></span><span class="sw" style="background:#d94f8a"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/2115391.jpg"><span class="hot" style="background:#ff6b4a">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-01</span><h3>İsimli Anahtarlık – Hediyelik</h3></div>
   </div>
   <div class="card">
-    <div class="art" style="--a:#ff6b4a"><span class="tag">TREND</span><svg viewBox="0 0 220 160">
-      <path d="M140 70 L120 30 L150 55 Z M150 66 L175 28 L168 62 Z" fill="#3dd6c4" opacity=".85"/>
-      <ellipse cx="150" cy="85" rx="15" ry="12" fill="#3dd6c4" stroke="#0002" stroke-width="1.5"/><ellipse cx="137" cy="95.53175091292832" rx="13.9" ry="11.120000000000001" fill="#7b5cff" stroke="#0002" stroke-width="1.5"/><ellipse cx="124" cy="102.08172314840056" rx="12.8" ry="10.240000000000002" fill="#3dd6c4" stroke="#0002" stroke-width="1.5"/><ellipse cx="111" cy="102.1735440689745" rx="11.7" ry="9.36" fill="#7b5cff" stroke="#0002" stroke-width="1.5"/><ellipse cx="98" cy="95.77249859387122" rx="10.6" ry="8.48" fill="#3dd6c4" stroke="#0002" stroke-width="1.5"/><ellipse cx="85" cy="85.29865406012826" rx="9.5" ry="7.6000000000000005" fill="#7b5cff" stroke="#0002" stroke-width="1.5"/><ellipse cx="72" cy="74.71189626263781" rx="8.399999999999999" ry="6.719999999999999" fill="#3dd6c4" stroke="#0002" stroke-width="1.5"/><ellipse cx="59" cy="68.01480053858268" rx="7.299999999999999" ry="5.84" fill="#7b5cff" stroke="#0002" stroke-width="1.5"/><ellipse cx="46" cy="67.73936305606351" rx="6.199999999999999" ry="4.96" fill="#3dd6c4" stroke="#0002" stroke-width="1.5"/>
-      <ellipse cx="172" cy="72" rx="24" ry="17" fill="#7b5cff" stroke="#0002" stroke-width="1.5"/>
-      <path d="M160 58 l-6 -14 l12 10 Z M176 56 l2 -15 l6 13 Z" fill="#3dd6c4"/>
-      <circle cx="180" cy="68" r="4.5" fill="#fff"/><circle cx="181" cy="68" r="2.2" fill="#222"/>
-      <circle cx="32" cy="120" r="10" fill="none" stroke="#9aa3ad" stroke-width="4"/>
-    </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">AN-02</div>
-      <h3>Esnek Ejderha Anahtarlık</h3>
-      <p>Eklemli gövde tek parça basılır, montaj gerektirmez. Kıvrılır, oynar; çocukların ve gençlerin favorisi.</p>
-      <table><tr><th>Boyut</th><td>~ 80 – 120 mm</td></tr><tr><th>Malzeme</th><td>PLA / Silk PLA</td></tr><tr><th>Özellik</th><td>Tek parça, hareketli</td></tr><tr><th>Seçenek</th><td>Mini / Standart</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#7b5cff"></span><span class="sw" style="background:#3dd6c4"></span><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#f6c343"></span><span class="sw" style="background:#2b2b2b"></span><span class="sw" style="background:linear-gradient(90deg,#ff6b4a,#f6c343,#3dd6c4,#7b5cff)"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/1122800.jpg"><span class="hot" style="background:#ff6b4a">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-02</span><h3>Çok Renkli İsimli Anahtarlık</h3></div>
   </div>
-    <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>3</span></div>
+  <div class="card">
+    <div class="ph"><img src="img/1306053.jpg"><span class="hot" style="background:#ff6b4a">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-03</span><h3>Çerçeveli İsimli Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/476266.jpg"></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-04</span><h3>İsimli Anahtarlık – Klasik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/487582.jpg"></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-05</span><h3>İsim Etiketi Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2316355.jpg"></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-06</span><h3>Kalpli Fidget Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/465128.jpg"></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-07</span><h3>Kelebek Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/936812.jpg"></div>
+    <div class="meta"><span class="code" style="color:#ff6b4a">AN-08</span><h3>İsimlik Anahtarlık</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>3</span></div>
   </section><section class="page">
-    <div class="bar" style="background:#f6c343"></div>
-    <div class="kicker" style="color:#f6c343">Kategori</div>
-    <h2>Zıplaç & Klik Oyuncaklar</h2>
-    <p class="lead">Bastır, bırak, zıplasın! Sosyal medyada en çok paylaşılan "tatmin edici" fidget ürünleri.</p>
-    
+    <div class="head" style="--c:#7b5cff"><div><div class="kicker" style="color:#7b5cff">Kategori</div><h2>Esnek Hayvan Anahtarlıkları</h2><p class="lead">Kıvrılan, oynayan, eklemli sevimli hayvanlar — tek parça.</p></div><div class="num" style="color:#7b5cff">18<small>model</small></div></div>
+    <div class="grid">
   <div class="card">
-    <div class="art" style="--a:#f6c343"><span class="tag">YENİ</span><svg viewBox="0 0 220 160">
-      <path d="M60 30 q10 -18 20 0 M140 22 q10 -18 20 0" stroke="#bbb" stroke-width="3" fill="none"/>
-      <polygon points="110,22 170.86761704288983,66.22291236000336 147.6182561467183,137.77708763999664 72.38174385328173,137.77708763999664 49.13238295711017,66.22291236000338" fill="#ff6b4a"/>
-      <polygon points="110,38 155.65071278216737,71.16718427000252 138.21369211003872,124.83281572999748 81.7863078899613,124.83281572999748 64.34928721783263,71.16718427000254" fill="#f6c343"/>
-      <polygon points="110,56 138.5316954888546,76.72949016875158 127.6335575687742,110.27050983124843 92.3664424312258,110.27050983124843 81.46830451114539,76.72949016875158" fill="#ff6b4a"/>
-      <circle cx="110" cy="86" r="10" fill="#fff" opacity=".9"/>
-      <path d="M40 145 h140" stroke="#0001" stroke-width="8" stroke-linecap="round"/>
-    </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">ZP-01</div>
-      <h3>Zıplaç (Penta Jump)</h3>
-      <p>Düz bastırılıp bırakıldığında havaya zıplar. Lastik gerdirmeli mekanizma; lastik sayısıyla zıplama gücü ayarlanır.</p>
-      <table><tr><th>Boyut</th><td>~ 60 mm</td></tr><tr><th>Malzeme</th><td>PLA + lastik</td></tr><tr><th>Mekanizma</th><td>Lastik gerdirmeli</td></tr><tr><th>Yaş</th><td>6+</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#f6c343"></span><span class="sw" style="background:#3aa6a0"></span><span class="sw" style="background:#7b5cff"></span><span class="sw" style="background:#1f2a44"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/831088.jpg"><span class="hot" style="background:#7b5cff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-01</span><h3>Esnek Aksolotl</h3></div>
   </div>
   <div class="card">
-    <div class="art" style="--a:#f6c343">
-  <svg viewBox="0 0 220 160">
-    <rect x="50" y="98" width="120" height="34" rx="8" fill="#444"/>
-    <path d="M58 100 L72 40 H148 L162 100 Z" fill="#1f2a44"/>
-    <path d="M78 46 H142 L150 88 H70 Z" fill="#ff6b4a"/>
-    <text x="110" y="76" font-family="DejaVu Sans" font-weight="700" font-size="20" fill="#fff" text-anchor="middle">CLICK</text>
-    <circle cx="185" cy="115" r="10" fill="none" stroke="#9aa3ad" stroke-width="4"/>
-  </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">ZP-02</div>
-      <h3>Klik Tuş Anahtarlık</h3>
-      <p>Mekanik klavye tuşu hissi veren tıklama sesi. Anahtarlık halkasıyla cepte taşınır; stres atmak için birebir.</p>
-      <table><tr><th>Boyut</th><td>~ 30 × 30 × 25 mm</td></tr><tr><th>Malzeme</th><td>PLA + mekanik switch</td></tr><tr><th>Ses</th><td>Net tık sesi</td></tr><tr><th>Kişiselleştirme</th><td>Tuş üzerine harf</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#ffffff"></span><span class="sw" style="background:#3aa6a0"></span><span class="sw" style="background:#d94f8a"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/2459711.jpg"><span class="hot" style="background:#7b5cff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-02</span><h3>Pofuduk Kuyruklu Kedi</h3></div>
   </div>
-    <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>4</span></div>
+  <div class="card">
+    <div class="ph"><img src="img/552097.jpg"><span class="hot" style="background:#7b5cff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-03</span><h3>Sevimli Tilki</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/578046.jpg"><span class="hot" style="background:#7b5cff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-04</span><h3>Sevimli Domuzcuk</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/738687.jpg"><span class="hot" style="background:#7b5cff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-05</span><h3>Aksolotl Ailesi</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/552113.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-06</span><h3>Sevimli Su Aygırı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2583729.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-07</span><h3>Esnek Kedi Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2620180.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-08</span><h3>Pofuduk Kuyruklu Sincap</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/198872.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-09</span><h3>Eklemli Aksolotl</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>4</span></div>
   </section><section class="page">
-    <div class="bar" style="background:#3aa6a0"></div>
-    <div class="kicker" style="color:#3aa6a0">Kategori</div>
-    <h2>Spinner & Spinner Ball</h2>
-    <p class="lead">Parmak ucunda dakikalarca dönen jiroskopik halkalar ve küre içinde küre tasarımlar.</p>
-    
+    <div class="subhead" style="color:#7b5cff">Esnek Hayvan Anahtarlıkları <span>— devam</span></div>
+    <div class="grid">
   <div class="card">
-    <div class="art" style="--a:#3aa6a0"><span class="tag">ÇOK SATAN</span><svg viewBox="0 0 220 160"><circle cx="110" cy="80" r="62" fill="#3aa6a0" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="50" fill="#1f2a44" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="38" fill="#3aa6a0" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="26" fill="#1f2a44" stroke="#0003" stroke-width="2"/><circle cx="110" cy="80" r="14" fill="#ffffff" stroke="#0003" stroke-width="2"/>
-      <path d="M30 40 a80 80 0 0 1 40 -25 M190 120 a80 80 0 0 1 -40 25" stroke="#bbb" stroke-width="3" fill="none"/>
-    </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">SP-01</div>
-      <h3>Jiroskop Spinner</h3>
-      <p>İç içe geçmiş halkalar birbirinden bağımsız döner. Tek parça basılır, rulman veya montaj gerekmez.</p>
-      <table><tr><th>Çap</th><td>~ 46 – 60 mm</td></tr><tr><th>Malzeme</th><td>PLA / Silk PLA</td></tr><tr><th>Halka sayısı</th><td>4 – 5</td></tr><tr><th>Özellik</th><td>Tek parça, montajsız</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#3aa6a0"></span><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#f6c343"></span><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:linear-gradient(90deg,#c0c0c0,#f6c343)"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/2800984.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-10</span><h3>Kaniş Köpek Anahtarlık</h3></div>
   </div>
   <div class="card">
-    <div class="art" style="--a:#3aa6a0">
-  <svg viewBox="0 0 220 160"><defs>
-    <radialGradient id="g1f2a44" cx=".35" cy=".35" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
-    <circle cx="110" cy="80" r="64" fill="#1f2a44"/>
-    <ellipse cx="110" cy="80" rx="64" ry="20" fill="none" stroke="#0003" stroke-width="3"/>
-    <ellipse cx="110" cy="80" rx="22" ry="64" fill="none" stroke="#0003" stroke-width="3"/>
-    <circle cx="86" cy="58" r="16" fill="#3dd6c4"/><circle cx="136" cy="104" r="16" fill="#3dd6c4"/>
-    <circle cx="136" cy="56" r="11" fill="#3dd6c4"/><circle cx="84" cy="106" r="11" fill="#3dd6c4"/>
-    <circle cx="110" cy="80" r="64" fill="url(#g1f2a44)"/>
-  </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">SP-02</div>
-      <h3>Spinner Ball (Küre içinde Küre)</h3>
-      <p>Pencereli dış kürenin içinde serbestçe dönen ikinci bir küre. Masa üstü süs ve fidget olarak iki işlevli.</p>
-      <table><tr><th>Çap</th><td>~ 40 – 50 mm</td></tr><tr><th>Malzeme</th><td>PLA</td></tr><tr><th>Hareket</th><td>Serbest dönüş</td></tr><tr><th>Seçenek</th><td>Anahtarlık halkalı</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#3dd6c4"></span><span class="sw" style="background:#7b5cff"></span><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#ffffff"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/725496.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-11</span><h3>Esnek Ejderha Buddy</h3></div>
   </div>
-    <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>5</span></div>
+  <div class="card">
+    <div class="ph"><img src="img/444711.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-12</span><h3>Aksolotl Figür Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2181821.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-13</span><h3>Mini Sevimli Ejderha</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1222537.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-14</span><h3>Mini Sincap</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/954385.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-15</span><h3>Esnek Tilki Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1473250.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-16</span><h3>Aksolotl Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/454934.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-17</span><h3>Yavru Ejderha Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2746766.jpg"></div>
+    <div class="meta"><span class="code" style="color:#7b5cff">FL-18</span><h3>Esnek Lemur</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>5</span></div>
   </section><section class="page">
-    <div class="bar" style="background:#7b5cff"></div>
-    <div class="kicker" style="color:#7b5cff">Kategori</div>
-    <h2>Sonsuzluk Küpü</h2>
-    <p class="lead">Sonsuza kadar katlanıp açılan 8 küp. Ofis masalarının ve öğrencilerin vazgeçilmezi.</p>
-    
+    <div class="head" style="--c:#f6a623"><div><div class="kicker" style="color:#f6a623">Kategori</div><h2>Zıplaçlar & Pop Oyuncaklar</h2><p class="lead">Bastır, bırak, zıplasın! Masa üstünün en eğlenceli oyuncakları.</p></div><div class="num" style="color:#f6a623">12<small>model</small></div></div>
+    <div class="grid">
   <div class="card">
-    <div class="art" style="--a:#7b5cff"><span class="tag">ÇOK SATAN</span><svg viewBox="0 0 220 160"><polygon points="110,10 136.1,25 110,40 83.9,25" fill="#7b5cff"/>
-        <polygon points="83.9,55 110,70 110,40 83.9,25" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="136.1,55 110,70 110,40 136.1,25" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="136.1,25 162.2,40 136.1,55 110,40" fill="#f6c343"/>
-        <polygon points="110,70 136.1,85 136.1,55 110,40" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="162.2,70 136.1,85 136.1,55 162.2,40" fill="#f6c343" style="filter:brightness(.65)"/><polygon points="83.9,25 110,40 83.9,55 57.8,40" fill="#f6c343"/>
-        <polygon points="57.8,70 83.9,85 83.9,55 57.8,40" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="110,70 83.9,85 83.9,55 110,40" fill="#f6c343" style="filter:brightness(.65)"/><polygon points="110,-20 136.1,-5 110,10 83.9,-5" fill="#f6c343"/>
-        <polygon points="83.9,25 110,40 110,10 83.9,-5" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="136.1,25 110,40 110,10 136.1,-5" fill="#f6c343" style="filter:brightness(.65)"/><polygon points="110,40 136.1,55 110,70 83.9,55" fill="#7b5cff"/>
-        <polygon points="83.9,85 110,100 110,70 83.9,55" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="136.1,85 110,100 110,70 136.1,55" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="136.1,-5 162.2,10 136.1,25 110,10" fill="#7b5cff"/>
-        <polygon points="110,40 136.1,55 136.1,25 110,10" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="162.2,40 136.1,55 136.1,25 162.2,10" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="83.9,-5 110,10 83.9,25 57.8,10" fill="#7b5cff"/>
-        <polygon points="57.8,40 83.9,55 83.9,25 57.8,10" fill="#7b5cff" style="filter:brightness(.8)"/>
-        <polygon points="110,40 83.9,55 83.9,25 110,10" fill="#7b5cff" style="filter:brightness(.65)"/><polygon points="110,10 136.1,25 110,40 83.9,25" fill="#f6c343"/>
-        <polygon points="83.9,55 110,70 110,40 83.9,25" fill="#f6c343" style="filter:brightness(.8)"/>
-        <polygon points="136.1,55 110,70 110,40 136.1,25" fill="#f6c343" style="filter:brightness(.65)"/></svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">KP-01</div>
-      <h3>Sonsuzluk Küpü – Standart</h3>
-      <p>Tek parça basılan menteşeli tasarım; yapıştırma veya montaj yok. Pürüzsüz, sessiz hareket.</p>
-      <table><tr><th>Boyut</th><td>~ 40 × 40 × 40 mm</td></tr><tr><th>Malzeme</th><td>PLA</td></tr><tr><th>Ağırlık</th><td>~ 30 g</td></tr><tr><th>Özellik</th><td>Tek parça, montajsız</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#7b5cff"></span><span class="sw" style="background:#f6c343"></span><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#3aa6a0"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/2661039.jpg"><span class="hot" style="background:#f6a623">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-01</span><h3>Penta Klik – Lastikli</h3></div>
   </div>
   <div class="card">
-    <div class="art" style="--a:#7b5cff"><svg viewBox="0 0 220 160"><polygon points="110,10 136.1,25 110,40 83.9,25" fill="#ff6b4a"/>
-        <polygon points="83.9,55 110,70 110,40 83.9,25" fill="#ff6b4a" style="filter:brightness(.8)"/>
-        <polygon points="136.1,55 110,70 110,40 136.1,25" fill="#ff6b4a" style="filter:brightness(.65)"/><polygon points="136.1,25 162.2,40 136.1,55 110,40" fill="#1f2a44"/>
-        <polygon points="110,70 136.1,85 136.1,55 110,40" fill="#1f2a44" style="filter:brightness(.8)"/>
-        <polygon points="162.2,70 136.1,85 136.1,55 162.2,40" fill="#1f2a44" style="filter:brightness(.65)"/><polygon points="83.9,25 110,40 83.9,55 57.8,40" fill="#1f2a44"/>
-        <polygon points="57.8,70 83.9,85 83.9,55 57.8,40" fill="#1f2a44" style="filter:brightness(.8)"/>
-        <polygon points="110,70 83.9,85 83.9,55 110,40" fill="#1f2a44" style="filter:brightness(.65)"/><polygon points="110,-20 136.1,-5 110,10 83.9,-5" fill="#1f2a44"/>
-        <polygon points="83.9,25 110,40 110,10 83.9,-5" fill="#1f2a44" style="filter:brightness(.8)"/>
-        <polygon points="136.1,25 110,40 110,10 136.1,-5" fill="#1f2a44" style="filter:brightness(.65)"/><polygon points="110,40 136.1,55 110,70 83.9,55" fill="#ff6b4a"/>
-        <polygon points="83.9,85 110,100 110,70 83.9,55" fill="#ff6b4a" style="filter:brightness(.8)"/>
-        <polygon points="136.1,85 110,100 110,70 136.1,55" fill="#ff6b4a" style="filter:brightness(.65)"/><polygon points="136.1,-5 162.2,10 136.1,25 110,10" fill="#ff6b4a"/>
-        <polygon points="110,40 136.1,55 136.1,25 110,10" fill="#ff6b4a" style="filter:brightness(.8)"/>
-        <polygon points="162.2,40 136.1,55 136.1,25 162.2,10" fill="#ff6b4a" style="filter:brightness(.65)"/><polygon points="83.9,-5 110,10 83.9,25 57.8,10" fill="#ff6b4a"/>
-        <polygon points="57.8,40 83.9,55 83.9,25 57.8,10" fill="#ff6b4a" style="filter:brightness(.8)"/>
-        <polygon points="110,40 83.9,55 83.9,25 110,10" fill="#ff6b4a" style="filter:brightness(.65)"/><polygon points="110,10 136.1,25 110,40 83.9,25" fill="#1f2a44"/>
-        <polygon points="83.9,55 110,70 110,40 83.9,25" fill="#1f2a44" style="filter:brightness(.8)"/>
-        <polygon points="136.1,55 110,70 110,40 136.1,25" fill="#1f2a44" style="filter:brightness(.65)"/></svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">KP-02</div>
-      <h3>Mini Sonsuzluk Küpü Anahtarlık</h3>
-      <p>Cebe ve anahtarlığa sığan mini versiyon. İsterseniz koruyucu kılıflı anahtarlık olarak hazırlanır.</p>
-      <table><tr><th>Boyut</th><td>~ 25 × 25 × 25 mm</td></tr><tr><th>Malzeme</th><td>PLA</td></tr><tr><th>Ağırlık</th><td>~ 10 g</td></tr><tr><th>Seçenek</th><td>Kılıflı / kılıfsız</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#ff6b4a"></span><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#3aa6a0"></span><span class="sw" style="background:#d94f8a"></span><span class="sw" style="background:#ffffff"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/1031969.jpg"><span class="hot" style="background:#f6a623">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-02</span><h3>Zıplayan Kurbağa – Mini</h3></div>
   </div>
-    <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>6</span></div>
+  <div class="card">
+    <div class="ph"><img src="img/2363862.jpg"><span class="hot" style="background:#f6a623">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-03</span><h3>Pop Switch Zıplaç</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1363334.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-04</span><h3>Yaylı Çubuk Fidget</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/768931.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-05</span><h3>Zıplayan Kurbağa</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/3353063.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-06</span><h3>Penta Zıplaç</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/62857.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-07</span><h3>Masa Zıplatıcı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2629352.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-08</span><h3>Pop Switch – Pro</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/942497.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-09</span><h3>Patlayan Fidget</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/485045.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-10</span><h3>Kurbağa Zıplatma Oyunu</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1385602.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-11</span><h3>Tık-Tak Tahterevalli</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1556065.jpg"></div>
+    <div class="meta"><span class="code" style="color:#f6a623">ZP-12</span><h3>Yaylı Fırlatıcı</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>6</span></div>
   </section><section class="page">
-    <div class="bar" style="background:#d94f8a"></div>
-    <div class="kicker" style="color:#d94f8a">Kategori</div>
-    <h2>Çakmak Kılıfları</h2>
-    <p class="lead">Standart ve mini boy çakmaklara birebir oturan, korumalı ve şık kılıflar.</p>
-    
+    <div class="head" style="--c:#e0457b"><div><div class="kicker" style="color:#e0457b">Kategori</div><h2>Klik Anahtarlıklar</h2><p class="lead">Tık sesiyle stres atan, cepte taşınan klik fidget'lar.</p></div><div class="num" style="color:#e0457b">16<small>model</small></div></div>
+    <div class="grid">
   <div class="card">
-    <div class="art" style="--a:#d94f8a"><span class="tag">ÇOK SATAN</span>
-  <svg viewBox="0 0 220 160">
-    <rect x="86" y="10" width="48" height="26" rx="5" fill="#c8ccd1"/>
-    <rect x="96" y="4" width="28" height="12" rx="3" fill="#888"/>
-    <rect x="76" y="30" width="68" height="124" rx="16" fill="#1f2a44"/>
-    <g transform="translate(110 92)"><circle r="20" fill="#d94f8a"/><path d="M-10 -4 q10 -14 20 0 q-10 14 -20 0 M-14 6 q14 10 28 0" stroke="#0004" stroke-width="2.5" fill="none"/>
-         <path d="M0 20 v26 M0 34 q-12 -6 -16 4 M0 30 q12 -6 16 4" stroke="#2f8f5b" stroke-width="3.5" fill="none"/></g>
-  </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">CK-01</div>
-      <h3>Desenli Çakmak Kılıfı</h3>
-      <p>Gül, geometrik ya da isim motifli kılıf. Çakmağı korur, kaymayı önler, kaybolmasını zorlaştırır.</p>
-      <table><tr><th>Uyum</th><td>Standart boy çakmak</td></tr><tr><th>Malzeme</th><td>PLA / PETG</td></tr><tr><th>Motif</th><td>Gül / geometrik / isim</td></tr><tr><th>Baskı</th><td>Tek veya çift renk</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#1f2a44"></span><span class="sw" style="background:#d94f8a"></span><span class="sw" style="background:#ffffff"></span><span class="sw" style="background:#f6c343"></span><span class="sw" style="background:#2b2b2b"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/707208.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-01</span><h3>Klik Fidget – Tek Parça</h3></div>
   </div>
   <div class="card">
-    <div class="art" style="--a:#d94f8a">
-  <svg viewBox="0 0 220 160">
-    <rect x="86" y="10" width="48" height="26" rx="5" fill="#c8ccd1"/>
-    <rect x="96" y="4" width="28" height="12" rx="3" fill="#888"/>
-    <rect x="76" y="30" width="68" height="124" rx="16" fill="#3a4a3a"/>
-    <g fill="#6b7f5a"><rect x="86" y="46" width="12" height="10" rx="2"/><rect x="104" y="46" width="12" height="10" rx="2"/><rect x="122" y="46" width="12" height="10" rx="2"/><rect x="86" y="63" width="12" height="10" rx="2"/><rect x="104" y="63" width="12" height="10" rx="2"/><rect x="122" y="63" width="12" height="10" rx="2"/><rect x="86" y="80" width="12" height="10" rx="2"/><rect x="104" y="80" width="12" height="10" rx="2"/><rect x="122" y="80" width="12" height="10" rx="2"/><rect x="86" y="97" width="12" height="10" rx="2"/><rect x="104" y="97" width="12" height="10" rx="2"/><rect x="122" y="97" width="12" height="10" rx="2"/><rect x="86" y="114" width="12" height="10" rx="2"/><rect x="104" y="114" width="12" height="10" rx="2"/><rect x="122" y="114" width="12" height="10" rx="2"/><rect x="86" y="131" width="12" height="10" rx="2"/><rect x="104" y="131" width="12" height="10" rx="2"/><rect x="122" y="131" width="12" height="10" rx="2"/></g>
-  </svg>
-      <span class="ph">Görsel temsilidir – gerçek ürün fotoğrafı eklenecek</span></div>
-    <div class="body">
-      <div class="code">CK-02</div>
-      <h3>Kapaklı / Su Geçirmez Kılıf</h3>
-      <p>Kapaklı, sıkı geçmeli kutu tipi kılıf. Kamp, outdoor ve araç içi kullanım için dayanıklı tasarım.</p>
-      <table><tr><th>Uyum</th><td>Mini / standart boy</td></tr><tr><th>Malzeme</th><td>PETG</td></tr><tr><th>Kapak</th><td>Geçmeli, contalı</td></tr><tr><th>Yüzey</th><td>Kaymaz doku</td></tr></table>
-      <div class="foot">
-        <div><small>Renk seçenekleri</small><div><span class="sw" style="background:#3a4a3a"></span><span class="sw" style="background:#6b7f5a"></span><span class="sw" style="background:#2b2b2b"></span><span class="sw" style="background:#c2a878"></span><span class="sw" style="background:#ff6b4a"></span></div></div>
-        <div class="price"><small>Fiyat</small><b>₺ ______</b></div>
-      </div>
-    </div>
+    <div class="ph"><img src="img/2856174.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-02</span><h3>Mini Mantı Klik</h3></div>
   </div>
-    <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>7</span></div>
+  <div class="card">
+    <div class="ph"><img src="img/2513119.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-03</span><h3>15 Kombinasyonlu Klik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/67728.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-04</span><h3>Klik Fidget – Klasik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1142090.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-05</span><h3>Peynir Klik Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2242060.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-06</span><h3>Lego Tuğla Klik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2460021.jpg"><span class="hot" style="background:#e0457b">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-07</span><h3>Klavye Tuşu Klik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1652741.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-08</span><h3>Dijital Evcil Hayvan Klik</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>7</span></div>
   </section><section class="page">
-  <div class="bar" style="background:#1f2a44"></div>
-  <div class="kicker">Bayi / Mağaza</div>
-  <h2>Fiyat Listesi & Sipariş</h2>
-  <table class="pl"><thead><tr><th>Kod</th><th>Ürün</th><th class="r">Perakende</th><th class="r">10+ adet</th><th class="r">50+ adet</th></tr></thead>
-  <tbody><tr><td>AN-01</td><td>İsimli Anahtarlık</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>AN-02</td><td>Esnek Ejderha Anahtarlık</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>ZP-01</td><td>Zıplaç (Penta Jump)</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>ZP-02</td><td>Klik Tuş Anahtarlık</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>SP-01</td><td>Jiroskop Spinner</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>SP-02</td><td>Spinner Ball (Küre içinde Küre)</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>KP-01</td><td>Sonsuzluk Küpü – Standart</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>KP-02</td><td>Mini Sonsuzluk Küpü Anahtarlık</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>CK-01</td><td>Desenli Çakmak Kılıfı</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr><tr><td>CK-02</td><td>Kapaklı / Su Geçirmez Kılıf</td><td class="r">₺ ____</td><td class="r">₺ ____</td><td class="r">₺ ____</td></tr></tbody></table>
-  <div class="steps">
-    <div><b>Seçin</b>Ürün kodunu ve adedi belirleyin.</div>
-    <div><b>Renk & yazı</b>Renkleri ve varsa kişisel yazıyı iletin.</div>
-    <div><b>Onay</b>Örnek görsel / numune onayı alınır.</div>
-    <div><b>Teslim</b>Üretim sonrası kargo veya elden teslim.</div>
+    <div class="subhead" style="color:#e0457b">Klik Anahtarlıklar <span>— devam</span></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/1308881.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-09</span><h3>Kafa Klik Anahtarlık</h3></div>
   </div>
-  <p class="lead" style="margin-top:8mm;font-size:9pt">Ölçüler yaklaşıktır, üretim partisine göre ±%5 değişebilir. Küçük parça içerir; 3 yaş altı çocuklar için uygun değildir. Çakmak kılıflarına çakmak dahil değildir.</p>
-  <div class="pf"><span>MARKA ADINIZ · 3D Baskı Hediyelik & Fidget Koleksiyonu</span><span>8</span></div>
-</section><section class="page back">
-  <div class="blob" style="position:absolute;border-radius:50%;width:180mm;height:180mm;background:#fff;opacity:.08;right:-60mm;bottom:-60mm"></div>
-  <div style="position:absolute;left:18mm;right:18mm;top:70mm">
+  <div class="card">
+    <div class="ph"><img src="img/485421.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-10</span><h3>Klik Fidget – Kare</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1067809.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-11</span><h3>Emoji Kalp Klik Seti</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/659838.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-12</span><h3>Hayalet & Tabut Klik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/722009.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-13</span><h3>Mini Klik Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/975256.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-14</span><h3>Esprili Buton Klik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1598240.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-15</span><h3>ESC Tuşu Klik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1128835.jpg"></div>
+    <div class="meta"><span class="code" style="color:#e0457b">KL-16</span><h3>Yin-Yang Klik</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>8</span></div>
+  </section><section class="page">
+    <div class="head" style="--c:#2a9d8f"><div><div class="kicker" style="color:#2a9d8f">Kategori</div><h2>Spinner'lar</h2><p class="lead">Jiroskop halkalı, dişli ve rulmanlı dakikalarca dönen spinner'lar.</p></div><div class="num" style="color:#2a9d8f">24<small>model</small></div></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/568279.jpg"><span class="hot" style="background:#2a9d8f">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-01</span><h3>Jiro4 Twist Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/856977.jpg"><span class="hot" style="background:#2a9d8f">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-02</span><h3>Jiroskop Anahtarlık Seti</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2027619.jpg"><span class="hot" style="background:#2a9d8f">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-03</span><h3>Dişli Spinner – Pro</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2931758.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-04</span><h3>Rulmanlı Spinner – Ultimate</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/444433.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-05</span><h3>Halkalı Jiro Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1655976.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-06</span><h3>Çift Katlı Dişli Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/718662.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-07</span><h3>Klikli Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2960449.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-08</span><h3>Rulmanlı Spinner – Extreme</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/465023.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-09</span><h3>Somun Jiro Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1156470.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-10</span><h3>Pickleball Jiro Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/254958.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-11</span><h3>Jiroskop Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/136262.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-12</span><h3>Çoklu Dönen Jiroskop</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>9</span></div>
+  </section><section class="page">
+    <div class="subhead" style="color:#2a9d8f">Spinner'lar <span>— devam</span></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/555424.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-13</span><h3>Dikenli Jiro Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/465935.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-14</span><h3>Dokulu Jiro Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/502345.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-15</span><h3>Cep Jiroskop</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/398576.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-16</span><h3>Jiroskop Spinner – Mini</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/198609.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-17</span><h3>Anahtarlık Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/58691.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-18</span><h3>Spinny Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/663482.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-19</span><h3>Planet Dişli Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1038195.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-20</span><h3>Rulman Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/604756.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-21</span><h3>Sade Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1014473.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-22</span><h3>Bilyalı Spinner Anahtarlık</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/549353.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-23</span><h3>5 Halkalı Jiro Spinner</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1569648.jpg"></div>
+    <div class="meta"><span class="code" style="color:#2a9d8f">SP-24</span><h3>Jiroskop Anahtarlık</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>10</span></div>
+  </section><section class="page">
+    <div class="head" style="--c:#3a86ff"><div><div class="kicker" style="color:#3a86ff">Kategori</div><h2>Spinner Ball & Twist Toplar</h2><p class="lead">Elde dönen, burulan, küre içinde küre fidget toplar.</p></div><div class="num" style="color:#3a86ff">9<small>model</small></div></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/2658901.jpg"><span class="hot" style="background:#3a86ff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-01</span><h3>Twist Fidget Top</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2313012.jpg"><span class="hot" style="background:#3a86ff">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-02</span><h3>Burgulu Fidget Top</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2324767.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-03</span><h3>Duyusal Twist Toplar</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2131999.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-04</span><h3>Spiral Dişli Top</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2697583.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-05</span><h3>Mini Twist Küre</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1624871.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-06</span><h3>Küre İçinde Küre</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2555729.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-07</span><h3>Orbix Spinner Ball</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/60723.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-08</span><h3>Dönen Fidget Küre</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1336055.jpg"></div>
+    <div class="meta"><span class="code" style="color:#3a86ff">SB-09</span><h3>Kayar Twist Top</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>11</span></div>
+  </section><section class="page">
+    <div class="head" style="--c:#8e44ad"><div><div class="kicker" style="color:#8e44ad">Kategori</div><h2>Sonsuzluk Küpleri</h2><p class="lead">Sonsuza kadar katlanıp açılan küpler ve anahtarlık versiyonları.</p></div><div class="num" style="color:#8e44ad">13<small>model</small></div></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/1084160.jpg"><span class="hot" style="background:#8e44ad">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-01</span><h3>Sonsuzluk Küpü – Klasik</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2329694.jpg"><span class="hot" style="background:#8e44ad">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-02</span><h3>Sonsuzluk Küpü – Yumuşak Menteşe</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2015474.jpg"><span class="hot" style="background:#8e44ad">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-03</span><h3>Cep Boy Sonsuzluk Küpü</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2429789.jpg"><span class="hot" style="background:#8e44ad">POPÜLER</span></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-04</span><h3>Sonsuzluk Fidget</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/499566.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-05</span><h3>Kılıflı Mini Sonsuzluk Küpü</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/961037.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-06</span><h3>Açılan Kalp-Yıldız</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/859525.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-07</span><h3>Sonsuzluk Küpü Anahtarlık</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>12</span></div>
+  </section><section class="page">
+    <div class="subhead" style="color:#8e44ad">Sonsuzluk Küpleri <span>— devam</span></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/1617853.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-08</span><h3>Sonsuzluk Küpü – Sade</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1362645.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-09</span><h3>Yaylı Sonsuzluk Küpü</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1243829.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-10</span><h3>Sonsuzluk Küpü – Katmanlı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/56759.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-11</span><h3>Sonsuzluk Küpü – Mini</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/800914.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-12</span><h3>Yılbaşı Ağacı Kılıflı Küp</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/572673.jpg"></div>
+    <div class="meta"><span class="code" style="color:#8e44ad">SK-13</span><h3>Labirent Sonsuzluk Küpü</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>13</span></div>
+  </section><section class="page">
+    <div class="head" style="--c:#c0392b"><div><div class="kicker" style="color:#c0392b">Kategori</div><h2>Çakmak Kılıfları</h2><p class="lead">Gül, ejderha, kurukafa ve taktik desenli çakmak kılıfları.</p></div><div class="num" style="color:#c0392b">11<small>model</small></div></div>
+    <div class="grid">
+  <div class="card">
+    <div class="ph"><img src="img/1232133.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-01</span><h3>Taktik Çakmak Kılıfı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1424092.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-02</span><h3>Ejderha Pulu Kılıf</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1246772.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-03</span><h3>Sigara & Çakmak Kutusu</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/650503.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-04</span><h3>Ergonomik Çakmak Kılıfı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/961388.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-05</span><h3>İnce Koruyucu Kılıf</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1027781.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-06</span><h3>Su Geçirmez Kılıf – 6 Model</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/408533.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-07</span><h3>Çalınmaz Çakmak Kılıfı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/1063259.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-08</span><h3>Güllü Çakmak Kılıfı</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/996608.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-09</span><h3>Kurukafa Desenli Kılıf</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/2437550.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-10</span><h3>Ejderha Ağzı Kılıf</h3></div>
+  </div>
+  <div class="card">
+    <div class="ph"><img src="img/839958.jpg"></div>
+    <div class="meta"><span class="code" style="color:#c0392b">CK-11</span><h3>Kapaklı Çakmak Kılıfı</h3></div>
+  </div></div>
+    <div class="pf"><span>MARKA ADINIZ · Katalog 2026</span><span>14</span></div>
+  </section><section class="page back">
+  <div style="position:absolute;left:18mm;right:18mm;top:80mm">
     <div class="kicker" style="color:#fff;opacity:.8">İletişim</div>
-    <h2 style="margin-top:3mm">Numune ve toplu sipariş<br>için bize yazın.</h2>
-    <div class="ct"><b>Telefon / WhatsApp</b>+90 ___ ___ __ __<br><b>Instagram</b>@__________<br><b>E-posta</b>__________@______<br><b>Adres</b>________________________</div>
+    <h2 style="margin-top:3mm;font-size:34pt;line-height:1.1">Numune ve toplu sipariş<br>için bize yazın.</h2>
+    <div class="ct"><b>Telefon / WhatsApp</b>+90 ___ ___ __ __<br><b>Instagram</b>@__________<br><b>E-posta</b>__________@______</div>
   </div>
   <div style="position:absolute;bottom:18mm;left:18mm;font-weight:700;letter-spacing:3px">MARKA ADINIZ</div>
 </section></body></html>
