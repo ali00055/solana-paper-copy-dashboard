@@ -17,7 +17,7 @@ const CATS = [
   ['spinner', 'Spinner\'lar', 'SP', '#2a9d8f', 'Jiroskop halkalı, dişli ve rulmanlı dakikalarca dönen spinner\'lar.'],
   ['ball', 'Spinner Ball & Twist Toplar', 'SB', '#3a86ff', 'Elde dönen, burulan, küre içinde küre fidget toplar.'],
   ['kup', 'Sonsuzluk Küpleri', 'SK', '#8e44ad', 'Sonsuza kadar katlanıp açılan küpler ve anahtarlık versiyonları.'],
-  ['cakmak', 'Çakmak Kılıfları', 'CK', '#c0392b', 'Gül, ejderha, kurukafa ve taktik desenli çakmak kılıfları.'],
+  ['cakmak', 'Çakmak Kılıfları', 'CK', '#c0392b', 'Ejderha, yılan, kurukafa, uzaylı gibi figürlü; gül, petek ve isimli desenli; anahtarlıklı çakmak kılıfları.'],
 ];
 
 const fmtK = n => n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace('.', ',') + 'B' : String(n);
