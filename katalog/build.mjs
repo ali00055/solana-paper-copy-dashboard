@@ -10,7 +10,7 @@ const names = JSON.parse(readFileSync('names.json', 'utf8'));
 const models = JSON.parse(readFileSync('models.json', 'utf8')).filter(m => names[m.id] && m.img);
 
 const CATS = [
-  ['isimli', 'İsimli Anahtarlıklar', 'AN', '#ff6b4a', 'Kişiye özel isim ve yazılı, tek ya da çok renkli anahtarlıklar.'],
+  ['isimli', 'Anahtarlıklar', 'AN', '#ff6b4a', 'En popüler anahtarlıklar: isimli, forma, turbo, fidget, karakter ve pati modelleri.'],
   ['flexi', 'Esnek Hayvan Anahtarlıkları', 'FL', '#7b5cff', 'Kıvrılan, oynayan, eklemli sevimli hayvanlar — tek parça.'],
   ['zipzip', 'Zıplaçlar & Pop Oyuncaklar', 'ZP', '#f6a623', 'Bastır, bırak, zıplasın! Masa üstünün en eğlenceli oyuncakları.'],
   ['klik', 'Klik Anahtarlıklar', 'KL', '#e0457b', 'Tık sesiyle stres atan, cepte taşınan klik fidget\'lar.'],
