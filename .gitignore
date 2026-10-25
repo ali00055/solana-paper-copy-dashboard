@@ -38,3 +38,6 @@ tmp_*
 gmgn-public-key*.txt
 gmgn-key-helper.html
 bot-runtime.lock
+
+# graphify
+graphify-out/cache/
